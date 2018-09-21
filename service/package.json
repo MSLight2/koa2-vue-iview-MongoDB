@@ -1,0 +1,15 @@
+{
+  "name": "watchshop",
+  "version": "1.0.0",
+  "description": "a spa shop",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "author": "caicai",
+  "license": "ISC",
+  "dependencies": {
+    "koa": "^2.5.3"
+  }
+}
