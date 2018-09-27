@@ -1,31 +1,54 @@
 <template>
   <div class="main">
     <div class="login-main"></div>
-    <!--<jelly-canvas/>-->
+    <jelly-canvas/>
     <div class="login-box">
       <div class="login-logo">
-        <img src="@/assets/img/logo.png" alt="logo">
+        <div class="login-logo-img">
+          <img src="@/assets/img/logo.png" alt="logo">
+        </div>
+        <p class="login-nick">Electro</p>
+        <p>早上好，欢迎光临！</p>
       </div>
       <div class="login-input-cnt">
         <div class="login-input-item">
           <i class="login-icon iconfont icon-user"></i>
-          <input class="login-input" type="text" maxlength="30" placeholder="请输入用户名/手机号/邮箱">
+          <input
+            class="login-input"
+            v-model="inputUserName"
+            type="text"
+            maxlength="30"
+            placeholder="用户名/手机号/邮箱">
         </div>
         <div class="login-input-item">
           <i class="login-icon iconfont icon-password"></i>
-          <input class="login-input" type="password" maxlength="30" placeholder="请输入密码">
-          <i class="login-icon iconfont icon-password-view" v-show="pwdShow"></i>
-          <i class="login-icon iconfont icon-password-not-view" v-show="!pwdShow"></i>
+          <input
+            class="login-input"
+            v-model="inputPassword"
+            :type="[pwdIconOpen ? 'text' : 'password']"
+            maxlength="30"
+            placeholder="密码">
+          <i
+            class="login-icon iconfont icon-password-view"
+            v-show="pwdIconOpen"
+            @click="switchPwdEyes">
+          </i>
+          <i
+            class="login-icon iconfont icon-password-not-view"
+            v-show="!pwdIconOpen"
+            @click="switchPwdEyes">
+          </i>
         </div>
       </div>
       <!-- btn -->
       <div class="login-box-btns">
         <div class="login-btn-tip">
           <div class="remined-pwd">
-            <input type="checkbox" value="">
+            <input type="checkbox" v-model="reminedPwdChenck" id="rmBox">
+            <label class="remined-pwd-label" :class="[reminedPwdChenck.length > 0 ? 'check' : '']" for="rmBox"></label>
             <span>记住密码</span>
           </div>
-          <div>
+          <div class="login-btn-right">
             <span>忘记密码</span>
             <span>立即注册</span>
           </div>
@@ -42,12 +65,20 @@ import JellyCanvas from '@/components/puppetComponent/JellyCanvas'
 export default {
   data () {
     return {
-      pwdShow: false,
-      pwdTypeIsPwd: true
+      pwdIconOpen: false,
+      pwdTypeIsPwd: true,
+      reminedPwdChenck: [],
+      inputUserName: '',
+      inputPassword: ''
     }
   },
   components: {
     JellyCanvas
+  },
+  methods: {
+    switchPwdEyes () {
+      this.pwdIconOpen = !this.pwdIconOpen
+    }
   }
 }
 </script>
@@ -71,8 +102,8 @@ export default {
   .login-box{
     position: absolute;
     width: 400px;
-    height: 480px;
-    background: rgba(255,255,255, 0.75);
+    height: 380px;
+    background: rgba(255,255,255, 0.8);
     border-radius: 8px;
     box-sizing: border-box;
     padding: 10px 20px;
@@ -80,8 +111,32 @@ export default {
     z-index: 999;
   }
   .login-logo{
+    position: relative;
     text-align: center;
     min-height: 70px;
+    color: #9a9a9a;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+  .login-logo-img{
+    position: absolute;
+    top: -55px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 1px solid transparent;
+    background: #D10024;
+    overflow: hidden;
+  }
+  .login-logo-img img{
+    width: 100%;
+    height: 100%;
+  }
+  .login-nick{
+    color: #333;
+    font-size: 18px;
+    margin: 30px 0 10px 0;
   }
   .login-input-cnt{
     margin-top: 20px;
@@ -91,15 +146,16 @@ export default {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    height: 50px;
+    height: 45px;
     margin: 0 auto;
     padding: 0 10px;
     background: #fff;
     border-radius: 5px;
-    margin-top: 10px;
+    margin-top: 20px;
   }
   .login-icon{
     font-size: 26px;
+    color: #999;
   }
   .login-input{
     flex-grow: 1;
@@ -112,7 +168,7 @@ export default {
     border-left: 1px solid #eee;
   }
   .login-box-btns{
-    margin-top: 10px;
+    margin-top: 15px;
   }
   .login-btn-tip{
     display: flex;
@@ -121,15 +177,46 @@ export default {
   .remined-pwd{
     display: flex;
     align-items: center;
-    color: #D10024;
+    color: #7f8c8d;
   }
   .remined-pwd>input{
+    display: none;
+  }
+  .remined-pwd-label{
     width: 15px;
     height: 15px;
     border: 1px solid #D10024;
     margin: 0;
+    cursor: pointer;
+  }
+  .remined-pwd-label.check{
+    background: #D10024;
   }
   .remined-pwd>span{
     margin-left: 5px;
+  }
+  .login-btn-right span{
+    cursor: pointer;
+    color: #D10024;
+  }
+  .login-btn-right span:hover{
+    text-decoration: underline;
+  }
+  .login-btn-right>span:first-child{
+    color: #7f8c8d;
+    margin-right: 10px;
+  }
+  .login-btn{
+    cursor: pointer;
+    height: 45px;
+    line-height: 45px;
+    color: #fff;
+    font-size: 16px;
+    text-align: center;
+    letter-spacing: 10px;
+    background: #D10024;
+    margin-top: 40px;
+    border-radius: 30px;
+    box-shadow: 0px 5px 8px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
   }
 </style>
