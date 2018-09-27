@@ -7,32 +7,32 @@
             <ul class="hot-deal-countdown">
               <li>
                 <div>
-                  <h3>02</h3>
-                  <span>Days</span>
+                  <h3>{{day | formatDate}}</h3>
+                  <span>日</span>
                 </div>
               </li>
               <li>
                 <div>
-                  <h3>10</h3>
-                  <span>Hours</span>
+                  <h3>{{hours | formatDate}}</h3>
+                  <span>时</span>
                 </div>
               </li>
               <li>
                 <div>
-                  <h3>34</h3>
-                  <span>Mins</span>
+                  <h3>{{minute | formatDate}}</h3>
+                  <span>分</span>
                 </div>
               </li>
               <li>
                 <div>
-                  <h3>60</h3>
-                  <span>Secs</span>
+                  <h3>{{second | formatDate}}</h3>
+                  <span>秒</span>
                 </div>
               </li>
             </ul>
-            <h2 class="text-uppercase">hot deal this week</h2>
-            <p>New Collection Up to 50% OFF</p>
-            <a class="primary-btn cta-btn" href="javascript:;">Shop now</a>
+            <h2 class="text-uppercase">本周畅销</h2>
+            <p>新商品最多优惠50%</p>
+            <a class="primary-btn cta-btn" href="javascript:;">立即购买</a>
           </div>
         </div>
       </div>
@@ -44,6 +44,38 @@
 export default {
   data () {
     return {
+      day: 0,
+      hours: 0,
+      minute: 0,
+      second: 0,
+      timeOut: null
+    }
+  },
+  mounted () {
+    this.getDateForTimeOut()
+  },
+  beforeDestroy () {
+    if (this.timeOut) {
+      clearTimeout(this.timeOut)
+      this.timeOut = null
+    }
+  },
+  methods: {
+    initDate () {
+      let date = new Date()
+      this.day = date.getDate()
+      this.hours = date.getHours()
+      this.minute = date.getMinutes()
+      this.second = date.getSeconds()
+    },
+    getDateForTimeOut () {
+      this.initDate()
+      this.timeOut = setTimeout(this.getDateForTimeOut, 1000)
+    }
+  },
+  filters: {
+    formatDate (val) {
+      return val < 10 ? '0' + val : val
     }
   }
 }
