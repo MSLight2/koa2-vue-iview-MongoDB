@@ -8,7 +8,11 @@
           :options="productMainImgSlickOption"
           @beforeChange="handleMainImgsBeforeChange">
           <div class="product-preview">
-            <img src="@/assets/img/product01.png" alt="">
+            <zoom-on-hover
+              :img-normal="require('@/assets/img/product01.png')"
+              :scale="2"
+              :disabled="false">
+            </zoom-on-hover>
           </div>
           <div class="product-preview">
             <img src="@/assets/img/product03.png" alt="">
@@ -49,6 +53,7 @@
 
 <script>
 import Slick from 'vue-slick'
+import ZoomOnHover from '@/components/smartComponent/ZoomOnHover'
 
 export default {
   data () {
@@ -82,7 +87,8 @@ export default {
     }
   },
   components: {
-    Slick
+    Slick,
+    ZoomOnHover
   },
   mounted () {
     this.slideInit()
