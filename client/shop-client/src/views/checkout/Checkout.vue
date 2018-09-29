@@ -6,16 +6,13 @@
     <div class="section">
       <div class="container">
         <div class="row">
-          <!-- Product main img -->
-          <product-slide-img></product-slide-img>
-          <!-- Product details -->
-          <product-detail-desc></product-detail-desc>
-          <!-- Product tab -->
-          <product-tab></product-tab>
+          <!-- Billing Details -->
+          <billing-address></billing-address>
+          <!-- Order Details -->
+          <order-details :data="orderDetailData" @payNow="payNow"></order-details>
         </div>
       </div>
     </div>
-    <related-products></related-products>
     <news-letter></news-letter>
     <footer-tmpl></footer-tmpl>
   </div>
@@ -25,32 +22,36 @@
 import HeaderTmpl from '@/components/header/HeaderTmpl'
 import FooterTmpl from '@/components/puppetComponent/FooterTmpl'
 import NavBar from '@/components/puppetComponent/NavBar'
-import BreadCrumb from '@/components/puppetComponent/BreadCrumb'
-import ProductSlideImg from './children/ProductSlideImg'
-import ProductDetailDesc from './children/ProductDetailDesc'
-import ProductTab from './children/ProductTab'
-import RelatedProducts from './children/RelatedProducts'
 import NewsLetter from '@/components/puppetComponent/NewsLetter'
+import BreadCrumb from '@/components/puppetComponent/BreadCrumb'
+import OrderDetails from './children/OrderDetails'
+import BillingAddress from './children/BillingAddress'
 
 export default {
   data () {
     return {
       breadCrumbTitles: {
-        titleArr: ['首页', '配件', '笔记本', '苹果电脑'],
+        titleTip: '支付',
+        titleArr: ['首页', '确认支付'],
         path: []
-      }
+      },
+      orderDetailData: {}
     }
   },
   components: {
     HeaderTmpl,
     NavBar,
     BreadCrumb,
-    ProductSlideImg,
-    ProductDetailDesc,
-    ProductTab,
-    RelatedProducts,
     NewsLetter,
-    FooterTmpl
+    FooterTmpl,
+    OrderDetails,
+    BillingAddress
+  },
+  mounted () {
+  },
+  methods: {
+    payNow (typePick, userIsAgren) {
+    }
   }
 }
 </script>

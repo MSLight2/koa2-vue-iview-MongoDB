@@ -243,7 +243,7 @@ export default {
       this.$refs.tabSlick.reSlick()
     },
     tabClick (index) {
-      this.tabCurrentIndex = index;
+      this.tabCurrentIndex = index
       this.$refs.tabSlick.goTo(index, false)
     }
   }
