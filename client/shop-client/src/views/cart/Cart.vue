@@ -40,7 +40,7 @@
                 <p>总金额</p>
                 <span>￥22225<i>.39</i></span>
               </div>
-              <botton class="cart-btm-btn">立即支付</botton>
+              <button class="cart-btm-btn">立即购买</button>
             </div>
           </div>
         </div>

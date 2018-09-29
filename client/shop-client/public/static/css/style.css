@@ -2244,6 +2244,7 @@ textarea.input {
   align-items: center;
   max-width: 425px;
   border-radius: 5px;
+  cursor: pointer;
 }
 
 .cli-img > p{
@@ -2347,5 +2348,4 @@ textarea.input {
   border-radius: 30px;
   cursor: pointer;
   margin-right: 20px;
-  user-select: none;
 }
