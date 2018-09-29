@@ -10,9 +10,9 @@
           <store-aside></store-aside>
           <!-- STORE -->
           <store-list></store-list>
-          </div>
         </div>
       </div>
+    </div>
     <news-letter></news-letter>
     <footer-tmpl></footer-tmpl>
   </div>
