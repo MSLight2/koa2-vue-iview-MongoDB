@@ -15,6 +15,7 @@
         </div>
       </div>
     </div>
+    <related-products></related-products>
     <news-letter></news-letter>
     <footer-tmpl></footer-tmpl>
   </div>
@@ -28,6 +29,7 @@ import BreadCrumb from '@/components/puppetComponent/BreadCrumb'
 import ProductSlideImg from './children/ProductSlideImg'
 import ProductDetailDesc from './children/ProductDetailDesc'
 import ProductTab from './children/ProductTab'
+import RelatedProducts from './children/RelatedProducts'
 import NewsLetter from '@/components/puppetComponent/NewsLetter'
 
 export default {
@@ -42,6 +44,7 @@ export default {
     ProductSlideImg,
     ProductDetailDesc,
     ProductTab,
+    RelatedProducts,
     NewsLetter,
     FooterTmpl
   }
