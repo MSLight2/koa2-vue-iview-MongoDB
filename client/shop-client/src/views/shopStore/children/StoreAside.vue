@@ -2,13 +2,13 @@
   <div id="aside" class="col-md-3">
     <!-- categories -->
     <div class="aside">
-      <h3 class="aside-title">Categories</h3>
+      <h3 class="aside-title">分类</h3>
       <div class="checkbox-filter">
         <div class="input-checkbox">
           <input type="checkbox" id="category-1">
           <label for="category-1">
             <span></span>
-            Laptops
+            笔记本
             <small>(120)</small>
           </label>
         </div>
@@ -16,7 +16,7 @@
           <input type="checkbox" id="category-2">
           <label for="category-2">
             <span></span>
-            Smartphones
+            智能手机
             <small>(740)</small>
           </label>
         </div>
@@ -24,7 +24,7 @@
           <input type="checkbox" id="category-3">
           <label for="category-3">
             <span></span>
-            Cameras
+            照相机
             <small>(1450)</small>
           </label>
         </div>
@@ -32,7 +32,7 @@
           <input type="checkbox" id="category-4">
           <label for="category-4">
             <span></span>
-            Accessories
+            配件
             <small>(578)</small>
           </label>
         </div>
@@ -40,7 +40,7 @@
           <input type="checkbox" id="category-5">
           <label for="category-5">
             <span></span>
-            Laptops
+            耳机
             <small>(120)</small>
           </label>
         </div>
@@ -48,7 +48,7 @@
           <input type="checkbox" id="category-6">
           <label for="category-6">
             <span></span>
-            Smartphones
+            显示器
             <small>(740)</small>
           </label>
         </div>
@@ -56,7 +56,7 @@
     </div>
     <!-- price -->
     <div class="aside">
-      <h3 class="aside-title">Price</h3>
+      <h3 class="aside-title">价格</h3>
       <div class="price-filter">
         <div class="input-number price-min">
           <input id="price-min" type="number" value="0">
@@ -73,13 +73,13 @@
     </div>
     <!-- brand -->
     <div class="aside">
-      <h3 class="aside-title">Brand</h3>
+      <h3 class="aside-title">品牌</h3>
       <div class="checkbox-filter">
         <div class="input-checkbox">
           <input type="checkbox" id="brand-1">
           <label for="brand-1">
             <span></span>
-            SAMSUNG
+            小米
             <small>(578)</small>
           </label>
         </div>
@@ -87,7 +87,7 @@
           <input type="checkbox" id="brand-2">
           <label for="brand-2">
             <span></span>
-            LG
+            华为
             <small>(125)</small>
           </label>
         </div>
@@ -95,7 +95,7 @@
           <input type="checkbox" id="brand-3">
           <label for="brand-3">
             <span></span>
-            SONY
+            苹果
             <small>(755)</small>
           </label>
         </div>
@@ -103,7 +103,7 @@
           <input type="checkbox" id="brand-4">
           <label for="brand-4">
             <span></span>
-            SAMSUNG
+            宏碁
             <small>(578)</small>
           </label>
         </div>
@@ -111,7 +111,7 @@
           <input type="checkbox" id="brand-5">
           <label for="brand-5">
             <span></span>
-            LG
+            联想
             <small>(125)</small>
           </label>
         </div>
@@ -119,7 +119,7 @@
           <input type="checkbox" id="brand-6">
           <label for="brand-6">
             <span></span>
-            SONY
+            华硕
             <small>(755)</small>
           </label>
         </div>
@@ -127,7 +127,7 @@
     </div>
     <!-- Top selling -->
     <div class="aside">
-      <h3 class="aside-title">Top selling</h3>
+      <h3 class="aside-title">热门商品</h3>
       <div class="product-widget" v-for="index in 3" :key="index">
         <div class="product-img">
           <img src="@/assets/img/product01.png" alt="">

@@ -4,24 +4,20 @@
     <div class="store-filter clearfix">
       <div class="store-sort">
         <label>
-          Sort By:
+          排序:
           <select class="input-select">
-            <option value="0">Popular</option>
-            <option value="1">Position</option>
+            <option value="0">销量</option>
+            <option value="1">热门</option>
           </select>
         </label>
         <label>
-          Show:
+          价格筛选:
           <select class="input-select">
-            <option value="0">20</option>
-            <option value="1">50</option>
+            <option value="0">0~100</option>
+            <option value="1">100~200</option>
           </select>
         </label>
       </div>
-      <ul class="store-grid">
-        <li class="active"><i class="fa fa-th"></i></li>
-        <li><a href="#"><i class="fa fa-th-list"></i></a></li>
-      </ul>
     </div>
     <!-- store products -->
     <div class="row">
