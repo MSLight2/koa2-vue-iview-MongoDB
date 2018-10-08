@@ -19,6 +19,7 @@
             type="text"
             maxlength="30"
             placeholder="用户名/手机号/邮箱">
+          <span class="user-msg" v-show="userErrorShow">{{userErrorMsg}}</span>
         </div>
         <div class="login-input-item">
           <i class="login-icon iconfont icon-password"></i>
@@ -38,6 +39,7 @@
             v-show="!pwdIconOpen"
             @click="switchPwdEyes">
           </i>
+          <span class="pwd-msg" v-show="pwdErrorShow">{{pwdErrorMsg}}</span>
         </div>
       </div>
       <!-- btn -->
@@ -69,7 +71,11 @@ export default {
       pwdTypeIsPwd: true,
       reminedPwdChenck: [],
       inputUserName: '',
-      inputPassword: ''
+      inputPassword: '',
+      userErrorShow: false,
+      userErrorMsg: '用户名错误',
+      pwdErrorShow: false,
+      pwdErrorMsg: '密码错误'
     }
   },
   components: {
@@ -143,6 +149,7 @@ export default {
     text-align: center;
   }
   .login-input-item{
+    position: relative;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -167,8 +174,14 @@ export default {
     padding: 0 10px;
     border-left: 1px solid #eee;
   }
+  .user-msg,.pwd-msg{
+    position: absolute;
+    right: 0;
+    top: 45px;
+    color: #D10024;
+  }
   .login-box-btns{
-    margin-top: 15px;
+    margin-top: 20px;
   }
   .login-btn-tip{
     display: flex;
