@@ -14,12 +14,12 @@ let homeRouter = async (ctx, next) => {
  */
 let getUserInfo = async (ctx, next) => {
   // TODO: 检验是否登录
-  let userInfo = []
+  let userInfo = [];
   let ctxQuery = ctx.query;
   let userName = ctxQuery.userName || '';
-  let userId = ctxQuery.id || ''
+  let userId = ctxQuery.id || '';
   if (Utils.isEmpty(userName) || Utils.isEmpty(userId)) {
-    ctx.body = {errMsg: '用户名和id是必须的'}
+    ctx.body = {errMsg: '用户名和id是必须的'};
     return;
   }
   try {
@@ -28,11 +28,11 @@ let getUserInfo = async (ctx, next) => {
       null,
       (err, users) => {
         if (err) return console.error(err);
-        userInfo = users
+        userInfo = users;
       }
     )
   } catch (error) {
-    ctx.body = {errMsg: '查询出错'}
+    ctx.body = {errMsg: '查询出错'};
   }
   ctx.body = userInfo
 }
@@ -43,16 +43,16 @@ let getUserInfo = async (ctx, next) => {
  * @param {密码} password
  */
 let login = async (ctx, next) => {
-  let repData = {}
+  let repData = {};
   let ctxReqBody = ctx.request.body;
   let userName = ctxReqBody.userName || '';
-  let password = ctxReqBody.password || ''
+  let password = ctxReqBody.password || '';
   if (Utils.isEmpty(userName) || Utils.isEmpty(password)) {
-    ctx.body = {errMsg: '用户名和密码是必须的'}
+    ctx.body = {errMsg: '用户名和密码是必须的'};
     return;
   }
   if (password.length < 6) {
-    ctx.body = {errMsg: '密码长度不能小于6位数'}
+    ctx.body = {errMsg: '密码长度不能小于6位数'};
     return;
   }
   try {
@@ -61,7 +61,7 @@ let login = async (ctx, next) => {
       null,
       (err, users) => {
         if (err) return console.error(err);
-        usersArr = users
+        usersArr = users;
         repData = {
           dataInfo: users,
           token: jwt.sign({ userId: users['_id'] }, SecretConfig.secret, { expiresIn: '1h' })
@@ -69,7 +69,7 @@ let login = async (ctx, next) => {
       }
     )
   } catch (error) {
-    ctx.body = {errMsg: '查询出错'}
+    ctx.body = {errMsg: '查询出错'};
   }
   ctx.body = repData;
 }
