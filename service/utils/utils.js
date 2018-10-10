@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const SecretConfig = require('../config/secretConfig');
+const ErrCode = require('../config/errCode');
 
 let isEmpty = (val) => {
   val = val.trim();
@@ -34,7 +35,12 @@ let responseJSON = ({result, statusCode, isSuccess, errMsg}) => {
     isSuccess: isSuccess || ''
   };
 }
-
+/**
+ * 解析token
+ * @returns {0} 传入token格式有误
+ * @returns {-1} 无token，未注册
+ * @returns {-2}  token过期
+ */
 let resolveAuthorizationHeader = (ctx) => {
   let decodedToken = 0;
   if (!ctx.header || !ctx.header.authorization) {
@@ -46,11 +52,32 @@ let resolveAuthorizationHeader = (ctx) => {
     let token = headerToken[1];
     if (/^Bearer$/g.test(scheme)) {
       jwt.verify(token, SecretConfig.secret, function(err, decoded) {
-        decodedToken = decoded
+        if (err) {
+          decodedToken = -2
+        } else {
+          decodedToken = decoded
+        }
       });
     }
   }
   return decodedToken;
+}
+
+/**
+ * 检验token
+ */
+let validateToken = (ctx) => {
+  let decodeToken = resolveAuthorizationHeader(ctx);
+  if (decodeToken === 0) {
+    return responseJSON({errMsg: 'token格式错误', statusCode: ErrCode.errToken});
+  }
+  if (decodeToken == -1) {
+    return responseJSON({errMsg: '用户未注册', statusCode: ErrCode.noToken});
+  }
+  if (decodeToken == -2) {
+    return responseJSON({errMsg: 'token过期', statusCode: ErrCode.tokenExpire});
+  }
+  return decodeToken;
 }
 
 module.exports = {
@@ -58,5 +85,6 @@ module.exports = {
   isEmail: isEmail,
   isPhoneNumber: isPhoneNumber,
   responseJSON: responseJSON,
-  resolveAuthorizationHeader: resolveAuthorizationHeader
+  resolveAuthorizationHeader: resolveAuthorizationHeader,
+  validateToken: validateToken
 }
