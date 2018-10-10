@@ -124,8 +124,28 @@ let login = async (ctx, next) => {
   }
 }
 
+/**
+ * 用户注册
+ * @param {用户名} userName
+ * @param {昵称} nickName
+ * @param {密码} password
+ * @param {确认密码} passwordAgian
+ */
+let regist = async (ctx) => {
+}
+
+/**
+ * 忘记密码：密码重置
+ * @param {用户名} userName
+ * @param {密码} password 
+ */
+let forgetPassword = async (ctx) => {
+}
+
 module.exports = {
   homeRouter: ['GET', '/', homeRouter],
   getUserInfo: ['GET', '/userInfo', getUserInfo],
-  login: ['POST', '/login', login]
+  login: ['POST', '/login', login],
+  regist: ['POST', '/regist', regist],
+  forgetPassword: ['POST', '/forgetPassword', forgetPassword]
 }
