@@ -21,9 +21,8 @@ let getUserInfo = async (ctx, next) => {
     return ctx.body = validateTokenResult;
   };
   let repData = {};
-  let ctxQuery = ctx.query;
-  let userName = ctxQuery.userName || '';
-  let userId = validateTokenResult.userId || '';
+  let {userName = ''} = ctx.query;
+  let {userId = ''} = validateTokenResult;
   if (Utils.isEmpty(userName) || Utils.isEmpty(userId)) {
     ctx.body = Utils.responseJSON({errMsg: '用户名和id是必须的'});
     return;
@@ -70,9 +69,7 @@ let getUserInfo = async (ctx, next) => {
  */
 let login = async (ctx, next) => {
   let repData = {};
-  let ctxReqBody = ctx.request.body;
-  let userName = ctxReqBody.userName || '';
-  let password = ctxReqBody.password || '';
+  let {userName = '', password = ''} = ctx.request.body;
   if (Utils.isEmpty(userName) || Utils.isEmpty(password)) {
     ctx.body = Utils.responseJSON({errMsg: '用户名和密码是必须的'});
     return;
@@ -130,7 +127,6 @@ let login = async (ctx, next) => {
  * @param {确认密码} passwordAgian
  */
 let regist = async (ctx) => {
-  let repData = {};
   let registType = 'phone';
   let {userName = '', nickName = '', password = '', passwordAgian = ''} = ctx.request.body;
   if (Utils.isEmpty(userName) || Utils.isEmpty(nickName) || Utils.isEmpty(password)|| Utils.isEmpty(passwordAgian)) {
@@ -180,10 +176,7 @@ let regist = async (ctx) => {
  */
 let resetPassword = async (ctx) => {
   let repDate = {};
-  let ctxReqBody = ctx.request.body;
-  let userName = ctxReqBody.userName || '';
-  let password = ctxReqBody.password || '';
-  let passwordAgian = ctxReqBody.passwordAgian || '';
+  let {userName = '', password = '', passwordAgian = ''} = ctx.request.body;
   if (Utils.isEmpty(userName) || Utils.isEmpty(password)|| Utils.isEmpty(passwordAgian)) {
     ctx.body = Utils.responseJSON({errMsg: '用户名和密码是必须的'});
     return;
