@@ -81,36 +81,31 @@ let login = async (ctx, next) => {
 
   try {
     // 查询
-    await UsersModule.findOne(sqlWhere, null, (err, users) => {
-      if (err) {
-        repData = Utils.responseJSON({errMsg: '查询有误'});
-      } else {
-        // 查询无误，校验是用户、密码是否正确
-        if (users && userName === users[Object.keys(sqlWhere)[0]]
-          && CryptoUtils.md5Encode(password) === users.password) {
-          let userInfo = {
-            _id: users._id,
-            name: users.name,
-            age: users.age,
-            sex: users.sex,
-            email: users.email,
-            address: users.address,
-            nickName: users.nickName,
-            birthday: users.birthday,
-            phone: users.phone
-          }
-          repData = Utils.responseJSON({
-            result: {
-              dataInfo: userInfo,
-              token: jwt.sign({ userId: users['_id'] }, SecretConfig.secret, { expiresIn: '1h' })
-            },
-            isSuccess: true
-          })
-        } else {
-          repData = Utils.responseJSON({errMsg: '用户名或密码错误'});
-        }
+    let users = await UsersModule.findOne(sqlWhere, null);
+    // 查询无误，校验是用户、密码是否正确
+    if (users && userName === users[Object.keys(sqlWhere)[0]]
+      && CryptoUtils.md5Encode(password) === users.password) {
+      let userInfo = {
+        _id: users._id,
+        name: users.name,
+        age: users.age,
+        sex: users.sex,
+        email: users.email,
+        address: users.address,
+        nickName: users.nickName,
+        birthday: users.birthday,
+        phone: users.phone
       }
-    })
+      repData = Utils.responseJSON({
+        result: {
+          dataInfo: userInfo,
+          token: jwt.sign({ userId: users['_id'] }, SecretConfig.secret, { expiresIn: '1h' })
+        },
+        isSuccess: true
+      })
+    } else {
+      repData = Utils.responseJSON({errMsg: '用户名或密码错误'});
+    }
     ctx.body = repData;
   } catch (error) {
     ctx.body = Utils.responseJSON({errMsg: '查询出错'});
@@ -153,7 +148,7 @@ let regist = async (ctx) => {
       nickName: nickName,
       birthday: '',
       phone: registType === 'phone' ? userName : '',
-      password: password,
+      password: CryptoUtils.md5Encode(password),
       isDelete: false
     })
     await Users.save();
@@ -187,24 +182,19 @@ let resetPassword = async (ctx) => {
   }
 
   let updateWhere = {'phone': userName};
-  let updateValue = {$set: { 'password': password }};
+  let updateValue = {$set: { 'password': CryptoUtils.md5Encode(password) }};
   if (Utils.isEmail(userName)) updateWhere = {'email': userName};
 
   try {
-    await UsersModule.updateOne(updateWhere, updateValue, (err, doc) => {
-      if (err) {
-        repData = Utils.responseJSON({errMsg: '更新有误'});
-      } else {
-        if (doc.n) {
-          repDate = Utils.responseJSON({
-            result: '密码重置成功',
-            isSuccess: true
-          })
-        } else {
-          repDate = Utils.responseJSON({errMsg: '密码重置失败，请输入手机号或邮箱'})
-        }
-      }
-    })
+    let doc = await UsersModule.updateOne(updateWhere, updateValue);
+    if (doc.n) {
+      repDate = Utils.responseJSON({
+        result: '密码重置成功',
+        isSuccess: true
+      })
+    } else {
+      repDate = Utils.responseJSON({errMsg: '密码重置失败，请输入手机号或邮箱'})
+    }
     ctx.body = repDate;
   } catch (error) {
     ctx.body = Utils.responseJSON({errMsg: '更新数据出错'});
