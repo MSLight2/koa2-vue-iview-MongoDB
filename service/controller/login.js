@@ -4,10 +4,6 @@ const SecretConfig = require('../config/secretConfig');
 const jwt = require('jsonwebtoken');
 var UsersModule = require('../module/login/Users');
 
-let homeRouter = async (ctx, next) => {
-  ctx.body = 'home page';
-}
-
 /**
  * 获取用户信息(用户id存于token中)
  * @method get
@@ -139,6 +135,16 @@ let regist = async (ctx) => {
   if (Utils.isEmail(userName)) registType = 'email';
 
   try {
+    // 注册前判断此用户是否存在
+    let sqlWhere = {'name': userName};
+    if (Utils.isPhoneNumber(userName)) sqlWhere = {'phone': userName};
+    if (Utils.isEmail(userName)) sqlWhere = {'email': userName};
+    let users = await UsersModule.findOne(sqlWhere, null);
+    if (users) {
+      ctx.body = Utils.responseJSON({errMsg: '此用户已存在'});
+      return;
+    }
+    // 注册
     let Users = new UsersModule({
       name: nickName,
       age: '',
@@ -186,6 +192,15 @@ let resetPassword = async (ctx) => {
   if (Utils.isEmail(userName)) updateWhere = {'email': userName};
 
   try {
+    // 重置用户是否存在
+    let sqlWhere = {'phone': userName};
+    if (Utils.isEmail(userName)) sqlWhere = {'email': userName};
+    let users = await UsersModule.findOne(sqlWhere, null);
+    if (!users) {
+      ctx.body = Utils.responseJSON({errMsg: '此用户已不存在'});
+      return;
+    }
+    // 重置
     let doc = await UsersModule.updateOne(updateWhere, updateValue);
     if (doc.n) {
       repDate = Utils.responseJSON({
@@ -203,9 +218,8 @@ let resetPassword = async (ctx) => {
 }
 
 module.exports = {
-  homeRouter: ['GET', '/', homeRouter],
-  getUserInfo: ['GET', '/userInfo', getUserInfo],
-  login: ['POST', '/login', login],
-  regist: ['POST', '/regist', regist],
-  resetPassword: ['POST', '/resetPassword', resetPassword]
+  getUserInfo: ['GET', '/api/userInfo', getUserInfo],
+  login: ['POST', '/api/login', login],
+  regist: ['POST', '/api/regist', regist],
+  resetPassword: ['POST', '/api/resetPassword', resetPassword]
 }

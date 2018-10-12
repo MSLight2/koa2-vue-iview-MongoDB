@@ -75,7 +75,7 @@ let validateToken = (ctx) => {
     return responseJSON({errMsg: '用户未注册', statusCode: ErrCode.noToken});
   }
   if (decodeToken == -2) {
-    return responseJSON({errMsg: 'token过期', statusCode: ErrCode.tokenExpire});
+    return responseJSON({errMsg: 'token已过期', statusCode: ErrCode.tokenExpire});
   }
   return decodeToken;
 }
