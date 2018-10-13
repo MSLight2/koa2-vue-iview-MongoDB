@@ -3,6 +3,6 @@ module.exports = {
   errToken: 1000,
   // token过期
   tokenExpire: 1001,
-  // 未注册
+  // 未传入token
   noToken: 1002
 }
