@@ -7,8 +7,7 @@ var UsersModule = require('../module/login/Users');
 /**
  * 获取用户信息(用户id存于token中)
  * @method get
- * @param {用户名} userName
- * @param {用户id} id
+ * @param {用户id（无需传入，通过解析token获取）} id
  */
 let getUserInfo = async (ctx, next) => {
   // 检验是否登录
@@ -17,39 +16,30 @@ let getUserInfo = async (ctx, next) => {
     return ctx.body = validateTokenResult;
   };
   let repData = {};
-  let {userName = ''} = ctx.query;
   let {userId = ''} = validateTokenResult;
-  if (Utils.isEmpty(userName) || Utils.isEmpty(userId)) {
-    ctx.body = Utils.responseJSON({errMsg: '用户名和id是必须的'});
+  if (Utils.isEmpty(userId)) {
+    ctx.body = Utils.responseJSON({errMsg: '用户id是必须的，请传入token'});
     return;
   }
-
-  // 根据用户输入按 用户名/手机号码/邮箱 查询
-  let sqlWhere = {'name': userName};
-  if (Utils.isPhoneNumber(userName)) sqlWhere = {'phone': userName};
-  if (Utils.isEmail(userName)) sqlWhere = {'email': userName};
+  
+  let sqlWhere = {'_id': userId};
 
   try {
-    await UsersModule.findOne(sqlWhere, null, (err, users) => {
-      if (err) {
-        repData = {errMsg: '查询有误'};
-      } else {
-        let userInfo = {
-          _id: users._id,
-          name: users.name,
-          age: users.age,
-          sex: users.sex,
-          email: users.email,
-          address: users.address,
-          nickName: users.nickName,
-          birthday: users.birthday,
-          phone: users.phone
-        }
-        repData = Utils.responseJSON({
-          result: { dataInfo: userInfo },
-          isSuccess: true
-        })
-      }
+    let users = await UsersModule.findById(sqlWhere, null);
+    let userInfo = {
+      _id: users._id,
+      name: users.name,
+      age: users.age,
+      sex: users.sex,
+      email: users.email,
+      address: users.address,
+      nickName: users.nickName,
+      birthday: users.birthday,
+      phone: users.phone
+    }
+    repData = Utils.responseJSON({
+      result: { dataInfo: userInfo },
+      isSuccess: true
     })
     ctx.body = repData;
   } catch (error) {
