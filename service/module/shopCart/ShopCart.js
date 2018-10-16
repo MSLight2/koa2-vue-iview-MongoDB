@@ -9,6 +9,6 @@ let shopCartSchema = new Schema({
   status: {type: Number},
   create_time: {type: String},
   update_time: {type: String}
-})
+}, {versionKey: false})
 
 module.exports = mongoose.model('shopCart', shopCartSchema, 'shopCart');

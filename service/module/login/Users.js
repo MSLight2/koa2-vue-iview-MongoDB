@@ -19,6 +19,6 @@ var usersSchema = new Schema({
   phone: String,
   password: String,
   isDelete: Boolean
-})
+}, {versionKey: false})
 
 module.exports = mongoose.model('users', usersSchema);
