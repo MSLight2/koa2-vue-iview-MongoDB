@@ -5,13 +5,16 @@
         <!-- section title -->
         <div class="col-md-12">
           <div class="section-title">
-            <h3 class="title">新产品</h3>
+            <h3 class="title">{{titleConfig.title}}</h3>
             <div class="section-nav">
               <ul class="section-tab-nav tab-nav">
-                <li class="active"><a data-toggle="tab" href="#tab1">笔记本</a></li>
-                <li><a data-toggle="tab" href="#tab1">智能手机</a></li>
-                <li><a data-toggle="tab" href="#tab1">照相机</a></li>
-                <li><a data-toggle="tab" href="#tab1">配件</a></li>
+                <li
+                  v-for="(item, index) in titleConfig.categories"
+                  :key="index"
+                  @click="tabSwitch(index)"
+                  :class="{'active': index === currentTabIndex}">
+                    <a href="javascript:;">{{item}}</a>
+                </li>
               </ul>
             </div>
           </div>
@@ -24,10 +27,10 @@
               <div class="tab-pane active fade">
                 <div class="products-slick">
                   <swiper :options="sSlideSwiperOption">
-                      <!-- product -->
-                      <swiper-slide v-for="item in 8" :key="item">
-                        <product-item :data-info="dataInfo"></product-item>
-                      </swiper-slide>
+                    <!-- product -->
+                    <swiper-slide v-for="item in 8" :key="item">
+                      <product-item :data-info="dataInfo"></product-item>
+                    </swiper-slide>
                   </swiper>
                 </div>
                 <div class="products-slick-nav">
@@ -50,6 +53,7 @@ export default {
   data () {
     return {
       dataInfo: {},
+      currentTabIndex: 0,
       sSlideSwiperOption: {
         slidesPerView: 4,
         spaceBetween: 30,
@@ -64,10 +68,27 @@ export default {
       }
     }
   },
+  props: {
+    titleConfig: {
+      type: Object,
+      require: true,
+      default: () => {
+        return {
+          title: '',
+          categories: []
+        }
+      }
+    }
+  },
   components: {
     swiper,
     swiperSlide,
     ProductItem
+  },
+  methods: {
+    tabSwitch (index) {
+      this.currentTabIndex = index
+    }
   }
 }
 </script>

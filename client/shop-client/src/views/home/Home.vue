@@ -3,9 +3,9 @@
     <header-tmpl></header-tmpl>
     <nav-bar></nav-bar>
     <section-shop></section-shop>
-    <section-slide></section-slide>
+    <section-slide :title-config="configHot"></section-slide>
     <hot-detail></hot-detail>
-    <section-slide></section-slide>
+    <section-slide :title-config="configRecommend"></section-slide>
     <top-selling></top-selling>
     <news-letter></news-letter>
     <footer-tmpl></footer-tmpl>
@@ -25,6 +25,14 @@ import NewsLetter from '@/components/puppetComponent/NewsLetter'
 export default {
   data () {
     return {
+      configHot: {
+        title: '热卖',
+        categories: ['AI', '手机', '耳机']
+      },
+      configRecommend: {
+        title: '推荐',
+        categories: ['高配电脑', '智能手机', 'AI智能家电', '相机']
+      }
     }
   },
   components: {

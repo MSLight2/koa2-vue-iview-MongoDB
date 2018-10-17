@@ -6,15 +6,18 @@
         <label>
           排序:
           <select class="input-select">
-            <option value="0">销量</option>
-            <option value="1">热门</option>
+            <option value="0">价格</option>
+            <option value="1">销量</option>
           </select>
         </label>
         <label>
           价格筛选:
           <select class="input-select">
-            <option value="0">0~100</option>
-            <option value="1">100~200</option>
+            <option value="0">100以下</option>
+            <option value="1">100~500</option>
+            <option value="1">500~1000</option>
+            <option value="1">1000~5000</option>
+            <option value="1">5000以上</option>
           </select>
         </label>
       </div>

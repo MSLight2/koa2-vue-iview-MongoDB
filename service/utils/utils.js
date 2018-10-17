@@ -35,6 +35,18 @@ let responseJSON = ({result, statusCode, isSuccess, errMsg}) => {
     isSuccess: isSuccess || ''
   };
 }
+
+let repPagination = ({page = 1, pageSize = 10, total = 0}) => {
+  return {
+    paginationModule: {
+      page: page,
+      pageSize: pageSize ,
+      pageCount: Math.ceil(total / pageSize),
+      total: total
+    }
+  };
+}
+
 /**
  * 解析token
  * @returns {0} 传入token格式有误
@@ -85,6 +97,7 @@ module.exports = {
   isEmail: isEmail,
   isPhoneNumber: isPhoneNumber,
   responseJSON: responseJSON,
+  repPagination: repPagination,
   resolveAuthorizationHeader: resolveAuthorizationHeader,
   validateToken: validateToken
 }
