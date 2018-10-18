@@ -7,6 +7,7 @@ let homeRouter = async (ctx, next) => {
 
 /**
  * 根据商品类型获取数据(类目)
+ * @method get
  * @param {商品类型} goodsType
  * @param {查询页数} page
  * @param {返回行数} pageSize
@@ -48,13 +49,14 @@ let getDateForGoodsType = async (ctx) => {
 
 /**
  * 商品列表页
+ * @method get
  * @param {商品类型} goodsType 
  * @param {查询页数} page
  * @param {返回行数} pageSize
  * @param {搜索字段} searchWords
- * @param {排序字段} orderType
+ * @param {排序字段：0:销量，1:价格 } orderType
  * @param {排序方式} sortOrder
- * @param {筛选区间} filterRange
+ * @param {筛选区间：格式:0-100} filterRange
  * @param {最小价格} minPrice
  * @param {最大价格} maxPrice
  */
@@ -75,17 +77,30 @@ let getStoreGoodsList = async (ctx) => {
   pageSize = parseInt(pageSize);
   let skipCount = pageskip * pageSize;
 
+  if (filterRange) {
+    let rangeArr = filterRange.split('-');
+    minPrice = parseFloat(rangeArr[0] || 0);
+    maxPrice = parseFloat(rangeArr[1] || null);
+  }
   let sqlWhere = {
     'goodsType': goodsType,
     'title': '',
     'showPrice': {'$gte': Number(minPrice), '$lte': Number(maxPrice)}
   };
+  // 排序字段
+  let sortObj = null;
+  if (Number(orderType) === 0) {
+    sortObj = {'sold': sortOrder};
+  }
+  if (Number(orderType) === 1) {
+    sortObj = {'showPrice': sortOrder};
+  }
 
   try {
     let goods = await GoodsModule.find(sqlWhere)
       .skip(skipCount)
       .limit(pageSize)
-      .sort({'sold': orderType, 'showPrice': orderType})
+      .sort(sortObj)
       .exec();
     ctx.body = Utils.responseJSON({
       result: goods,
