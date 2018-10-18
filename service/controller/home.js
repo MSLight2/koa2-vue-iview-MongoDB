@@ -69,7 +69,7 @@ let getStoreGoodsList = async (ctx) => {
     orderType = null,
     sortOrder = null,
     filterRange = null,
-    minPrice = 0,
+    minPrice = null,
     maxPrice = null
   } = ctx.query;
   let pageskip = parseInt(page) - 1;
