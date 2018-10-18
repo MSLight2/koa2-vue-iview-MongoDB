@@ -1,17 +1,90 @@
+let CollectionModule = require('../module/Collection');
+let Utils = require('../utils/utils');
+
+/**
+ * 添加收藏
+ * @method post
+ * @param {用户id} userId
+ * @param {商品id} goodsId
+ */
 let addCollection = async (ctx) => {
-  ctx.body = '404'
+  let validateTokenResult = Utils.validateToken(ctx);
+  if (validateTokenResult.errMsg) return ctx.body = validateTokenResult;
+  let {userId = ''} = validateTokenResult;
+  if (Utils.isEmpty(userId)) return ctx.body = Utils.responseJSON({errMsg: '用户id是必须的，请传入token'});
+  
+  let {goodsId = ''} = ctx.request.body;
+  if (!goodsId) return ctx.body = Utils.responseJSON({errMsg: '参数错误'});
+
+  try {
+    let collection = new CollectionModule({
+      userId: userId,
+      goodsId: goodsId,
+      collectionTime: new Date().getTime()
+    })
+    await collection.save();
+    ctx.body = Utils.responseJSON({
+      result: '添加收藏成功',
+      isSuccess: true
+    });
+  } catch (error) {
+    ctx.body = Utils.responseJSON({errMsg: '插入数据出错'});
+  }
 }
 
+/**
+ * 删除收藏
+ * @method post
+ * @param {用户id} userId
+ * @param {商品id} goodsId
+ */
 let deleteCollection = async (ctx) => {
-  ctx.body = '404'
+  let validateTokenResult = Utils.validateToken(ctx);
+  if (validateTokenResult.errMsg) return ctx.body = validateTokenResult;
+  let {userId = ''} = validateTokenResult;
+  if (Utils.isEmpty(userId)) return ctx.body = Utils.responseJSON({errMsg: '用户id是必须的，请传入token'});
+  
+  let {goodsId = ''} = ctx.request.body;
+  if (!goodsId) return ctx.body = Utils.responseJSON({errMsg: '参数错误'});
+
+  try {
+
+    let sqlWhere = {'userId': userId, 'goodsId': goodsId};
+    let del = await CollectionModule.deleteOne(sqlWhere);
+    if (!del.n) return  ctx.body = Utils.responseJSON({errMsg: '无此条数据'});
+    ctx.body = Utils.responseJSON({
+      result: '删除收藏成功',
+      isSuccess: true
+    });
+  } catch (error) {
+    ctx.body = Utils.responseJSON({errMsg: '删除出错'});
+  }
 }
 
+/**
+ * 获取我的收藏
+ * @method get
+ * @param {用户id} userId
+ */
 let getCollection = async (ctx) => {
-  ctx.body = '404'
+  let validateTokenResult = Utils.validateToken(ctx);
+  if (validateTokenResult.errMsg) return ctx.body = validateTokenResult;
+  let {userId = ''} = validateTokenResult;
+  if (Utils.isEmpty(userId)) return ctx.body = Utils.responseJSON({errMsg: '用户id是必须的，请传入token'});
+
+  try {
+    let collections = await CollectionModule.find({'userId': userId});
+    ctx.body = Utils.responseJSON({
+      result: collections,
+      isSuccess: true
+    })
+  } catch (error) {
+    ctx.body = Utils.responseJSON({errMsg: '查询出错'})
+  }
 }
 
 module.exports = {
-  addCollection: ['GET', '/api/addCollection' , addCollection],
-  deleteCollection: ['GET', '/api/deleteCollection' , deleteCollection],
+  addCollection: ['POST', '/api/addCollection' , addCollection],
+  deleteCollection: ['POST', '/api/deleteCollection' , deleteCollection],
   getCollection: ['GET', '/api/getCollection' , getCollection]
 }

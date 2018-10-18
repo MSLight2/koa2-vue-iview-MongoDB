@@ -34,10 +34,12 @@ let manyDataInsert = async (ctx) => {
       dataItem.location = item.location || item.sellerLoc || item.area;
       dataItem.originalPrice = item.price || item.priceWap;
       dataItem.discountPrice = item.priceWap || item.priceWithRate || item.priceShow.price;
+      dataItem.showPrice = item.priceShow.price || item.price;
       dataItem.quantity = item.quantity;
       dataItem.mainPicPath = item.pic_path;
       dataItem.goodRate = item.goodRate;
       dataItem.auctionURL = item.auctionURL || item.shopInfo.url
+      dataItem.sold = item.sold || 0;
   
       insertDataArr.push(dataItem)
     });

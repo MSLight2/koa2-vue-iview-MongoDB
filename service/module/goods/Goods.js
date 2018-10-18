@@ -18,10 +18,12 @@ let GoodSchema = new Schema({
   location: {type: String, default: ''},
   originalPrice: {type: String, default: '0'},
   discountPrice: {type: String, default: '0'},
+  showPrice: {type: String, default: '0'},
   quantity: {type: Number, default: '0'},
   mainPicPath: {type: String, default: ''},
   goodRate: {type: String, default: '0'},
-  auctionURL: {type: String, default: ''}
+  auctionURL: {type: String, default: ''},
+  sold: {type: Number, default: 0}
 }, {versionKey: false})
 
 module.exports = mongoose.model('good', GoodSchema);

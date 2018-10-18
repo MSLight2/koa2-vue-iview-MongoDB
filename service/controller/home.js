@@ -46,7 +46,58 @@ let getDateForGoodsType = async (ctx) => {
   }
 }
 
+/**
+ * 商品列表页
+ * @param {商品类型} goodsType 
+ * @param {查询页数} page
+ * @param {返回行数} pageSize
+ * @param {搜索字段} searchWords
+ * @param {排序字段} orderType
+ * @param {排序方式} sortOrder
+ * @param {筛选区间} filterRange
+ * @param {最小价格} minPrice
+ * @param {最大价格} maxPrice
+ */
+let getStoreGoodsList = async (ctx) => {
+  let {
+    goodsType = null,
+    page = 1,
+    pageSize = 9,
+    searchWords = null,
+    orderType = null,
+    sortOrder = null,
+    filterRange = null,
+    minPrice = 0,
+    maxPrice = null
+  } = ctx.query;
+  let pageskip = parseInt(page) - 1;
+  if (pageskip < 0) pageskip = 0;
+  pageSize = parseInt(pageSize);
+  let skipCount = pageskip * pageSize;
+
+  let sqlWhere = {
+    'goodsType': goodsType,
+    'title': '',
+    'showPrice': {'$gte': Number(minPrice), '$lte': Number(maxPrice)}
+  };
+
+  try {
+    let goods = await GoodsModule.find(sqlWhere)
+      .skip(skipCount)
+      .limit(pageSize)
+      .sort({'sold': orderType, 'showPrice': orderType})
+      .exec();
+    ctx.body = Utils.responseJSON({
+      result: goods,
+      isSuccess: true
+    })
+  } catch (error) {
+    ctx.body = Utils.responseJSON({errMsg: '查询数据出错'});
+  }
+}
+
 module.exports = {
   home: ['GET', '/api/' , homeRouter],
-  getGoodsTypeDate: ['GET', '/api/getByCategoty' , getDateForGoodsType]
+  getGoodsTypeDate: ['GET', '/api/getByCategoty' , getDateForGoodsType],
+  getStoreGoodsList: ['GET', '/api/getStoreGoodsList' , getStoreGoodsList]
 }
