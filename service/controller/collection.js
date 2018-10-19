@@ -48,7 +48,6 @@ let deleteCollection = async (ctx) => {
   if (!goodsId) return ctx.body = Utils.responseJSON({errMsg: '参数错误'});
 
   try {
-
     let sqlWhere = {'userId': userId, 'goodsId': goodsId};
     let del = await CollectionModule.deleteOne(sqlWhere);
     if (!del.n) return  ctx.body = Utils.responseJSON({errMsg: '无此条数据'});

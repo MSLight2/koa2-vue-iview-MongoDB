@@ -48,6 +48,14 @@ let repPagination = ({page = 1, pageSize = 10, total = 0}) => {
 }
 
 /**
+ * 生成唯一的订单号
+ * @param {商品id} goodsId
+ */
+let createUniqueOrderNumber = (goodsId,) => {
+  return new Date().getTime() + goodsId + Math.random().toFixed(3) * 1000
+}
+
+/**
  * 解析token
  * @returns {0} 传入token格式有误
  * @returns {-1} 无token，未注册
@@ -99,5 +107,6 @@ module.exports = {
   responseJSON: responseJSON,
   repPagination: repPagination,
   resolveAuthorizationHeader: resolveAuthorizationHeader,
-  validateToken: validateToken
+  validateToken: validateToken,
+  createUniqueOrderNumber: createUniqueOrderNumber
 }

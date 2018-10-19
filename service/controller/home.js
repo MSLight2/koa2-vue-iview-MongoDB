@@ -14,9 +14,9 @@ let homeRouter = async (ctx, next) => {
  */
 let getDateForGoodsType = async (ctx) => {
   let {goodsType = 0, page = 1, pageSize = 10} = ctx.query;
-  let pageskip = parseInt(page) - 1;
+  let pageskip = page ? parseInt(page) - 1 : 0;
   if (pageskip < 0) pageskip = 0;
-  pageSize = parseInt(pageSize);
+  pageSize = pageSize ? parseInt(pageSize) : 10;
   let skipCount = pageskip * pageSize;
   
   let sqlWhere = null;
@@ -55,14 +55,14 @@ let getDateForGoodsType = async (ctx) => {
  * @param {返回行数} pageSize
  * @param {搜索字段} searchWords
  * @param {排序字段：0:销量，1:价格 } orderType
- * @param {排序方式} sortOrder
+ * @param {排序方式：-1降 1升} sortOrder
  * @param {筛选区间：格式:0-100} filterRange
  * @param {最小价格} minPrice
  * @param {最大价格} maxPrice
  */
 let getStoreGoodsList = async (ctx) => {
   let {
-    goodsType = null,
+    goodsType = 0,
     page = 1,
     pageSize = 9,
     searchWords = null,
@@ -72,9 +72,9 @@ let getStoreGoodsList = async (ctx) => {
     minPrice = null,
     maxPrice = null
   } = ctx.query;
-  let pageskip = parseInt(page) - 1;
+  let pageskip = page ? parseInt(page) - 1 : 0;
   if (pageskip < 0) pageskip = 0;
-  pageSize = parseInt(pageSize);
+  pageSize = pageSize ? parseInt(pageSize) : 9;
   let skipCount = pageskip * pageSize;
 
   if (filterRange) {
@@ -82,11 +82,10 @@ let getStoreGoodsList = async (ctx) => {
     minPrice = parseFloat(rangeArr[0] || 0);
     maxPrice = parseFloat(rangeArr[1] || null);
   }
-  let sqlWhere = {
-    'goodsType': goodsType,
-    'title': '',
-    'showPrice': {'$gte': Number(minPrice), '$lte': Number(maxPrice)}
-  };
+  let sqlWhere = null;
+  if (goodsType) sqlWhere = {'goodsType': goodsType};
+  if (searchWords) sqlWhere['title'] = {'$regex': searchWords, '$options': '$g'};
+  if (minPrice && maxPrice) sqlWhere['showPrice'] = {'$gte': Number(minPrice), '$lte': Number(maxPrice)};
   // 排序字段
   let sortObj = null;
   if (Number(orderType) === 0) {
