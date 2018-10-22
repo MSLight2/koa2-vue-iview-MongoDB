@@ -183,9 +183,7 @@ let resetPassword = async (ctx) => {
 
   try {
     // 重置用户是否存在
-    let sqlWhere = {'phone': userName};
-    if (Utils.isEmail(userName)) sqlWhere = {'email': userName};
-    let users = await UsersModule.findOne(sqlWhere, null);
+    let users = await UsersModule.findOne(updateWhere, null);
     if (!users) {
       ctx.body = Utils.responseJSON({errMsg: '此用户已不存在'});
       return;

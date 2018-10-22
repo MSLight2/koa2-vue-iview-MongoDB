@@ -110,8 +110,29 @@ let getStoreGoodsList = async (ctx) => {
   }
 }
 
+/**
+ * 根据商品id获取商品
+ * @method get
+ * @param {商品id} goodsId
+ */
+let getGoodByID = async ctx => {
+  let {goodsId = ''} = ctx.query;
+  if (!goodsId) return ctx.body = Utils.responseJSON({errMsg: '商品ID是必须的'});
+
+  try {
+    let goodsItem = await GoodsModule.findOne({'goodsId': goodsId}, null);
+    ctx.body = Utils.responseJSON({
+      result: goodsItem,
+      isSuccess: true
+    })
+  } catch (error) {
+    ctx.body = Utils.responseJSON({errMsg: '查询商品详情出错'});
+  }
+}
+
 module.exports = {
   home: ['GET', '/api/' , homeRouter],
   getGoodsTypeDate: ['GET', '/api/getByCategoty' , getDateForGoodsType],
-  getStoreGoodsList: ['GET', '/api/getStoreGoodsList' , getStoreGoodsList]
+  getStoreGoodsList: ['GET', '/api/getStoreGoodsList' , getStoreGoodsList],
+  getGoodByID: ['GET', '/api/getGoodByID' , getGoodByID]
 }

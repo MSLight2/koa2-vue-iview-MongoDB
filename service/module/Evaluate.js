@@ -1,14 +1,11 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var addressSchema = new Schema({
+var evaluateSchema = new Schema({
   _id: {type: Schema.Types.ObjectId, default: function () { return new mongoose.Types.ObjectId() }},
   userId: String,
-  email: String,
-  detailAddress: String,
-  city: String,
-  phone: String,
-  isDefault: {type: Boolean, default: false},
+  goodsId: String,
+  createTime: String
 }, {versionKey: false})
 
-module.exports = mongoose.model('address', addressSchema);
+module.exports = mongoose.model('evaluate', evaluateSchema);

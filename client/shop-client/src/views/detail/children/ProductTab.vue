@@ -29,7 +29,7 @@
             <div class="tab-pane">
               <div class="row">
                 <div class="col-md-12">
-                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                  <p>暂无详情</p>
                 </div>
               </div>
             </div>
@@ -187,11 +187,11 @@
                 <div class="col-md-3">
                   <div id="review-form">
                     <form class="review-form">
-                      <input class="input" type="text" placeholder="Your Name">
-                      <input class="input" type="email" placeholder="Your Email">
-                      <textarea class="input" placeholder="Your Review"></textarea>
+                      <input class="input" type="text" placeholder="昵称">
+                      <input class="input" type="email" placeholder="邮箱地址">
+                      <textarea class="input" placeholder="你的评价"></textarea>
                       <div class="input-rating">
-                        <span>Your Rating: </span>
+                        <span>你的评分: </span>
                         <div class="stars">
                           <input id="star5" name="rating" value="5" type="radio"><label for="star5"></label>
                           <input id="star4" name="rating" value="4" type="radio"><label for="star4"></label>
@@ -200,7 +200,7 @@
                           <input id="star1" name="rating" value="1" type="radio"><label for="star1"></label>
                         </div>
                       </div>
-                      <button class="primary-btn">Submit</button>
+                      <button class="primary-btn">提交</button>
                     </form>
                   </div>
                 </div>

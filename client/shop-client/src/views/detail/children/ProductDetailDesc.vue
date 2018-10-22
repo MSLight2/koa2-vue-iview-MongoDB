@@ -40,7 +40,7 @@
             <span class="qty-down">-</span>
           </div>
         </div>
-        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>加入购物车</button>
       </div>
       <ul class="product-btns">
         <li><a href="#"><i class="fa fa-heart-o"></i> 收藏</a></li>

@@ -7,7 +7,6 @@
         <li><a href="javascript:;"><i class="fa fa-map-marker"></i> 1734 Stonecoal Road</a></li>
       </ul>
       <ul class="header-links pull-right">
-        <li><a href="javascript:;"><i class="fa fa-dollar"></i> USD</a></li>
         <li><a href="javascript:;"><i class="fa fa-user-o"></i> 个人中心</a></li>
       </ul>
     </div>

@@ -7,7 +7,7 @@
           <ul class="breadcrumb-tree">
             <li
               v-for="(item, index) in titles.titleArr" :key="index">
-                <a href="#" v-if="titles.titleArr.length - 1 !== index">{{item}}</a>
+                <a href="javascript:;" v-if="titles.titleArr.length - 1 !== index">{{item}}</a>
                 <template v-else>{{item}}</template>
             </li>
           </ul>
