@@ -7,6 +7,18 @@ let Utils = require('../utils/utils.js');
  * @param {商品id} goodsId
  */
 let getEvaluateList = async ctx => {
+  let {goodsId = ''} = ctx.query;
+  if (!goodsId) return ctx.body = Utils.responseJSON({errMsg: '商品id是必须的'});
+
+  try {
+    let evaluates = await EvaluateModule.find({'goodsId': goodsId}, null);
+    ctx.body = Utils.responseJSON({
+      result: evaluates,
+      isSuccess: true
+    })
+  } catch (error) {
+    ctx.body = Utils.responseJSON({errMsg: '查询评论出错'});
+  }
 }
 
 /**
@@ -24,6 +36,35 @@ let addEvaluate = async ctx => {
   if (validateTokenResult.errMsg) return ctx.body = validateTokenResult;
   let {userId = ''} = validateTokenResult;
   if (Utils.isEmpty(userId)) return ctx.body = Utils.responseJSON({errMsg: '用户id是必须的，请传入token'});
+
+  let {goodsId = '', nickName = '', email = '', review = '', rate = ''} = ctx.request.body;
+  if (!goodsId) return ctx.body = Utils.responseJSON({errMsg: '商品id是必须的'});
+  if (!nickName) return ctx.body = Utils.responseJSON({errMsg: '昵称是必须的'});
+  if (!email) return ctx.body = Utils.responseJSON({errMsg: '邮箱是必须的'});
+  if (!review) return ctx.body = Utils.responseJSON({errMsg: '评价是必须的'});
+  if (!rate) return ctx.body = Utils.responseJSON({errMsg: '评分是必须的'});
+
+  try {
+    let evaluated = await EvaluateModule.findOne({'userId': userId, 'goodsId': goodsId}, null);
+    if (evaluated) return ctx.body = Utils.responseJSON({errMsg: '你已评论过该商品，不能重复评论'});
+
+    let evaluate = new EvaluateModule({
+      userId: userId,
+      goodsId: goodsId,
+      createTime: new Date().getTime(),
+      nickName: nickName,
+      email: email,
+      review: review,
+      rate: rate
+    });
+    await evaluate.save();
+    ctx.body = Utils.responseJSON({
+      result: '评论成功',
+      isSuccess: true
+    })
+  } catch (error) {
+    ctx.body = Utils.responseJSON({errMsg: '添加评论出错'});
+  }
 }
 
 /**
@@ -42,7 +83,7 @@ let deleteEvaluate = async ctx => {
   if (!goodsId) return ctx.body = Utils.responseJSON({errMsg: '商品id是必须的'});
 
   try {
-    let doc = EvaluateModule.deleteOne({'userId': userId, 'goodsId': goodsId});
+    let doc = await EvaluateModule.deleteOne({'userId': userId, 'goodsId': goodsId});
     if (!doc.n) return ctx.body = Utils.responseJSON({errMsg: '该评论不存在'});
     ctx.body = Utils.responseJSON({
       result: '删除评论成功',
@@ -55,6 +96,6 @@ let deleteEvaluate = async ctx => {
 
 module.exports = {
   getEvaluateList: ['GET', '/api/getEvaluateList' , getEvaluateList],
-  addEvaluate: ['GET', '/api/addEvaluate' , addEvaluate],
-  deleteEvaluate: ['GET', '/api/deleteEvaluate' , deleteEvaluate]
+  addEvaluate: ['POST', '/api/addEvaluate' , addEvaluate],
+  deleteEvaluate: ['POST', '/api/deleteEvaluate' , deleteEvaluate]
 }
