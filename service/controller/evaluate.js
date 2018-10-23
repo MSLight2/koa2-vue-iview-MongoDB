@@ -41,6 +41,7 @@ let addEvaluate = async ctx => {
   if (!goodsId) return ctx.body = Utils.responseJSON({errMsg: '商品id是必须的'});
   if (!nickName) return ctx.body = Utils.responseJSON({errMsg: '昵称是必须的'});
   if (!email) return ctx.body = Utils.responseJSON({errMsg: '邮箱是必须的'});
+  if (email && !Utils.isEmail(email)) return ctx.body = Utils.responseJSON({errMsg: '邮箱格式不正确'});
   if (!review) return ctx.body = Utils.responseJSON({errMsg: '评价是必须的'});
   if (!rate) return ctx.body = Utils.responseJSON({errMsg: '评分是必须的'});
 
