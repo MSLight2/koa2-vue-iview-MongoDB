@@ -1,5 +1,6 @@
 let CheckoutModule = require('../module/checkout/Checkout');
 let Utils = require('../utils/utils');
+let Code = require('../config/errCode');
 
 /**
  * 获取订单
@@ -17,10 +18,11 @@ let getCheckoutList = async ctx => {
     if (!checkouts) return ctx.body = Utils.responseJSON({errMsg: '此用户无订单数据'});
     ctx.body = Utils.responseJSON({
       result: checkouts,
-      isSuccess: true
+      isSuccess: true,
+      code: Code.successCode
     })
   } catch (error) {
-    ctx.body = Utils.responseJSON({errMsg: '查询出错'});
+    ctx.body = Utils.responseJSON({errMsg: '查询数据出错', code: Code.dbErr});
   }
 }
 
@@ -59,10 +61,11 @@ let addCheckout = async ctx => {
     await newCheckout.save();
     ctx.body = Utils.responseJSON({
       result: '已生成订单',
-      isSuccess: true
+      isSuccess: true,
+      code: Code.successCode
     })
   } catch (error) {
-    ctx.body = Utils.responseJSON({errMsg: '添加订单出错'});
+    ctx.body = Utils.responseJSON({errMsg: '添加订单出错', code: Code.dbErr});
   }
 }
 
@@ -86,10 +89,11 @@ let deleteCheckout = async ctx => {
     if (!del.n) return ctx.body = Utils.responseJSON({errMsg: '无此条数据'});
     ctx.body = Utils.responseJSON({
       result: '删除订单成功',
-      isSuccess: true
+      isSuccess: true,
+      code: Code.successCode
     })
   } catch (error) {
-    ctx.body = Utils.responseJSON({errMsg: '删除数据出错'});
+    ctx.body = Utils.responseJSON({errMsg: '删除数据出错', code: Code.dbErr});
   }
 }
 

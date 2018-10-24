@@ -1,5 +1,6 @@
 let EvaluateModule = require('../module/Evaluate');
 let Utils = require('../utils/utils.js');
+let Code = require('../config/errCode');
 
 /**
  * 获取评价内容
@@ -14,10 +15,11 @@ let getEvaluateList = async ctx => {
     let evaluates = await EvaluateModule.find({'goodsId': goodsId}, null);
     ctx.body = Utils.responseJSON({
       result: evaluates,
-      isSuccess: true
+      isSuccess: true,
+      code: Code.successCode
     })
   } catch (error) {
-    ctx.body = Utils.responseJSON({errMsg: '查询评论出错'});
+    ctx.body = Utils.responseJSON({errMsg: '查询评论出错', code: Code.dbErr});
   }
 }
 
@@ -61,10 +63,11 @@ let addEvaluate = async ctx => {
     await evaluate.save();
     ctx.body = Utils.responseJSON({
       result: '评论成功',
-      isSuccess: true
+      isSuccess: true,
+      code: Code.successCode
     })
   } catch (error) {
-    ctx.body = Utils.responseJSON({errMsg: '添加评论出错'});
+    ctx.body = Utils.responseJSON({errMsg: '添加评论出错', code: Code.dbErr});
   }
 }
 
@@ -88,10 +91,11 @@ let deleteEvaluate = async ctx => {
     if (!doc.n) return ctx.body = Utils.responseJSON({errMsg: '该评论不存在'});
     ctx.body = Utils.responseJSON({
       result: '删除评论成功',
-      isSuccess: true
+      isSuccess: true,
+      code: Code.successCode
     })
   } catch (error) {
-    ctx.body = Utils.responseJSON({errMsg: '删除评论出错'});
+    ctx.body = Utils.responseJSON({errMsg: '删除评论出错', code: Code.dbErr});
   }
 }
 

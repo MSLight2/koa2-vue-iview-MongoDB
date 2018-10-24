@@ -1,5 +1,6 @@
 let AddressModule = require('../module/Address');
 let Utils = require('../utils/utils');
+let Code = require('../config/errCode');
 
 /**
  * 获取用户收货地址
@@ -16,10 +17,11 @@ let getAddressList = async ctx => {
     let addresses = await AddressModule.find({'userId': userId}, null);
     ctx.body = Utils.responseJSON({
       result: addresses,
-      isSuccess: true
+      isSuccess: true,
+      code: Code.successCode
     })
   } catch (error) {
-    ctx.body = Utils.responseJSON({errMsg: '查询出错'});
+    ctx.body = Utils.responseJSON({errMsg: '查询数据出错', code: Code.dbErr});
   }
 }
 
@@ -63,10 +65,11 @@ let addAddress = async ctx => {
     await address.save();
     ctx.body = Utils.responseJSON({
       result: '地址添加成功',
-      isSuccess: true
+      isSuccess: true,
+      code: Code.successCode
     })
   } catch (error) {
-    ctx.body = Utils.responseJSON({errMsg: '添加地址出错'});
+    ctx.body = Utils.responseJSON({errMsg: '添加地址出错', code: Code.dbErr});
   }
 }
 
@@ -125,10 +128,11 @@ let editAddress = async ctx => {
     if (!doc) return ctx.body = Utils.responseJSON({errMsg: '改地址不存在'});
     ctx.body = Utils.responseJSON({
       result: '地址已更新',
-      isSuccess: true
+      isSuccess: true,
+      code: Code.successCode
     })
   } catch (error) {
-    ctx.body = Utils.responseJSON({errMsg: '更新地址出错'});
+    ctx.body = Utils.responseJSON({errMsg: '更新地址出错', code: Code.dbErr});
   }
 }
 
@@ -152,11 +156,12 @@ let deleteAddress = async ctx => {
     if (!doc) return ctx.body = Utils.responseJSON({errMsg: '该条数据不存在'});
     ctx.body = Utils.responseJSON({
       result: '删除成功',
-      isSuccess: true
+      isSuccess: true,
+      code: Code.successCode
     })
   } catch (error) {
     console.log(error)
-    ctx.body = Utils.responseJSON({errMsg: '删除数据出错'});
+    ctx.body = Utils.responseJSON({errMsg: '删除数据出错', code: Code.dbErr});
   }
 }
 

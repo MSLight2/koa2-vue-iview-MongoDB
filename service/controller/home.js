@@ -1,5 +1,6 @@
 let Utils = require('../utils/utils');
 let GoodsModule = require('../module/goods/Goods');
+let Code = require('../config/errCode');
 
 let homeRouter = async (ctx, next) => {
   ctx.body = 'home page';
@@ -34,7 +35,8 @@ let getDateForGoodsType = async (ctx) => {
     ctx.body = {
       ...Utils.responseJSON({
         result: goods,
-        isSuccess: true
+        isSuccess: true,
+        code: Code.successCode
       }),
       ...Utils.repPagination({
         page: page,
@@ -43,7 +45,7 @@ let getDateForGoodsType = async (ctx) => {
       })
     }
   } catch (error) {
-    ctx.body = Utils.responseJSON({errMsg: '查询出错'});
+    ctx.body = Utils.responseJSON({errMsg: '查询数据出错', code: Code.dbErr});
   }
 }
 
@@ -88,12 +90,8 @@ let getStoreGoodsList = async (ctx) => {
   if (minPrice && maxPrice) sqlWhere['showPrice'] = {'$gte': Number(minPrice), '$lte': Number(maxPrice)};
   // 排序字段
   let sortObj = null;
-  if (Number(orderType) === 0) {
-    sortObj = {'sold': sortOrder};
-  }
-  if (Number(orderType) === 1) {
-    sortObj = {'showPrice': sortOrder};
-  }
+  if (Number(orderType) === 0) sortObj = {'sold': sortOrder};
+  if (Number(orderType) === 1) sortObj = {'showPrice': sortOrder};
 
   try {
     let goods = await GoodsModule.find(sqlWhere)
@@ -103,10 +101,11 @@ let getStoreGoodsList = async (ctx) => {
       .exec();
     ctx.body = Utils.responseJSON({
       result: goods,
-      isSuccess: true
+      isSuccess: true,
+      code: Code.successCode
     })
   } catch (error) {
-    ctx.body = Utils.responseJSON({errMsg: '查询数据出错'});
+    ctx.body = Utils.responseJSON({errMsg: '查询数据出错', code: Code.dbErr});
   }
 }
 
@@ -123,10 +122,11 @@ let getGoodByID = async ctx => {
     let goodsItem = await GoodsModule.findOne({'goodsId': goodsId}, null);
     ctx.body = Utils.responseJSON({
       result: goodsItem,
-      isSuccess: true
+      isSuccess: true,
+      code: Code.successCode
     })
   } catch (error) {
-    ctx.body = Utils.responseJSON({errMsg: '查询商品详情出错'});
+    ctx.body = Utils.responseJSON({errMsg: '查询商品详情数据出错', code: Code.dbErr});
   }
 }
 

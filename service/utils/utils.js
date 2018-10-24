@@ -27,11 +27,11 @@ let isPhoneNumber = (val) => {
   }
 }
 
-let responseJSON = ({result, statusCode, isSuccess, errMsg}) => {
+let responseJSON = ({result, code, isSuccess, errMsg}) => {
   return {
     result: result || '',
     errMsg: errMsg || '',
-    statusCode: statusCode || '',
+    code: code || ErrCode.validateErrCode,
     isSuccess: isSuccess || ''
   };
 }
@@ -89,13 +89,13 @@ let resolveAuthorizationHeader = (ctx) => {
 let validateToken = (ctx) => {
   let decodeToken = resolveAuthorizationHeader(ctx);
   if (decodeToken === 0) {
-    return responseJSON({errMsg: 'token格式错误', statusCode: ErrCode.errToken});
+    return responseJSON({errMsg: 'token格式错误', code: ErrCode.errToken});
   }
   if (decodeToken == -1) {
-    return responseJSON({errMsg: '请传入token', statusCode: ErrCode.noToken});
+    return responseJSON({errMsg: '请传入token', code: ErrCode.noToken});
   }
   if (decodeToken == -2) {
-    return responseJSON({errMsg: 'token已过期', statusCode: ErrCode.tokenExpire});
+    return responseJSON({errMsg: 'token已过期', code: ErrCode.tokenExpire});
   }
   return decodeToken;
 }

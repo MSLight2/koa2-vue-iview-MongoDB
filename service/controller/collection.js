@@ -1,5 +1,6 @@
 let CollectionModule = require('../module/Collection');
 let Utils = require('../utils/utils');
+let Code = require('../config/errCode');
 
 /**
  * 添加收藏
@@ -25,10 +26,11 @@ let addCollection = async (ctx) => {
     await collection.save();
     ctx.body = Utils.responseJSON({
       result: '添加收藏成功',
-      isSuccess: true
+      isSuccess: true,
+      code: Code.successCode
     });
   } catch (error) {
-    ctx.body = Utils.responseJSON({errMsg: '插入数据出错'});
+    ctx.body = Utils.responseJSON({errMsg: '插入数据出错', code: Code.dbErr});
   }
 }
 
@@ -53,10 +55,11 @@ let deleteCollection = async (ctx) => {
     if (!del.n) return  ctx.body = Utils.responseJSON({errMsg: '无此条数据'});
     ctx.body = Utils.responseJSON({
       result: '删除收藏成功',
-      isSuccess: true
+      isSuccess: true,
+      code: Code.successCode
     });
   } catch (error) {
-    ctx.body = Utils.responseJSON({errMsg: '删除出错'});
+    ctx.body = Utils.responseJSON({errMsg: '删除数据出错', code: Code.dbErr});
   }
 }
 
@@ -75,10 +78,11 @@ let getCollection = async (ctx) => {
     let collections = await CollectionModule.find({'userId': userId});
     ctx.body = Utils.responseJSON({
       result: collections,
-      isSuccess: true
+      isSuccess: true,
+      code: Code.successCode
     })
   } catch (error) {
-    ctx.body = Utils.responseJSON({errMsg: '查询出错'})
+    ctx.body = Utils.responseJSON({errMsg: '查询数据出错', code: Code.dbErr})
   }
 }
 

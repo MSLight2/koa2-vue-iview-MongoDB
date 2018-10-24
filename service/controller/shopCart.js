@@ -1,5 +1,6 @@
 let Utils = require('../utils/utils');
 let ShopCartModule = require('../module/shopCart/ShopCart');
+let Code = require('../config/errCode');
 
 /**
  * 购物车数据获取
@@ -20,10 +21,11 @@ let getShoppingCart = async (ctx) => {
 
     ctx.body = Utils.responseJSON({
       result: { dataInfo: shopCarts },
-      isSuccess: true
+      isSuccess: true,
+      code: Code.successCode
     })
   } catch (error) {
-    ctx.body = Utils.responseJSON({errMsg: '购物车查询出错'});
+    ctx.body = Utils.responseJSON({errMsg: '购物车查询出错', code: Code.dbErr});
   }
 }
 
@@ -78,11 +80,12 @@ let addAndEditShoppingCart = async (ctx) => {
       await shopItem.save();
       ctx.body = Utils.responseJSON({
         result: '添加购物车成功',
-        isSuccess: true
+        isSuccess: true,
+        code: Code.successCode
       });
     }
   } catch (error) {
-    ctx.body = Utils.responseJSON({errMsg: '插入数据出错'});
+    ctx.body = Utils.responseJSON({errMsg: '插入数据出错', code: Code.dbErr});
   }
 }
 
@@ -119,10 +122,11 @@ let deleteShoppingCart = async (ctx) => {
     await ShopCartModule.deleteOne(sqlWhere);
     ctx.body = Utils.responseJSON({
       result: '删除购物车成功',
-      isSuccess: true
+      isSuccess: true,
+      code: Code.successCode
     });
   } catch (error) {
-    ctx.body = Utils.responseJSON({errMsg: '删除数据出错'});
+    ctx.body = Utils.responseJSON({errMsg: '删除数据出错', code: dbErr});
   }
 }
 

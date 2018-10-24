@@ -1,6 +1,7 @@
 const Utils = require('../utils/utils');
 const CryptoUtils = require('../utils/cryptoUtils');
 const SecretConfig = require('../config/secretConfig');
+const Code = require('../config/errCode');
 const jwt = require('jsonwebtoken');
 var UsersModule = require('../module/login/Users');
 
@@ -12,16 +13,11 @@ var UsersModule = require('../module/login/Users');
 let getUserInfo = async (ctx, next) => {
   // 检验是否登录
   let validateTokenResult = Utils.validateToken(ctx);
-  if (validateTokenResult.errMsg) {
-    return ctx.body = validateTokenResult;
-  };
-  let repData = {};
+  if (validateTokenResult.errMsg) return ctx.body = validateTokenResult;
   let {userId = ''} = validateTokenResult;
-  if (Utils.isEmpty(userId)) {
-    ctx.body = Utils.responseJSON({errMsg: '用户id是必须的，请传入token'});
-    return;
-  }
+  if (Utils.isEmpty(userId)) return ctx.body = Utils.responseJSON({errMsg: '用户id是必须的，请传入token'});
   
+  let repData = {};
   let sqlWhere = {'_id': userId};
 
   try {
@@ -39,11 +35,12 @@ let getUserInfo = async (ctx, next) => {
     }
     repData = Utils.responseJSON({
       result: { dataInfo: userInfo },
-      isSuccess: true
+      isSuccess: true,
+      code: Code.successCode
     })
     ctx.body = repData;
   } catch (error) {
-    ctx.body = Utils.responseJSON({errMsg: '查询出错'});
+    ctx.body = Utils.responseJSON({errMsg: '查询数据出错', code: Code.dbErr});
   }
 }
 
@@ -57,8 +54,7 @@ let login = async (ctx, next) => {
   let repData = {};
   let {userName = '', password = ''} = ctx.request.body;
   if (Utils.isEmpty(userName) || Utils.isEmpty(password)) {
-    ctx.body = Utils.responseJSON({errMsg: '用户名和密码是必须的'});
-    return;
+    return ctx.body = Utils.responseJSON({errMsg: '用户名和密码是必须的'});
   }
   // 根据用户输入按 用户名/手机号码/邮箱 查询
   let sqlWhere = {'name': userName};
@@ -68,6 +64,8 @@ let login = async (ctx, next) => {
   try {
     // 查询
     let users = await UsersModule.findOne(sqlWhere, null);
+    // 未注册
+    if (!users) return ctx.body = Utils.responseJSON({errMsg: '此用户未注册', code: Code.noRegister});
     // 查询无误，校验是用户、密码是否正确
     if (users && userName === users[Object.keys(sqlWhere)[0]]
       && CryptoUtils.md5Encode(password) === users.password) {
@@ -87,14 +85,15 @@ let login = async (ctx, next) => {
           dataInfo: userInfo,
           token: jwt.sign({ userId: users['_id'] }, SecretConfig.secret, { expiresIn: '1h' })
         },
-        isSuccess: true
+        isSuccess: true,
+        code: Code.successCode
       })
     } else {
-      repData = Utils.responseJSON({errMsg: '用户名或密码错误'});
+      repData = Utils.responseJSON({errMsg: '用户名或密码错误', code: Code.loginFail});
     }
     ctx.body = repData;
   } catch (error) {
-    ctx.body = Utils.responseJSON({errMsg: '查询出错'});
+    ctx.body = Utils.responseJSON({errMsg: '查询数据出错', code: Code.dbErr});
     repData = null;
   }
 }
@@ -111,16 +110,11 @@ let regist = async (ctx) => {
   let registType = 'phone';
   let {userName = '', nickName = '', password = '', passwordAgian = ''} = ctx.request.body;
   if (Utils.isEmpty(userName) || Utils.isEmpty(nickName) || Utils.isEmpty(password)|| Utils.isEmpty(passwordAgian)) {
-    ctx.body = Utils.responseJSON({errMsg: '用户名、呢城和密码是必须的'});
-    return;
+    return ctx.body = Utils.responseJSON({errMsg: '用户名、呢城和密码是必须的'});
   }
-  if (password !== passwordAgian) {
-    ctx.body = Utils.responseJSON({errMsg: '输入的密码不一致'});
-    return;
-  }
+  if (password !== passwordAgian) return ctx.body = Utils.responseJSON({errMsg: '输入的密码不一致'});
   if (!Utils.isPhoneNumber(userName) && !Utils.isEmail(userName)) {
-    ctx.body = Utils.responseJSON({errMsg: '用户名只能是手机号或邮箱'});
-    return;
+    return ctx.body = Utils.responseJSON({errMsg: '用户名只能是手机号或邮箱'});
   }
   if (Utils.isEmail(userName)) registType = 'email';
 
@@ -130,10 +124,8 @@ let regist = async (ctx) => {
     if (Utils.isPhoneNumber(userName)) sqlWhere = {'phone': userName};
     if (Utils.isEmail(userName)) sqlWhere = {'email': userName};
     let users = await UsersModule.findOne(sqlWhere, null);
-    if (users) {
-      ctx.body = Utils.responseJSON({errMsg: '此用户已存在'});
-      return;
-    }
+    if (users) return ctx.body = Utils.responseJSON({errMsg: '此用户已存在'});
+
     // 注册
     let Users = new UsersModule({
       name: nickName,
@@ -150,10 +142,11 @@ let regist = async (ctx) => {
     await Users.save();
     ctx.body = Utils.responseJSON({
       result: '注册成功',
-      isSuccess: true
+      isSuccess: true,
+      code: Code.successCode
     });
   } catch (error) {
-    ctx.body = Utils.responseJSON({errMsg: '插入数据出错'});
+    ctx.body = Utils.responseJSON({errMsg: '插入数据出错', code: Code.dbErr});
     repData = null;
   }
 }
@@ -169,13 +162,9 @@ let resetPassword = async (ctx) => {
   let repDate = {};
   let {userName = '', password = '', passwordAgian = ''} = ctx.request.body;
   if (Utils.isEmpty(userName) || Utils.isEmpty(password)|| Utils.isEmpty(passwordAgian)) {
-    ctx.body = Utils.responseJSON({errMsg: '用户名和密码是必须的'});
-    return;
+    return ctx.body = Utils.responseJSON({errMsg: '用户名和密码是必须的'});
   }
-  if (password !== passwordAgian) {
-    ctx.body = Utils.responseJSON({errMsg: '输入的密码不一致'});
-    return;
-  }
+  if (password !== passwordAgian) return ctx.body = Utils.responseJSON({errMsg: '输入的密码不一致'});
 
   let updateWhere = {'phone': userName};
   let updateValue = {$set: { 'password': CryptoUtils.md5Encode(password) }};
@@ -184,23 +173,21 @@ let resetPassword = async (ctx) => {
   try {
     // 重置用户是否存在
     let users = await UsersModule.findOne(updateWhere, null);
-    if (!users) {
-      ctx.body = Utils.responseJSON({errMsg: '此用户已不存在'});
-      return;
-    }
+    if (!users) return ctx.body = Utils.responseJSON({errMsg: '此用户不存在', code: Code.noRegister});
     // 重置
     let doc = await UsersModule.updateOne(updateWhere, updateValue);
     if (doc.n) {
       repDate = Utils.responseJSON({
         result: '密码重置成功',
-        isSuccess: true
+        isSuccess: true,
+        code: Code.successCode
       })
     } else {
       repDate = Utils.responseJSON({errMsg: '密码重置失败，请输入手机号或邮箱'})
     }
     ctx.body = repDate;
   } catch (error) {
-    ctx.body = Utils.responseJSON({errMsg: '更新数据出错'});
+    ctx.body = Utils.responseJSON({errMsg: '更新数据出错', code: Code.dbErr});
     repData = null;
   }
 }
