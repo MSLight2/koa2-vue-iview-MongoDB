@@ -64,6 +64,8 @@
 
 <script>
 import JellyCanvas from '@/components/puppetComponent/JellyCanvas'
+// import * as Api from '@/api/login'
+
 export default {
   data () {
     return {
@@ -80,6 +82,11 @@ export default {
   },
   components: {
     JellyCanvas
+  },
+  mounted () {
+    // Api.UserLogin({ password: '123456', userName: '13555555555' }).then(res => {
+    //   console.log(res)
+    // })
   },
   methods: {
     switchPwdEyes () {
