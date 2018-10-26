@@ -1,5 +1,6 @@
 import axios from 'axios'
 import qs from 'qs'
+import LoginStorage from '@/utils/login'
 
 let CancelToken = axios.CancelToken
 let source = CancelToken.source()
@@ -9,7 +10,7 @@ let axiosInstance = axios.create({
   cancelToken: source.token
 })
 
-let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1YmE5YjE1NjQ5YzBmOTI3NTA2YjM4OGMiLCJpYXQiOjE1NDA1MzYxMzcsImV4cCI6MTU0MDUzOTczN30.v9Uey6KfAZsaqQjru5RKv79GaUtFfxpKEnSwX-wVo28'
+let token = LoginStorage.getToken()
 axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${{ token }}`
 
 axiosInstance.$cancel = source
