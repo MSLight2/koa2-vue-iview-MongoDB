@@ -7,6 +7,8 @@ module.exports = {
   noToken: 1002,
   // 返回成功
   successCode: 20,
+  // 超过登录次数
+  exceedLoginTimeCode: 30,
   // 未注册
   noRegister: 40,
   // 用户名或密码错误
