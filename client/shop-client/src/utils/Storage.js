@@ -1,8 +1,8 @@
 export default {
   /**
    * loacal storage
-   * @param {键值} key 
-   * @param {是否转需要换为json格式} needConvert 
+   * @param {键值} key
+   * @param {是否转需要换为json格式} needConvert
    */
   getLoacalStorage (key, needConvert = false) {
     if (!key) return null
@@ -30,8 +30,8 @@ export default {
   },
   /**
    * session storage
-   * @param {键值} key 
-   * @param {是否转需要换为json格式} needConvert 
+   * @param {键值} key
+   * @param {是否转需要换为json格式} needConvert
    */
   getSessionStorage (key, needConvert = false) {
     if (!key) return null

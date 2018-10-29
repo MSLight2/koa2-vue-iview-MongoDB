@@ -112,3 +112,10 @@ export default {
   }
 }
 </script>
+
+<style>
+  .header-search form .input-select,
+  .header-search form .search-btn{
+    vertical-align: top;
+  }
+</style>

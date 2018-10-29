@@ -2,8 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 const Home = () => import('@/views/home/Home.vue')
 const Login = () => import('@/views/login/Login.vue')
-const Regist = () => import('@/views/regist/Regist.vue')
-const ResetPwd = () => import('@/views/reset/ResetPwd.vue')
+const RegisterAndReset = () => import('@/views/registerAndReset/RegisterAndReset.vue')
 const ProductDetail = () => import('@/views/detail/ProductDetail.vue')
 const Checkout = () => import('@/views/checkout/Checkout.vue')
 const Store = () => import('@/views/shopStore/Store.vue')
@@ -25,14 +24,14 @@ export default new Router({
       component: Login
     },
     {
-      path: '/regist',
-      name: 'regist',
-      component: Regist
+      path: '/register',
+      name: 'register',
+      component: RegisterAndReset
     },
     {
       path: '/resetPwd',
       name: 'resetPwd',
-      component: ResetPwd
+      component: RegisterAndReset
     },
     {
       path: '/detail',

@@ -1,7 +1,8 @@
 <template>
   <div class="main">
-    <div class="login-main"></div>
-    <jelly-canvas/>
+    <keep-alive>
+      <!--<jelly-canvas/>-->
+    </keep-alive>
     <div class="login-box">
       <div class="login-logo">
         <div class="login-logo-img">
@@ -18,8 +19,9 @@
             v-model="inputUserName"
             type="text"
             maxlength="30"
-            placeholder="用户名/手机号/邮箱">
-          <span class="user-msg" v-show="userErrorShow">{{userErrorMsg}}</span>
+            placeholder="用户名/手机号/邮箱"
+            @blur="inputBlur">
+          <span class="user-msg" v-show="userErrorMsg">{{userErrorMsg}}</span>
         </div>
         <div class="login-input-item">
           <i class="login-icon iconfont icon-password"></i>
@@ -28,7 +30,8 @@
             v-model="inputPassword"
             :type="[pwdIconOpen ? 'text' : 'password']"
             maxlength="30"
-            placeholder="密码">
+            placeholder="密码"
+            @blur="inputBlur">
           <i
             class="login-icon iconfont icon-password-view"
             v-show="pwdIconOpen"
@@ -39,7 +42,7 @@
             v-show="!pwdIconOpen"
             @click="switchPwdEyes">
           </i>
-          <span class="pwd-msg" v-show="pwdErrorShow">{{pwdErrorMsg}}</span>
+          <span class="pwd-msg" v-show="pwdErrorMsg">{{pwdErrorMsg}}</span>
         </div>
       </div>
       <!-- btn -->
@@ -51,11 +54,11 @@
             <span>记住密码</span>
           </div>
           <div class="login-btn-right">
-            <span>忘记密码</span>
-            <span>立即注册</span>
+            <span @click="goReset">忘记密码</span>
+            <span @click="goRegister">立即注册</span>
           </div>
         </div>
-        <div class="login-btn">登录</div>
+        <Button @click="login" class="login-btn" :loading="loading">登 录</Button>
       </div>
       <!-- btn end -->
     </div>
@@ -64,33 +67,72 @@
 
 <script>
 import JellyCanvas from '@/components/puppetComponent/JellyCanvas'
-// import * as Api from '@/api/login'
+import * as Api from '@/api/login'
 
 export default {
   data () {
     return {
       pwdIconOpen: false,
-      pwdTypeIsPwd: true,
       reminedPwdChenck: [],
       inputUserName: '',
       inputPassword: '',
-      userErrorShow: false,
-      userErrorMsg: '用户名错误',
-      pwdErrorShow: false,
-      pwdErrorMsg: '密码错误'
+      userErrorMsg: '',
+      pwdErrorMsg: '',
+      loading: false
     }
   },
   components: {
     JellyCanvas
   },
   mounted () {
-    // Api.UserLogin({ password: '123456', userName: '13555555555' }).then(res => {
-    //   console.log(res)
-    // })
   },
   methods: {
+    fetchLogin () {
+      let postData = {
+        userName: this.inputUserName,
+        password: this.inputPassword
+      }
+      this.loading = true
+      Api.UserLogin(postData).then(res => {
+        this.loading = false
+        if (res.errMsg) {
+          this.$Message.error(res.errMsg)
+          return
+        }
+        this.$router.replace('/')
+      }).catch(() => {
+        this.loading = false
+        this.$Message.error('连接出错，请稍后重试')
+      })
+    },
+    // 切换密码显示
     switchPwdEyes () {
       this.pwdIconOpen = !this.pwdIconOpen
+    },
+    inputBlur () {
+      if (!this.inputUserName) {
+        this.userErrorMsg = '请输入用户名'
+      } else {
+        this.userErrorMsg = ''
+      }
+      if (!this.inputPassword) {
+        this.pwdErrorMsg = '请输入密码'
+      } else {
+        if (this.inputPassword.length < 6) {
+          this.pwdErrorMsg = '密码长度不能小于6位数'
+          return
+        }
+        this.pwdErrorMsg = ''
+      }
+    },
+    login () {
+      this.fetchLogin()
+    },
+    goReset () {
+      this.$router.push('resetPwd')
+    },
+    goRegister () {
+      this.$router.push('register')
     }
   }
 }
@@ -183,7 +225,7 @@ export default {
   }
   .user-msg,.pwd-msg{
     position: absolute;
-    right: 0;
+    left: 0;
     top: 45px;
     color: #D10024;
   }
@@ -227,16 +269,18 @@ export default {
     margin-right: 10px;
   }
   .login-btn{
+    position: relative;
+    width: 100%;
     cursor: pointer;
-    height: 45px;
-    line-height: 45px;
+    line-height: 35px;
     color: #fff;
     font-size: 16px;
     text-align: center;
-    letter-spacing: 10px;
     background: #D10024;
     margin-top: 40px;
     border-radius: 30px;
+    overflow: hidden;
+    border: none;
     box-shadow: 0px 5px 8px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
   }
 </style>

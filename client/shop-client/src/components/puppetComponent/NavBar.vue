@@ -24,3 +24,9 @@ export default {
   }
 }
 </script>
+
+<style>
+  .navbar-nav a{
+    color: #2B2D42
+  }
+</style>
