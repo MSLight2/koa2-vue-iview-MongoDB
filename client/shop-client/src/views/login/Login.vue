@@ -50,7 +50,7 @@
         <div class="login-btn-tip">
           <div class="remined-pwd">
             <input type="checkbox" v-model="reminedPwdChenck" id="rmBox">
-            <label class="remined-pwd-label" :class="[reminedPwdChenck.length > 0 ? 'check' : '']" for="rmBox"></label>
+            <label class="remined-pwd-label" :class="[reminedPwdChenck ? 'check' : '']" for="rmBox"></label>
             <span>记住密码</span>
           </div>
           <div class="login-btn-right">
@@ -67,13 +67,14 @@
 
 <script>
 import JellyCanvas from '@/components/puppetComponent/JellyCanvas'
+import LoginUtils from '@/utils/login'
 import * as Api from '@/api/login'
 
 export default {
   data () {
     return {
       pwdIconOpen: false,
-      reminedPwdChenck: [],
+      reminedPwdChenck: null,
       inputUserName: '',
       inputPassword: '',
       userErrorMsg: '',
@@ -85,6 +86,8 @@ export default {
     JellyCanvas
   },
   mounted () {
+    this.inputUserName = LoginUtils.getName()
+    this.inputPassword = LoginUtils.getPwd()
   },
   methods: {
     fetchLogin () {
@@ -126,6 +129,14 @@ export default {
       }
     },
     login () {
+      if (!this.inputUserName || !this.inputPassword) return
+      if (this.userErrorMsg || this.pwdErrorMsg) return
+      LoginUtils.setName(this.inputUserName)
+      if (this.reminedPwdChenck) {
+        LoginUtils.setPwd(this.inputPassword)
+      } else {
+        LoginUtils.setPwd(null)
+      }
       this.fetchLogin()
     },
     goReset () {
