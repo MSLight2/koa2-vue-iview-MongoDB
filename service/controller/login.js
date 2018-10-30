@@ -69,20 +69,8 @@ let login = async (ctx, next) => {
     // 查询无误，校验是用户、密码是否正确
     if (users && userName === users[Object.keys(sqlWhere)[0]]
       && CryptoUtils.md5Encode(password) === users.password) {
-      let userInfo = {
-        _id: users._id,
-        name: users.name,
-        age: users.age,
-        sex: users.sex,
-        email: users.email,
-        address: users.address,
-        nickName: users.nickName,
-        birthday: users.birthday,
-        phone: users.phone
-      }
       repData = Utils.responseJSON({
         result: {
-          dataInfo: userInfo,
           token: jwt.sign({ userId: users['_id'] }, SecretConfig.secret, { expiresIn: '1h' })
         },
         isSuccess: true,

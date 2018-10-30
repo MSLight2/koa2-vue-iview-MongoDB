@@ -13,7 +13,8 @@ import {
   Input,
   Message,
   Spin,
-  Icon
+  Icon,
+  Modal
 } from 'iview'
 // iview组件
 Vue.component('Button', Button)
@@ -22,6 +23,7 @@ Vue.component('FormItem', FormItem)
 Vue.component('Input', Input)
 Vue.component('Spin', Spin)
 Vue.component('Icon', Icon)
+Vue.component('Modal', Modal)
 Vue.prototype.$Message = Message
 
 window.jQuery = window.$ = jQuery

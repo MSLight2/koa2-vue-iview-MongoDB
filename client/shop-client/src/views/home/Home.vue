@@ -21,6 +21,9 @@ import SectionSlide from '@/views/home/children/SectionSlide'
 import HotDetail from '@/views/home/children/HotDetail'
 import TopSelling from '@/views/home/children/TopSelling'
 import NewsLetter from '@/components/puppetComponent/NewsLetter'
+import * as GoodsApi from '@/api/goods'
+import * as LoginApi from '@/api/login'
+import LoginStorage from '@/utils/login'
 
 export default {
   data () {
@@ -44,6 +47,22 @@ export default {
     TopSelling,
     NewsLetter,
     FooterTmpl
+  },
+  mounted () {
+  },
+  methods: {
+    // 获取登录用户的信息数据
+    getUserInfo () {
+      if (!LoginStorage.getToken()) {
+        return
+      }
+      LoginApi.getUserInfo().then(res => {
+
+      }).catch(err => {
+      })
+    }
+    // 获取商品数
+    getGoodsInfo () {}
   }
 }
 </script>
