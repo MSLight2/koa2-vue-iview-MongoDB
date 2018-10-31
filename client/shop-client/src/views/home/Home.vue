@@ -9,6 +9,12 @@
     <top-selling></top-selling>
     <news-letter></news-letter>
     <footer-tmpl></footer-tmpl>
+    <iview-modal
+      :is-show="modalShow"
+      type="warning"
+      content="这是一个提示"
+      @close="modalShow = false">
+    </iview-modal>
   </div>
 </template>
 
@@ -21,6 +27,7 @@ import SectionSlide from '@/views/home/children/SectionSlide'
 import HotDetail from '@/views/home/children/HotDetail'
 import TopSelling from '@/views/home/children/TopSelling'
 import NewsLetter from '@/components/puppetComponent/NewsLetter'
+import IviewModal from '@/components/puppetComponent/Modal/IviewModal'
 import * as GoodsApi from '@/api/goods'
 import * as LoginApi from '@/api/login'
 import LoginStorage from '@/utils/login'
@@ -35,7 +42,14 @@ export default {
       configRecommend: {
         title: '推荐',
         categories: ['高配电脑', '智能手机', 'AI智能家电', '相机']
-      }
+      },
+      modalShow: false,
+      categoryType: 0,
+      userInfoData: {},
+      hotInfoData: {},
+      recommendInfoData: {},
+      collectionInfoData: {},
+      shopCartInfoData: {}
     }
   },
   components: {
@@ -46,7 +60,8 @@ export default {
     HotDetail,
     TopSelling,
     NewsLetter,
-    FooterTmpl
+    FooterTmpl,
+    IviewModal
   },
   mounted () {
   },
@@ -57,12 +72,18 @@ export default {
         return
       }
       LoginApi.getUserInfo().then(res => {
-
       }).catch(err => {
       })
+    },
+    // 通过类目获取商品数
+    getGoodsInfoByCategoty (type = 1) {
+      let params = {
+        goodsType: type,
+        pageSize: 12
+      }
+      GoodsApi.GetGoodsByCategory(params).then(res => {
+      })
     }
-    // 获取商品数
-    getGoodsInfo () {}
   }
 }
 </script>
