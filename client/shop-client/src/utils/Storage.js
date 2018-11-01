@@ -19,7 +19,7 @@ export default {
   },
   setLoacalStorage (key, value) {
     if (!key) return
-    if (typeof value !== 'string') {
+    if (value && typeof value !== 'string') {
       value = JSON.stringify(value)
     }
     localStorage.setItem(key, value)
@@ -48,7 +48,7 @@ export default {
   },
   setSessionStorage (key, value) {
     if (!key) return
-    if (typeof value !== 'string') {
+    if (value && typeof value !== 'string') {
       value = JSON.stringify(value)
     }
     sessionStorage.setItem(key, value)

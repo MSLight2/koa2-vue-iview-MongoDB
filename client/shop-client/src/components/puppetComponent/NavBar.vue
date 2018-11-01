@@ -3,13 +3,13 @@
     <div class="container">
       <div id="responsive-nav">
         <ul class="main-nav nav navbar-nav">
-          <li class="active"><a href="javascript:;">首页</a></li>
-          <li><a href="javascript:;">电脑</a></li>
-          <li><a href="javascript:;">智能手机</a></li>
-          <li><a href="javascript:;">耳机</a></li>
-          <li><a href="javascript:;">相机</a></li>
-          <li><a href="javascript:;">家电</a></li>
-          <li><a href="javascript:;">AI智能</a></li>
+          <li
+            v-for="(item, index) in categotyList"
+            :key="index"
+            :class="{'active': activeCategory === index}"
+            @click="categotyChange(index)">
+              <a href="javascript:;">{{ item }}</a>
+          </li>
         </ul>
       </div>
     </div>
@@ -20,6 +20,19 @@
 export default {
   data () {
     return {
+      categotyList: ['首页', '电脑', '智能手机', '耳机', '相机', '家电', 'AI智能']
+    }
+  },
+  props: {
+    activeCategory: {
+      type: Number,
+      require: true,
+      default: 0
+    }
+  },
+  methods: {
+    categotyChange (index) {
+      this.$emit('categotyChange', index)
     }
   }
 }

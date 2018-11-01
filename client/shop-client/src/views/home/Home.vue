@@ -1,18 +1,29 @@
 <template>
   <div>
-    <header-tmpl></header-tmpl>
+    <header-tmpl
+      :user-info-data="userInfoData">
+    </header-tmpl>
     <nav-bar></nav-bar>
-    <section-shop></section-shop>
-    <section-slide :title-config="configHot"></section-slide>
-    <hot-detail></hot-detail>
-    <section-slide :title-config="configRecommend"></section-slide>
+    <section-shop @buyNow="sectionBuyNow"></section-shop>
+    <section-slide
+      :title-config="configHot"
+      :data-list="hotInfoData"
+      @tabSwitch="tabSwitch">
+    </section-slide>
+    <hot-detail @buyNow="hotBuyNow"></hot-detail>
+    <section-slide
+      :title-config="configRecommend"
+      :data-list="recommendInfoData"
+      @tabSwitch="tabSwitchTwo">
+    </section-slide>
     <top-selling></top-selling>
     <news-letter></news-letter>
     <footer-tmpl></footer-tmpl>
     <iview-modal
       :is-show="modalShow"
-      type="warning"
-      content="这是一个提示"
+      :type="modalType"
+      :content="modelContent"
+      :sureText="modalSureText"
       @close="modalShow = false">
     </iview-modal>
   </div>
@@ -44,10 +55,13 @@ export default {
         categories: ['高配电脑', '智能手机', 'AI智能家电', '相机']
       },
       modalShow: false,
+      modalType: 'warning',
+      modelContent: '',
+      modalSureText: '确定',
       categoryType: 0,
       userInfoData: {},
-      hotInfoData: {},
-      recommendInfoData: {},
+      hotInfoData: [],
+      recommendInfoData: [],
       collectionInfoData: {},
       shopCartInfoData: {}
     }
@@ -64,25 +78,70 @@ export default {
     IviewModal
   },
   mounted () {
+    // this.getUserInfoData()
+    this.initData()
   },
   methods: {
+    initData () {
+      // 热卖
+      this.getGoodsInfoByCategoty({ type: 6 }, (res) => {
+        this.hotInfoData = res.result
+      })
+      // 推荐
+      this.getGoodsInfoByCategoty({ type: 1}, (res) => {
+        this.recommendInfoData = res.result
+      })
+    },
     // 获取登录用户的信息数据
-    getUserInfo () {
+    getUserInfoData () {
       if (!LoginStorage.getToken()) {
         return
       }
       LoginApi.getUserInfo().then(res => {
-      }).catch(err => {
+        this.userInfoData = res.result.dataInfo
+        console.log(res)
+      }).catch(() => {
+        this.$Message.error('连接出错，请稍后重试')
       })
     },
     // 通过类目获取商品数
-    getGoodsInfoByCategoty (type = 1) {
+    async getGoodsInfoByCategoty ({type = 1, size = 12}, fn) {
       let params = {
         goodsType: type,
-        pageSize: 12
+        pageSize: size
       }
       GoodsApi.GetGoodsByCategory(params).then(res => {
+        if (fn) fn(res)
       })
+    },
+    // 立即购买
+    sectionBuyNow (type) {
+      this.$router.push({
+        name: 'store',
+        query: { type: type }
+      })
+    },
+    tabSwitch (index) {
+      let goodsType = 6
+      if (index === 0) goodsType = 6
+      if (index === 1) goodsType = 2
+      if (index === 2) goodsType = 3
+      this.getGoodsInfoByCategoty({ type: goodsType }, (res) => {
+        this.hotInfoData = res.result
+      })
+    },
+    tabSwitchTwo (index) {
+      let goodsType = 1
+      if (index === 0) goodsType = 1
+      if (index === 1) goodsType = 2
+      if (index === 2) goodsType = 5
+      if (index === 3) goodsType = 4
+      this.getGoodsInfoByCategoty({ type: goodsType}, (res) => {
+        this.recommendInfoData = res.result
+      })
+    },
+    // 畅销购买
+    hotBuyNow () {
     }
   }
 }

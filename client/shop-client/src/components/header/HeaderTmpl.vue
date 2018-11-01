@@ -1,17 +1,14 @@
 <template>
   <header>
-    <!-- TOP HEADER -->
-    <top-header></top-header>
-    <!-- MAIN HEADER -->
+    <top-header :data-info="userInfoData"></top-header>
     <div id="header">
       <!-- container -->
       <div class="container">
-        <!-- row -->
         <div class="row">
           <!-- LOGO -->
           <div class="col-md-3">
             <div class="header-logo">
-              <a href="#" class="logo">
+              <a href="javascript:;" class="logo" @click="goHome">
                 <img src="@/assets/img/logo.png" alt="">
               </a>
             </div>
@@ -19,14 +16,17 @@
           <!-- SEARCH BAR -->
           <div class="col-md-6">
             <div class="header-search">
-              <form>
-                <select class="input-select">
-                  <option value="0">所有类目</option>
-                  <option value="1">衣服</option>
-                  <option value="1">鞋子</option>
+              <form @click="forbitSubmit($event)">
+                <select class="input-select" v-model="categotySelect" @change="selectChange">
+                  <option
+                    v-for="(item, index) in categotyList"
+                    :key="index"
+                    :value="index"
+                    >{{item}}
+                  </option>
                 </select>
-                <input class="input" placeholder="请输入要搜索的商品">
-                <button class="search-btn">搜索</button>
+                <input v-model="searchContent" class="input" placeholder="请输入要搜索的商品">
+                <button class="search-btn" @click="search">搜索</button>
               </form>
             </div>
           </div>
@@ -35,7 +35,7 @@
             <div class="header-ctn">
               <!-- Wishlist -->
               <div>
-                <a href="#">
+                <a href="javascript:;">
                   <i class="fa fa-heart-o"></i>
                   <span>收藏</span>
                   <div class="qty">2</div>
@@ -43,13 +43,13 @@
               </div>
               <!-- /Wishlist -->
               <!-- Cart -->
-              <div class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+              <div class="dropdown open">
+                <a class="dropdown-toggle" @click="switchCart">
                   <i class="fa fa-shopping-cart"></i>
                   <span>购物车</span>
                   <div class="qty">3</div>
                 </a>
-                <div class="cart-dropdown">
+                <div class="cart-dropdown" v-show="cartListShow">
                   <div class="cart-list">
                     <div class="product-widget">
                       <div class="product-img">
@@ -77,24 +77,15 @@
                     <h5>SUBTOTAL: $2940.00</h5>
                   </div>
                   <div class="cart-btns">
-                    <a href="#">查看购物车</a>
-                    <a href="#">立即购买  <i class="fa fa-arrow-circle-right"></i></a>
+                    <a href="javascript:;" @click="checkCart">查看购物车</a>
+                    <a href="javascript:;" @click="buyNow">立即购买  <i class="fa fa-arrow-circle-right"></i></a>
                   </div>
                 </div>
               </div>
               <!-- /Cart -->
-              <!-- Menu Toogle -->
-              <div class="menu-toggle">
-                <a href="#">
-                  <i class="fa fa-bars"></i>
-                  <span>菜单</span>
-                </a>
-              </div>
-              <!-- /Menu Toogle -->
             </div>
           </div>
         </div>
-        <!-- row -->
       </div>
     </div>
   </header>
@@ -105,10 +96,44 @@ import TopHeader from './TopHeader'
 export default {
   data () {
     return {
+      categotyList: ['所有类目', '电脑', '智能手机', '耳机', '相机', '家电', 'AI智能'],
+      categotySelect: 0,
+      searchContent: '',
+      cartListShow: false
     }
   },
   components: {
     TopHeader
+  },
+  props: {
+    userInfoData: {
+      type: Object,
+      require: true,
+      default: () => {}
+    }
+  },
+  methods: {
+    goHome () {
+      this.$router.replace({ name: 'home' })
+    },
+    selectChange () {
+    },
+    search () {
+      if (!this.searchContent) return
+      this.$emit('search', this.searchContent, this.categotySelect)
+    },
+    switchCart () {
+      this.cartListShow = !this.cartListShow
+    },
+    checkCart () {
+      this.$router.push({ name: 'checkout' })
+    },
+    buyNow () {
+      this.$router.push({ name: 'cart' })
+    },
+    forbitSubmit (e) {
+      e.preventDefault()
+    }
   }
 }
 </script>

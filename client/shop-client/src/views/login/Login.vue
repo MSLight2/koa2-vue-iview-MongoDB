@@ -135,7 +135,7 @@ export default {
       if (this.reminedPwdChenck) {
         LoginUtils.setPwd(this.inputPassword)
       } else {
-        LoginUtils.setPwd(null)
+        LoginUtils.setPwd('')
       }
       this.fetchLogin()
     },

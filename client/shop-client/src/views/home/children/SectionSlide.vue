@@ -21,15 +21,15 @@
         </div>
         <!-- Products tab & slick -->
         <div class="col-md-12">
-          <div class="row">
+          <div class="row" v-if="dataList.length > 0">
             <div class="products-tabs">
               <!-- tab -->
               <div class="tab-pane active fade">
                 <div class="products-slick">
                   <swiper :options="sSlideSwiperOption">
                     <!-- product -->
-                    <swiper-slide v-for="item in 8" :key="item">
-                      <product-item :data-info="dataInfo"></product-item>
+                    <swiper-slide v-for="(item, index) in dataList" :key="index">
+                      <product-item :data-info="item"></product-item>
                     </swiper-slide>
                   </swiper>
                 </div>
@@ -78,6 +78,11 @@ export default {
           categories: []
         }
       }
+    },
+    dataList: {
+      type: Array,
+      require: true,
+      default: () => []
     }
   },
   components: {
@@ -88,6 +93,7 @@ export default {
   methods: {
     tabSwitch (index) {
       this.currentTabIndex = index
+      this.$emit('tabSwitch', index)
     }
   }
 }

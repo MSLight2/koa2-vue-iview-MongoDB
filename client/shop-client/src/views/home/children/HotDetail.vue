@@ -32,7 +32,7 @@
             </ul>
             <h2 class="text-uppercase">本周畅销</h2>
             <p>新商品最多优惠50%</p>
-            <a class="primary-btn cta-btn" href="javascript:;">立即购买</a>
+            <a class="primary-btn cta-btn" href="javascript:;" @click="buyNow">立即购买</a>
           </div>
         </div>
       </div>
@@ -71,6 +71,9 @@ export default {
     getDateForTimeOut () {
       this.initDate()
       this.timeOut = setTimeout(this.getDateForTimeOut, 1000)
+    },
+    buyNow () {
+      this.$emit('buyNow')
     }
   },
   filters: {
