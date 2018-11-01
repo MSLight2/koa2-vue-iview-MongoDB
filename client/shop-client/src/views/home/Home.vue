@@ -88,7 +88,7 @@ export default {
         this.hotInfoData = res.result
       })
       // 推荐
-      this.getGoodsInfoByCategoty({ type: 1}, (res) => {
+      this.getGoodsInfoByCategoty({ type: 1 }, (res) => {
         this.recommendInfoData = res.result
       })
     },
@@ -105,7 +105,7 @@ export default {
       })
     },
     // 通过类目获取商品数
-    async getGoodsInfoByCategoty ({type = 1, size = 12}, fn) {
+    async getGoodsInfoByCategoty ({ type = 1, size = 12 }, fn) {
       let params = {
         goodsType: type,
         pageSize: size
@@ -136,7 +136,7 @@ export default {
       if (index === 1) goodsType = 2
       if (index === 2) goodsType = 5
       if (index === 3) goodsType = 4
-      this.getGoodsInfoByCategoty({ type: goodsType}, (res) => {
+      this.getGoodsInfoByCategoty({ type: goodsType }, (res) => {
         this.recommendInfoData = res.result
       })
     },

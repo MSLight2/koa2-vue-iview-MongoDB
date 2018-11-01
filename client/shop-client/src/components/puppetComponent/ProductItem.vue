@@ -6,12 +6,12 @@
     <div class="product-body">
       <p class="product-category">{{dataInfo.goodsType | filterGoodsType}}</p>
       <h3 class="product-name">{{dataInfo.title}}</h3>
-      <h4 class="product-price">${{dataInfo.originalPrice | formatPrice}} 
+      <h4 class="product-price">${{dataInfo.originalPrice | formatPrice}}
         <del class="product-old-price">${{dataInfo.showPrice | formatPrice}}</del>
       </h4>
       <div class="product-rating">
         <i class="fa fa-star" v-for="item in starRate" :key="item"></i>
-        <i class="fa fa-star no" v-for="i in (5 - starRate)"></i>
+        <i class="fa fa-star no" v-for="i in (5 - starRate)" :key="i"></i>
       </div>
       <div class="product-btns">
         <button class="add-to-wishlist" @click="addToCollection(dataInfo.goodsId)">
