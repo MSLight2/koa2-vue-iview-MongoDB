@@ -1,6 +1,6 @@
 <template>
   <div class="section">
-    <div class="container">
+    <div class="container hot-cnt">
       <div class="row">
         <div class="col-md-4 col-xs-6" v-for="(item, index) in dataList" :key="index">
           <div class="shop">
@@ -53,3 +53,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .hot-cnt{
+    min-height: 270px;
+  }
+</style>

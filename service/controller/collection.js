@@ -18,6 +18,8 @@ let addCollection = async (ctx) => {
   if (!goodsId) return ctx.body = Utils.responseJSON({errMsg: '参数错误'});
 
   try {
+    let collectioned = await CollectionModule.findOne({'userId': userId, 'goodsId': goodsId})
+    if (collectioned) return ctx.body = Utils.responseJSON({errMsg: '这个商品你已经收藏过啦'});
     let collection = new CollectionModule({
       userId: userId,
       goodsId: goodsId,

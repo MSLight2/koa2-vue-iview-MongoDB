@@ -1,15 +1,14 @@
 <template>
   <div>
     <header-tmpl></header-tmpl>
-    <nav-bar></nav-bar>
     <bread-crumb :titles="breadCrumbTitles"></bread-crumb>
     <div class="section">
       <div class="container">
         <div class="row">
           <!-- Product main img -->
-          <product-slide-img></product-slide-img>
+          <product-slide-img :img-list="imgList"></product-slide-img>
           <!-- Product details -->
-          <product-detail-desc></product-detail-desc>
+          <product-detail-desc :data-info="goodDetailInfo"></product-detail-desc>
           <!-- Product tab -->
           <product-tab></product-tab>
         </div>
@@ -31,6 +30,7 @@ import ProductDetailDesc from './children/ProductDetailDesc'
 import ProductTab from './children/ProductTab'
 import RelatedProducts from './children/RelatedProducts'
 import NewsLetter from '@/components/puppetComponent/NewsLetter'
+import * as GoodsApi from '@/api/goods'
 
 export default {
   data () {
@@ -38,7 +38,9 @@ export default {
       breadCrumbTitles: {
         titleArr: ['首页', '配件', '笔记本', '苹果电脑'],
         path: []
-      }
+      },
+      goodDetailInfo: {},
+      imgList: []
     }
   },
   components: {
@@ -51,6 +53,25 @@ export default {
     RelatedProducts,
     NewsLetter,
     FooterTmpl
+  },
+  mounted () {
+    if (this.$route.query.id) {
+      this.getGoodsDetailData(this.$route.query.id)
+    } else {
+      this.$Message.warning('你是真的皮╭(╯^╰)╮')
+      setTimeout(() => {
+        this.$router.go(-1)
+      }, 3000)
+    }
+  },
+  methods: {
+    getGoodsDetailData (id) {
+      GoodsApi.GetGoodsDetail({ goodsId: id }).then(res => {
+        console.log(res.result)
+        this.goodDetailInfo = res.result
+        this.imgList.push(res.result.mainPicPath)
+      })
+    }
   }
 }
 </script>

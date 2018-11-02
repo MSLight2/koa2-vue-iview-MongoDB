@@ -4,25 +4,26 @@
     <div class="col-md-5 col-md-push-2">
       <div id="product-main-img">
         <slick
+          v-if="imgList.length > 0"
           ref="producMainSlick"
           :options="productMainImgSlickOption"
           @beforeChange="handleMainImgsBeforeChange">
-          <div class="product-preview">
-            <zoom-on-hover
-              :img-normal="require('@/assets/img/product01.png')"
-              :scale="2"
-              :disabled="false">
-            </zoom-on-hover>
-          </div>
-          <div class="product-preview">
-            <img src="@/assets/img/product03.png" alt="">
-          </div>
-          <div class="product-preview">
-            <img src="@/assets/img/product06.png" alt="">
-          </div>
-          <div class="product-preview">
-            <img src="@/assets/img/product08.png" alt="">
-          </div>
+            <div class="product-preview" v-for="(item, index) in imgList" :key="index">
+              <zoom-on-hover
+                :img-normal="item | filterImgUrl"
+                :scale="2"
+                :disabled="false">
+              </zoom-on-hover>
+            </div>
+            <!--<div class="product-preview">
+              <img src="@/assets/img/product03.png" alt="">
+            </div>
+            <div class="product-preview">
+              <img src="@/assets/img/product06.png" alt="">
+            </div>
+            <div class="product-preview">
+              <img src="@/assets/img/product08.png" alt="">
+            </div>-->
         </slick>
       </div>
     </div>
@@ -30,21 +31,22 @@
     <div class="col-md-2  col-md-pull-5">
       <div id="product-imgs">
         <slick
+          v-if="imgList.length > 0"
           ref="producSlick"
           :options="productImgSlickOption"
           @beforeChange="handleImgsBeforeChange">
-          <div class="product-preview">
-            <img src="@/assets/img/product01.png" alt="">
-          </div>
-          <div class="product-preview">
-            <img src="@/assets/img/product03.png" alt="">
-          </div>
-          <div class="product-preview">
-            <img src="@/assets/img/product06.png" alt="">
-          </div>
-          <div class="product-preview">
-            <img src="@/assets/img/product08.png" alt="">
-          </div>
+            <div class="product-preview" v-for="(item, index) in imgList" :key="index">
+              <img :src="item | filterImgUrlSmall" alt="">
+            </div>
+            <!--<div class="product-preview">
+              <img src="@/assets/img/product03.png" alt="">
+            </div>
+            <div class="product-preview">
+              <img src="@/assets/img/product06.png" alt="">
+            </div>
+            <div class="product-preview">
+              <img src="@/assets/img/product08.png" alt="">
+            </div>-->
         </slick>
       </div>
     </div>
@@ -86,6 +88,13 @@ export default {
       }
     }
   },
+  props: {
+    imgList: {
+      type: Array,
+      require: true,
+      default: () => []
+    }
+  },
   components: {
     Slick,
     ZoomOnHover
@@ -97,8 +106,10 @@ export default {
     // 初始化
     slideInit () {
       this.$nextTick(() => {
-        this.$refs.producMainSlick.reSlick()
-        this.$refs.producSlick.reSlick()
+        if (this.$refs.producMainSlick !== undefined) {
+          this.$refs.producMainSlick.reSlick()
+          this.$refs.producSlick.reSlick()
+        }
       })
     },
     // 主要展示图
@@ -113,9 +124,23 @@ export default {
     },
     // 侧边slide展示图
     handleImgsBeforeChange (event, slick, currentSlide, nextSlide) {
-      // this.productMainImgSlickOption.initialSlide = nextSlide
-      // this.$refs.producMainSlick.reSlick()
       this.$refs.producMainSlick.goTo(nextSlide, false)
+    }
+  },
+  filters: {
+    filterImgUrlSmall (val) {
+      if (val) {
+        return val.replace(/_60x60.jpg/g, '_180x180.jpg')
+      } else {
+        return ''
+      }
+    },
+    filterImgUrl (val) {
+      if (val) {
+        return val.replace(/_60x60.jpg/g, '_400x400.jpg')
+      } else {
+        return ''
+      }
     }
   }
 }

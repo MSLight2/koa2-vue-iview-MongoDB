@@ -14,73 +14,20 @@
             </div>
           </div>
           <div class="products-widget-slick">
-            <swiper :options="swiperOption1">
-              <swiper-slide>
+            <swiper :options="swiperOption1" v-if="houesDataList.length > 0">
+              <swiper-slide v-for="(itemInfo, index) in houseDataArray" :key="index">
                 <div>
                   <!-- product widget -->
-                  <div class="product-widget">
+                  <div class="product-widget" v-for="(item, i) in itemInfo" :key="i">
                     <div class="product-img">
-                      <img src="@/assets/img/product07.png" alt="">
+                      <img :src="item.mainPicPath" alt="">
                     </div>
-                    <div class="product-body">
-                      <p class="product-category">Category</p>
-                      <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                      <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-                    </div>
-                  </div>
-                  <div class="product-widget">
-                    <div class="product-img">
-                      <img src="@/assets/img/product08.png" alt="">
-                    </div>
-                    <div class="product-body">
-                      <p class="product-category">Category</p>
-                      <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                      <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-                    </div>
-                  </div>
-                  <div class="product-widget">
-                    <div class="product-img">
-                      <img src="@/assets/img/product09.png" alt="">
-                    </div>
-                    <div class="product-body">
-                      <p class="product-category">Category</p>
-                      <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                      <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-                    </div>
-                  </div>
-                </div>
-              </swiper-slide>
-              <swiper-slide>
-                <div>
-                  <!-- product widget -->
-                  <div class="product-widget">
-                    <div class="product-img">
-                      <img src="@/assets/img/product01.png" alt="">
-                    </div>
-                    <div class="product-body">
-                      <p class="product-category">Category</p>
-                      <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                      <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-                    </div>
-                  </div>
-                  <div class="product-widget">
-                    <div class="product-img">
-                      <img src="@/assets/img/product02.png" alt="">
-                    </div>
-                    <div class="product-body">
-                      <p class="product-category">Category</p>
-                      <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                      <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-                    </div>
-                  </div>
-                  <div class="product-widget">
-                    <div class="product-img">
-                      <img src="@/assets/img/product03.png" alt="">
-                    </div>
-                    <div class="product-body">
-                      <p class="product-category">Category</p>
-                      <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                      <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+                    <div class="product-body" @click="goDetailPage(item.goodsId)">
+                      <p class="product-category">{{item.goodsType | filterGoodsType}}</p>
+                      <h3 class="product-name">{{item.title}}</h3>
+                      <h4 class="product-price">￥{{item.originalPrice | formatPrice}}
+                        <del class="product-old-price">￥{{item.showPrice | formatPrice}}</del>
+                      </h4>
                     </div>
                   </div>
                 </div>
@@ -100,71 +47,20 @@
             </div>
           </div>
           <div class="products-widget-slick">
-            <swiper :options="swiperOption2">
-              <swiper-slide>
+            <swiper :options="swiperOption2" v-if="cameraDataList.length > 0">
+              <swiper-slide v-for="(itemInfo, index) in cameraDataArray" :key="index">
                 <div>
-                  <div class="product-widget">
+                  <!-- product widget -->
+                  <div class="product-widget" v-for="(item, i) in itemInfo" :key="i">
                     <div class="product-img">
-                      <img src="@/assets/img/product04.png" alt="">
+                      <img :src="item.mainPicPath" alt="">
                     </div>
-                    <div class="product-body">
-                      <p class="product-category">Category</p>
-                      <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                      <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-                    </div>
-                  </div>
-                  <div class="product-widget">
-                    <div class="product-img">
-                      <img src="@/assets/img/product05.png" alt="">
-                    </div>
-                    <div class="product-body">
-                      <p class="product-category">Category</p>
-                      <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                      <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-                    </div>
-                  </div>
-                  <div class="product-widget">
-                    <div class="product-img">
-                      <img src="@/assets/img/product06.png" alt="">
-                    </div>
-                    <div class="product-body">
-                      <p class="product-category">Category</p>
-                      <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                      <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-                    </div>
-                  </div>
-                </div>
-              </swiper-slide>
-              <swiper-slide>
-                <div>
-                  <div class="product-widget">
-                    <div class="product-img">
-                      <img src="@/assets/img/product07.png" alt="">
-                    </div>
-                    <div class="product-body">
-                      <p class="product-category">Category</p>
-                      <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                      <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-                    </div>
-                  </div>
-                  <div class="product-widget">
-                    <div class="product-img">
-                      <img src="@/assets/img/product08.png" alt="">
-                    </div>
-                    <div class="product-body">
-                      <p class="product-category">Category</p>
-                      <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                      <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-                    </div>
-                  </div>
-                  <div class="product-widget">
-                    <div class="product-img">
-                      <img src="@/assets/img/product09.png" alt="">
-                    </div>
-                    <div class="product-body">
-                      <p class="product-category">Category</p>
-                      <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                      <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+                    <div class="product-body" @click="goDetailPage(item.goodsId)">
+                      <p class="product-category">{{item.goodsType | filterGoodsType}}</p>
+                      <h3 class="product-name">{{item.title}}</h3>
+                      <h4 class="product-price">￥{{item.originalPrice | formatPrice}}
+                        <del class="product-old-price">￥{{item.showPrice | formatPrice}}</del>
+                      </h4>
                     </div>
                   </div>
                 </div>
@@ -184,71 +80,20 @@
             </div>
           </div>
           <div class="products-widget-slick">
-            <swiper :options="swiperOption3">
-              <swiper-slide>
+            <swiper :options="swiperOption3" v-if="phoneDataList.length > 0">
+              <swiper-slide v-for="(itemInfo, index) in phoneDataArray" :key="index">
                 <div>
-                  <div class="product-widget">
+                  <!-- product widget -->
+                  <div class="product-widget" v-for="(item, i) in itemInfo" :key="i">
                     <div class="product-img">
-                      <img src="@/assets/img/product04.png" alt="">
+                      <img :src="item.mainPicPath" alt="">
                     </div>
-                    <div class="product-body">
-                      <p class="product-category">Category</p>
-                      <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                      <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-                    </div>
-                  </div>
-                  <div class="product-widget">
-                    <div class="product-img">
-                      <img src="@/assets/img/product05.png" alt="">
-                    </div>
-                    <div class="product-body">
-                      <p class="product-category">Category</p>
-                      <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                      <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-                    </div>
-                  </div>
-                  <div class="product-widget">
-                    <div class="product-img">
-                      <img src="@/assets/img/product06.png" alt="">
-                    </div>
-                    <div class="product-body">
-                      <p class="product-category">Category</p>
-                      <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                      <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-                    </div>
-                  </div>
-                </div>
-              </swiper-slide>
-              <swiper-slide>
-                <div>
-                  <div class="product-widget">
-                    <div class="product-img">
-                      <img src="@/assets/img/product07.png" alt="">
-                    </div>
-                    <div class="product-body">
-                      <p class="product-category">Category</p>
-                      <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                      <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-                    </div>
-                  </div>
-                  <div class="product-widget">
-                    <div class="product-img">
-                      <img src="@/assets/img/product08.png" alt="">
-                    </div>
-                    <div class="product-body">
-                      <p class="product-category">Category</p>
-                      <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                      <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-                    </div>
-                  </div>
-                  <div class="product-widget">
-                    <div class="product-img">
-                      <img src="@/assets/img/product09.png" alt="">
-                    </div>
-                    <div class="product-body">
-                      <p class="product-category">Category</p>
-                      <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                      <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+                    <div class="product-body" @click="goDetailPage(item.goodsId)">
+                      <p class="product-category">{{item.goodsType | filterGoodsType}}</p>
+                      <h3 class="product-name">{{item.title}}</h3>
+                      <h4 class="product-price">￥{{item.originalPrice | formatPrice}}
+                        <del class="product-old-price">￥{{item.showPrice | formatPrice}}</del>
+                      </h4>
                     </div>
                   </div>
                 </div>
@@ -256,9 +101,7 @@
             </swiper>
           </div>
         </div>
-
       </div>
-      <!--end row-->
     </div>
   </div>
 </template>
@@ -268,6 +111,9 @@ import { swiper, swiperSlide } from 'vue-awesome-swiper'
 export default {
   data () {
     return {
+      houseDataArray: [],
+      cameraDataArray: [],
+      phoneDataArray: [],
       swiperOption1: {
         centeredSlides: true,
         loop: true,
@@ -309,6 +155,105 @@ export default {
   components: {
     swiper,
     swiperSlide
+  },
+  props: {
+    houesDataList: {
+      type: Array,
+      require: true,
+      default: () => []
+    },
+    cameraDataList: {
+      type: Array,
+      require: true,
+      default: () => []
+    },
+    phoneDataList: {
+      type: Array,
+      require: true,
+      default: () => []
+    }
+  },
+  methods: {
+    goDetailPage (id) {
+      this.$router.push({
+        name: 'detail',
+        query: { id: id }
+      })
+    }
+  },
+  watch: {
+    houesDataList () {
+      let tempArray = []
+      this.houesDataList.forEach((item, index) => {
+        tempArray.push(item)
+        if ((index + 1) % 3 === 0) {
+          this.houseDataArray.push(tempArray)
+          tempArray = []
+        }
+      })
+      this.swiperOption1.loop = true
+    },
+    cameraDataList () {
+      let tempArray = []
+      this.cameraDataList.forEach((item, index) => {
+        tempArray.push(item)
+        if ((index + 1) % 3 === 0) {
+          this.cameraDataArray.push(tempArray)
+          tempArray = []
+        }
+      })
+    },
+    phoneDataList () {
+      let tempArray = []
+      this.phoneDataList.forEach((item, index) => {
+        tempArray.push(item)
+        if ((index + 1) % 3 === 0) {
+          this.phoneDataArray.push(tempArray)
+          tempArray = []
+        }
+      })
+    }
+  },
+  filters: {
+    filterGoodsType (val) {
+      switch (val) {
+        case 1:
+          return '电脑'
+        case 2:
+          return '智能手机'
+        case 3:
+          return '耳机'
+        case 4:
+          return '相机'
+        case 5:
+          return '家电'
+        case 6:
+          return 'AI智能'
+        default:
+          return ''
+      }
+    },
+    formatPrice (val) {
+      if (val) {
+        return Number(val).toFixed(2)
+      } else {
+        return '0.00'
+      }
+    }
   }
 }
 </script>
+
+<style scoped>
+  .product-name{
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  .product-body{
+    cursor: pointer;
+  }
+  .products-widget-slick{
+    min-height: 270px;
+  }
+</style>

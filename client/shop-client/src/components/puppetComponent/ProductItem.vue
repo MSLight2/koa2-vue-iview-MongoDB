@@ -1,13 +1,13 @@
 <template>
   <div class="product spa">
-    <div class="product-img">
+    <div class="product-img" @click="checkDetail(dataInfo.goodsId)">
       <img :src="dataInfo.mainPicPath | filterImgUrl" alt="">
     </div>
     <div class="product-body">
       <p class="product-category">{{dataInfo.goodsType | filterGoodsType}}</p>
       <h3 class="product-name">{{dataInfo.title}}</h3>
-      <h4 class="product-price">${{dataInfo.originalPrice | formatPrice}}
-        <del class="product-old-price">${{dataInfo.showPrice | formatPrice}}</del>
+      <h4 class="product-price">￥{{dataInfo.originalPrice | formatPrice}}
+        <del class="product-old-price">￥{{dataInfo.showPrice | formatPrice}}</del>
       </h4>
       <div class="product-rating">
         <i class="fa fa-star" v-for="item in starRate" :key="item"></i>
@@ -30,13 +30,26 @@
         <i class="fa fa-shopping-cart"></i>加入购物车
       </button>
     </div>
+    <iview-modal
+      :is-show="modalShow"
+      type="warning"
+      content="您还未登录，请登录后再操作"
+      sureText="知道了"
+      @close="modalShow = false">
+    </iview-modal>
   </div>
 </template>
 
 <script>
+import * as CollectionApi from '@/api/collection'
+import * as AddCartApi from '@/api/cart'
+import IviewModal from '@/components/puppetComponent/Modal/IviewModal'
+import LoginStorage from '@/utils/login'
+
 export default {
   data () {
     return {
+      modalShow: false
     }
   },
   props: {
@@ -47,6 +60,9 @@ export default {
         return {}
       }
     }
+  },
+  components: {
+    IviewModal
   },
   computed: {
     starRate () {
@@ -59,6 +75,20 @@ export default {
   methods: {
     // 添加收藏
     addToCollection (id) {
+      if (!LoginStorage.getToken()) {
+        this.$Message.error('请登录后在试！')
+        return
+      }
+      CollectionApi.AddCollection({ goodsId: id }).then(res => {
+        if (res.errMsg) this.$Message.warning(res.errMsg)
+        if (res.isSuccess) this.$Message.success('已收藏！')
+      }).catch((err) => {
+        if (err.code >= 1000 & err.code <= 1002) {
+          this.modalShow = true
+        } else {
+          this.$Message.error('服务器不想理你，请稍后重试')
+        }
+      })
     },
     // 相似
     findSimilar (url) {
@@ -72,35 +102,28 @@ export default {
       })
     },
     // 加入购物车
-    addToCart () {
+    addToCart (id) {
+      if (!LoginStorage.getToken()) {
+        this.$Message.error('请登录后在试！')
+        return
+      }
+      let params = {
+        goodsId: id,
+        goodsNum: 1
+      }
+      AddCartApi.AddOrEditCart(params).then(res => {
+        if (res.errMsg) this.$Message.warning(res.errMsg)
+        if (res.isSuccess) this.$Message.success('商品已在购物车，等你呦(*╹▽╹*)！')
+      }).catch((err) => {
+        if (err.code >= 1000 & err.code <= 1002) {
+          this.modalShow = true
+        } else {
+          this.$Message.error('服务器不想理你，请稍后重试')
+        }
+      })
     }
   },
   filters: {
-    filterGoodsType (val) {
-      switch (val) {
-        case 1:
-          return '电脑'
-        case 2:
-          return '智能手机'
-        case 3:
-          return '耳机'
-        case 4:
-          return '相机'
-        case 5:
-          return '家电'
-        case 6:
-          return 'AI智能'
-        default:
-          return ''
-      }
-    },
-    formatPrice (val) {
-      if (val) {
-        return Number(val).toFixed(2)
-      } else {
-        return '0.00'
-      }
-    },
     filterImgUrl (val) {
       if (val) {
         return val.replace(/_60x60.jpg/g, '_240x240.jpg')

@@ -31,7 +31,7 @@ export const AddOrEditCart = (data) => {
 /**
  * 删除购物车
  * @method post
- * @param {商品id} goodsId 
+ * @param {商品id} goodsId
  */
 export const DeleteCart = (data) => {
   return axios({

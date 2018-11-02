@@ -21,12 +21,12 @@
         </div>
         <!-- Products tab & slick -->
         <div class="col-md-12">
-          <div class="row" v-if="dataList.length > 0">
+          <div class="row">
             <div class="products-tabs">
               <!-- tab -->
               <div class="tab-pane active fade">
                 <div class="products-slick">
-                  <swiper :options="sSlideSwiperOption">
+                  <swiper :options="sSlideSwiperOption" v-if="dataList.length > 0">
                     <!-- product -->
                     <swiper-slide v-for="(item, index) in dataList" :key="index">
                       <product-item :data-info="item"></product-item>
@@ -108,5 +108,8 @@ export default {
   }
   .products-tabs .product{
     margin: 15px 2px;
+  }
+  .products-slick{
+    min-height: 520px;
   }
 </style>

@@ -16,7 +16,11 @@
       :data-list="recommendInfoData"
       @tabSwitch="tabSwitchTwo">
     </section-slide>
-    <top-selling></top-selling>
+    <top-selling
+      :houes-data-list="houseInfoData"
+      :camera-data-list="cameraInfoData"
+      :phone-data-list="phoneInfoData">
+    </top-selling>
     <news-letter></news-letter>
     <footer-tmpl></footer-tmpl>
     <iview-modal
@@ -62,8 +66,13 @@ export default {
       userInfoData: {},
       hotInfoData: [],
       recommendInfoData: [],
+      // 头部数据
       collectionInfoData: {},
-      shopCartInfoData: {}
+      shopCartInfoData: {},
+      // 底部数据
+      houseInfoData: [],
+      cameraInfoData: [],
+      phoneInfoData: []
     }
   },
   components: {
@@ -91,6 +100,16 @@ export default {
       this.getGoodsInfoByCategoty({ type: 1 }, (res) => {
         this.recommendInfoData = res.result
       })
+      // 底部 家电-相机-耳机
+      this.getGoodsInfoByCategoty({ type: 5, size: 9 }, (res) => {
+        this.houseInfoData = res.result
+      })
+      this.getGoodsInfoByCategoty({ type: 4, size: 9 }, (res) => {
+        this.cameraInfoData = res.result
+      })
+      this.getGoodsInfoByCategoty({ type: 3, size: 9 }, (res) => {
+        this.phoneInfoData = res.result
+      })
     },
     // 获取登录用户的信息数据
     getUserInfoData () {
@@ -101,7 +120,7 @@ export default {
         this.userInfoData = res.result.dataInfo
         console.log(res)
       }).catch(() => {
-        this.$Message.error('连接出错，请稍后重试')
+        this.$Message.error('服务器不想理你，请稍后重试')
       })
     },
     // 通过类目获取商品数
@@ -142,6 +161,10 @@ export default {
     },
     // 畅销购买
     hotBuyNow () {
+      this.$router.push({
+        name: 'store',
+        query: { type: Math.floor(Math.random() * 6 + 1) }
+      })
     }
   }
 }

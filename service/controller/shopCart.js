@@ -61,7 +61,7 @@ let addAndEditShoppingCart = async (ctx) => {
     }
     if (!isEdit && user) {
       // 不是编辑，但数据库已有此条数据
-      await ShopCartModule.updateOne(sqlWhere, {$set: {'number': goodsNum}}, null);
+      await ShopCartModule.updateOne(sqlWhere, {$inc: {'number': goodsNum}}, null);
       ctx.body = Utils.responseJSON({
         result: '编辑购物车成功',
         isSuccess: true

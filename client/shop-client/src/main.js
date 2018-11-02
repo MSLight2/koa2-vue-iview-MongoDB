@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router/router'
 import store from './store/store'
+import SetGlobalFilters from '@/utils/GlobalFilters'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import jQuery from 'jquery'
 import 'swiper/dist/css/swiper.css'
@@ -28,6 +29,7 @@ Vue.prototype.$Message = Message
 
 window.jQuery = window.$ = jQuery
 Vue.use(VueAwesomeSwiper)
+SetGlobalFilters(Vue)
 
 Vue.config.productionTip = false
 new Vue({
