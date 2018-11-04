@@ -2,12 +2,16 @@
   <div class="col-md-5">
     <div class="product-details">
       <h2 class="product-name">{{dataInfo.title | filterTitle}}</h2>
-      <div>
+      <div class="g-desc">
         <div class="product-rating">
           <i class="fa fa-star" v-for="item in starRate" :key="item"></i>
           <i class="fa fa-star-o" v-for="i in (5 - starRate)" :key="i"></i>
         </div>
-        <a class="review-link" href="#">0 评价 | 我来评价</a>
+        <a
+          class="review-link"
+          href="JavaScript:;"
+          @click="toEvaluatet">{{evaluateCount}} 评价 | 我来评价
+        </a>
       </div>
       <div>
         <h3 class="product-price">￥{{dataInfo.originalPrice | formatPrice}} <del class="product-old-price">￥{{dataInfo.showPrice | formatPrice}}</del></h3>
@@ -27,7 +31,7 @@
       <div class="add-to-cart">
         <div class="qty-label">数量
           <div class="input-number">
-            <input type="number" value="1" v-model="goodsCount">
+            <input type="number" v-model="goodsCount" @change="incCount">
             <span class="qty-up" @click="incCount">+</span>
             <span class="qty-down" @click="decCount">-</span>
           </div>
@@ -47,7 +51,7 @@
       </ul>
       <ul class="product-links">
         <li>类别:</li>
-        <li><a href="javascript:;">{{dataInfo.goodsType | filterGoodsType}}</a></li>
+        <li>{{dataInfo.goodsType | filterGoodsType}}</li>
       </ul>
       <ul class="product-links">
         <li>分享:</li>
@@ -91,6 +95,11 @@ export default {
       default: () => {
         return {}
       }
+    },
+    evaluateCount: {
+      type: Number,
+      require: true,
+      default: 0
     }
   },
   computed: {
@@ -141,10 +150,20 @@ export default {
       })
     },
     incCount () {
-      this.goodsCount = this.goodsCount + 1
+      this.goodsCount = Number(this.goodsCount) + 1
+      if (this.goodsCount > this.dataInfo.quantity) {
+        this.goodsCount = this.dataInfo.quantity
+      }
     },
     decCount () {
-      this.goodsCount = this.goodsCount - 1
+      this.goodsCount = Number(this.goodsCount) - 1
+      if (this.goodsCount <= 1) {
+        this.goodsCount = 1
+      }
+    },
+    // 去评价
+    toEvaluatet () {
+      this.$emit('addEvaluate')
     }
   },
   filters: {
@@ -158,3 +177,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .g-desc{
+    margin-top: 10px;
+  }
+</style>

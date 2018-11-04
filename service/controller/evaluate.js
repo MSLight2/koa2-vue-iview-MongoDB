@@ -5,19 +5,33 @@ let Code = require('../config/errCode');
 /**
  * 获取评价内容
  * @method get
+ * @param {当前页} page
+ * @param {单页条数} pageSize
  * @param {商品id} goodsId
  */
 let getEvaluateList = async ctx => {
-  let {goodsId = ''} = ctx.query;
+  let {goodsId = '', page = 1, pageSize = 10} = ctx.query;
+  let pageskip = page ? parseInt(page) - 1 : 0;
+  if (pageskip < 0) pageskip = 0;
+  pageSize = pageSize ? parseInt(pageSize) : 10;
+  let skipCount = pageskip * pageSize;
+
   if (!goodsId) return ctx.body = Utils.responseJSON({errMsg: '商品id是必须的'});
 
   try {
-    let evaluates = await EvaluateModule.find({'goodsId': goodsId}, null);
-    ctx.body = Utils.responseJSON({
-      result: evaluates,
-      isSuccess: true,
-      code: Code.successCode
-    })
+    let evaluates = await EvaluateModule.find({'goodsId': goodsId}).skip(skipCount).limit(pageSize).exec();
+    ctx.body = {
+      ...Utils.responseJSON({
+        result: evaluates,
+        isSuccess: true,
+        code: Code.successCode
+      }),
+      ...Utils.repPagination({
+        page: page,
+        pageSize: pageSize,
+        total: goodsCount
+      })
+    }
   } catch (error) {
     ctx.body = Utils.responseJSON({errMsg: '查询评论出错', code: Code.dbErr});
   }

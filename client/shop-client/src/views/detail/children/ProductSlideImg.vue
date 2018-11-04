@@ -31,7 +31,7 @@
     <div class="col-md-2  col-md-pull-5">
       <div id="product-imgs">
         <slick
-          v-if="imgList.length > 0"
+          v-show="imgList.length > 0"
           ref="producSlick"
           :options="productImgSlickOption"
           @beforeChange="handleImgsBeforeChange">
