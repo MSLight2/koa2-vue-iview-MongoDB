@@ -10,14 +10,14 @@
           <!-- Product details -->
           <product-detail-desc
             :data-info="goodDetailInfo"
-            :evaluate-count="evaluateInfoData.length"
+            :evaluate-count="evaluateCount"
             @addEvaluate="gotoEvaluate">
           </product-detail-desc>
           <!-- Product tab -->
           <product-tab
             ref="productTab"
             :tab-index="tabIndex"
-            :evaluate-list="evaluateInfoData"
+            :evaluate-data="evaluateInfoData"
             :data-info="goodDetailInfo"
             @tabChange="tabChange"
             @evaluateSubmit="evaluateSubmit">
@@ -63,7 +63,7 @@ export default {
         path: []
       },
       goodDetailInfo: {},
-      evaluateInfoData: [],
+      evaluateInfoData: {},
       imgList: [],
       tabIndex: 0
     }
@@ -80,11 +80,20 @@ export default {
     FooterTmpl,
     IviewModal
   },
+  computed: {
+    evaluateCount () {
+      if (this.evaluateInfoData.starList !== undefined) {
+        return this.evaluateInfoData.starList.length
+      } else {
+        return 0
+      }
+    }
+  },
   mounted () {
     this.goodsId = this.$route.query.id
     if (this.goodsId) {
       this.getGoodsDetailData(this.goodsId)
-      this.getEvaluateData(this.goodsId)
+      this.getEvaluateData('566962867578')
     } else {
       this.$Message.warning('你是真的皮╭(╯^╰)╮')
       setTimeout(() => {
@@ -108,7 +117,8 @@ export default {
         pageSize: pageSize
       }
       EvaluateApi.GetEvaluateList(params).then(res => {
-        this.evaluateInfoData = res.result
+        if (res.isSuccess) this.evaluateInfoData = res
+        console.log(res)
       })
     },
     // 点击【我来评价】
@@ -138,6 +148,10 @@ export default {
       }
       EvaluateApi.AddEvaluate(params).then(res => {
         if (res.errMsg) this.$Message.warning(res.errMsg)
+        if (res.isSuccess) {
+          this.$Message.success('评价成功')
+          this.getEvaluateData(this.goodsId)
+        }
         console.log(res)
       }).catch((err) => {
         if (err.code >= 1000 & err.code <= 1002) {

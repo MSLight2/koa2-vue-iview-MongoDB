@@ -15,7 +15,8 @@ import {
   Message,
   Spin,
   Icon,
-  Modal
+  Modal,
+  Page
 } from 'iview'
 // iview组件
 Vue.component('Button', Button)
@@ -25,6 +26,7 @@ Vue.component('Input', Input)
 Vue.component('Spin', Spin)
 Vue.component('Icon', Icon)
 Vue.component('Modal', Modal)
+Vue.component('Page', Page)
 Vue.prototype.$Message = Message
 
 window.jQuery = window.$ = jQuery

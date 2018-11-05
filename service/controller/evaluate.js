@@ -18,8 +18,16 @@ let getEvaluateList = async ctx => {
 
   if (!goodsId) return ctx.body = Utils.responseJSON({errMsg: '商品id是必须的'});
 
+  let sqlWhere = {'goodsId': goodsId}
+
   try {
-    let evaluates = await EvaluateModule.find({'goodsId': goodsId}).skip(skipCount).limit(pageSize).exec();
+    let evaluates = await EvaluateModule.find(sqlWhere)
+      .skip(skipCount)
+      .limit(pageSize)
+      .exec();
+    let evaluatesCount = await EvaluateModule.find(sqlWhere).count();
+    let starList = await EvaluateModule.find(sqlWhere, 'rate');
+    
     ctx.body = {
       ...Utils.responseJSON({
         result: evaluates,
@@ -29,8 +37,9 @@ let getEvaluateList = async ctx => {
       ...Utils.repPagination({
         page: page,
         pageSize: pageSize,
-        total: goodsCount
-      })
+        total: evaluatesCount
+      }),
+      starList: starList
     }
   } catch (error) {
     ctx.body = Utils.responseJSON({errMsg: '查询评论出错', code: Code.dbErr});

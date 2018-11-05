@@ -10,7 +10,7 @@
           <a href="javascript:;">详情</a>
         </li>
         <li :class="{'active': tabCurrentIndex === 2}" @click="tabClick(2)">
-          <a href="javascript:;">评价 (10)</a>
+          <a href="javascript:;">评价 ({{starLength || 0}})</a>
         </li>
       </ul>
       <!-- product tab content -->
@@ -41,122 +41,116 @@
             </div>
             <div class="tab-pane">
               <div class="row">
-                <!-- Rating -->
-                <div class="col-md-3">
-                  <div id="rating">
-                    <div class="rating-avg">
-                      <span>4.5</span>
-                      <div class="rating-stars">
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star-o"></i>
+                <template v-if="starLength > 0">
+                  <!-- Rating -->
+                  <div class="col-md-3">
+                    <div id="rating">
+                      <div class="rating-avg">
+                        <span>{{averageStar}}</span>
+                        <div class="rating-stars">
+                          <i class="fa fa-star" v-for="item in averageStar" :key="item"></i>
+                          <i class="fa fa-star-o" v-for="i in (5 - averageStar)" :key="i"></i>
+                        </div>
                       </div>
-                    </div>
-                    <ul class="rating">
-                      <li>
-                        <div class="rating-stars">
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                        </div>
-                        <div class="rating-progress">
-                          <div style="width: 80%;"></div>
-                        </div>
-                        <span class="sum">3</span>
-                      </li>
-                      <li>
-                        <div class="rating-stars">
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star-o"></i>
-                        </div>
-                        <div class="rating-progress">
-                          <div style="width: 60%;"></div>
-                        </div>
-                        <span class="sum">2</span>
-                      </li>
-                      <li>
-                        <div class="rating-stars">
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star-o"></i>
-                          <i class="fa fa-star-o"></i>
-                        </div>
-                        <div class="rating-progress">
-                          <div></div>
-                        </div>
-                        <span class="sum">0</span>
-                      </li>
-                      <li>
-                        <div class="rating-stars">
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star-o"></i>
-                          <i class="fa fa-star-o"></i>
-                          <i class="fa fa-star-o"></i>
-                        </div>
-                        <div class="rating-progress">
-                          <div></div>
-                        </div>
-                        <span class="sum">0</span>
-                      </li>
-                      <li>
-                        <div class="rating-stars">
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star-o"></i>
-                          <i class="fa fa-star-o"></i>
-                          <i class="fa fa-star-o"></i>
-                          <i class="fa fa-star-o"></i>
-                        </div>
-                        <div class="rating-progress">
-                          <div></div>
-                        </div>
-                        <span class="sum">0</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <!-- /Rating -->
-
-                <!-- Reviews -->
-                <div class="col-md-6">
-                  <div id="reviews">
-                    <ul class="reviews">
-                      <li>
-                        <div class="review-heading">
-                          <h5 class="name">John</h5>
-                          <p class="date">27 DEC 2018, 8:0 PM</p>
-                          <div class="review-rating">
+                      <ul class="rating">
+                        <li>
+                          <div class="rating-stars">
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
-                            <i class="fa fa-star-o empty"></i>
+                            <i class="fa fa-star"></i>
                           </div>
-                        </div>
-                        <div class="review-body">
-                          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
-                        </div>
-                      </li>
-                    </ul>
-                    <ul class="reviews-pagination">
-                      <li class="active">1</li>
-                      <li><a href="#">2</a></li>
-                      <li><a href="#">3</a></li>
-                      <li><a href="#">4</a></li>
-                      <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
-                    </ul>
+                          <div class="rating-progress">
+                            <div :style="`width: ${starWidth[0]}%;`"></div>
+                          </div>
+                          <span class="sum">{{starCount[0]}}</span>
+                        </li>
+                        <li>
+                          <div class="rating-stars">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o"></i>
+                          </div>
+                          <div class="rating-progress">
+                            <div :style="`width: ${starWidth[1]}%;`"></div>
+                          </div>
+                          <span class="sum">{{starCount[1]}}</span>
+                        </li>
+                        <li>
+                          <div class="rating-stars">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                          </div>
+                          <div class="rating-progress">
+                            <div :style="`width: ${starWidth[2]}%;`"></div>
+                          </div>
+                          <span class="sum">{{starCount[2]}}</span>
+                        </li>
+                        <li>
+                          <div class="rating-stars">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                          </div>
+                          <div class="rating-progress">
+                            <div :style="`width: ${starWidth[3]}%;`"></div>
+                          </div>
+                          <span class="sum">{{starCount[3]}}</span>
+                        </li>
+                        <li>
+                          <div class="rating-stars">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                          </div>
+                          <div class="rating-progress">
+                            <div :style="`width: ${starWidth[4]}%;`"></div>
+                          </div>
+                          <span class="sum">{{starCount[4]}}</span>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
-                </div>
-                <!-- /Reviews -->
-
+                  <!-- Reviews -->
+                  <div class="col-md-6">
+                    <div id="reviews">
+                      <ul class="reviews" v-if="evaluateData.result !== undefined">
+                        <li v-for="(item, index) in evaluateData.result" :key="index">
+                          <div class="review-heading">
+                            <h5 class="name">{{item.nickName}}</h5>
+                            <p class="date">{{item.createTime | formatDate}}</p>
+                            <div class="review-rating">
+                              <i class="fa fa-star" v-for="item in item.rate" :key="item"></i>
+                              <i class="fa fa-star-o empty" v-for="i in (5 - item.rate)" :key="i"></i>
+                            </div>
+                          </div>
+                          <div class="review-body">
+                            <p>{{item.review}}</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <ul class="reviews-pagination" v-if="evaluateData.paginationModule.pageCount > 1">
+                        <Page
+                          :current="currentPage"
+                          :page-size="pageSize"
+                          :total="pageTotal"
+                          @on-change="pageChange"
+                        />
+                      </ul>
+                    </div>
+                  </div>
+                </template>
+                <div class="col-md-9 no-evaluate" v-else>暂无评价</div>
                 <!-- Review Form -->
                 <div class="col-md-3">
                   <div id="review-form">
@@ -178,7 +172,6 @@
                     </div>
                   </div>
                 </div>
-                <!-- /Review Form -->
               </div>
             </div>
         </slick>
@@ -188,6 +181,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 import Slick from 'vue-slick'
 import Utils from '@/utils/utils'
 
@@ -207,7 +201,11 @@ export default {
       nickName: '',
       userEmail: '',
       feedBack: '',
-      startRate: 0
+      startRate: 0,
+      // 分页
+      currentPage: 1,
+      pageSize: 3,
+      pageTotal: 0
     }
   },
   components: {
@@ -219,10 +217,12 @@ export default {
       require: true,
       default: 0
     },
-    evaluateList: {
-      type: Array,
+    evaluateData: {
+      type: Object,
       require: true,
-      default: () => []
+      default: () => {
+        return {}
+      }
     },
     dataInfo: {
       type: Object,
@@ -234,6 +234,46 @@ export default {
   },
   mounted () {
     this.slickInit()
+  },
+  computed: {
+    starLength () {
+      if (this.evaluateData.starList !== undefined) {
+        return this.evaluateData.starList.length
+      } else {
+        return 0
+      }
+    },
+    // 不同星级显示条的宽度
+    starWidth () {
+      let widthArr = []
+      let starLength = this.starLength || 1
+      this.starCount.forEach((item, index) => {
+        widthArr[index] = item / starLength * 100
+      })
+      return widthArr
+    },
+    // 星级个数
+    starCount () {
+      let startCountArr = []
+      startCountArr[0] = this.evaluateData.starList.filter(item => item.rate === 5).length
+      startCountArr[1] = this.evaluateData.starList.filter(item => item.rate === 4).length
+      startCountArr[2] = this.evaluateData.starList.filter(item => item.rate === 3).length
+      startCountArr[3] = this.evaluateData.starList.filter(item => item.rate === 2).length
+      startCountArr[4] = this.evaluateData.starList.filter(item => item.rate === 1).length
+      return startCountArr
+    },
+    // 平均的星级
+    averageStar () {
+      let sum = 0
+      this.starCount.forEach((item, index) => {
+        if (index === 0) sum = sum + (item * 5)
+        if (index === 1) sum = sum + (item * 4)
+        if (index === 2) sum = sum + (item * 3)
+        if (index === 3) sum = sum + (item * 2)
+        if (index === 4) sum = sum + (item * 1)
+      })
+      return Math.round(sum / (this.starLength || 1))
+    }
   },
   methods: {
     slickInit () {
@@ -268,12 +308,24 @@ export default {
         feedBack: this.feedBack,
         startRate: this.startRate
       })
+    },
+    pageChange (val) {
+      console.log(val)
     }
   },
   watch: {
     tabIndex () {
       this.tabCurrentIndex = this.tabIndex
       this.$refs.tabSlick.goTo(this.tabIndex, true)
+    }
+  },
+  filters: {
+    formatDate (val) {
+      if (val) {
+        return moment(parseInt(val)).format('YYYY-MM-DD HH:mm')
+      } else {
+        return '无'
+      }
     }
   }
 }
@@ -291,5 +343,11 @@ export default {
     display: inline-block;
     width: 90px;
     text-align: right;
+  }
+  .no-evaluate{
+    text-align: center;
+    height: 200px;
+    line-height: 200px;
+    padding-left: 300px;
   }
 </style>
