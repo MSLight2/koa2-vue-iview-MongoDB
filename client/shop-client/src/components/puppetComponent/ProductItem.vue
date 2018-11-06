@@ -96,10 +96,11 @@ export default {
     },
     // 查看详情
     checkDetail (id) {
-      this.$router.push({
-        name: 'detail',
-        query: { id: id }
-      })
+      // this.$router.push({
+      //   name: 'detail',
+      //   query: { id: id }
+      // })
+      window.open(`/detail?id=${id}`)
     },
     // 加入购物车
     addToCart (id) {

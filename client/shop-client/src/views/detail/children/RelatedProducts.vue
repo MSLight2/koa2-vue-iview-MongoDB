@@ -8,8 +8,8 @@
           </div>
         </div>
         <!-- product -->
-        <div class="col-md-3 col-xs-6" v-for="index in 4" :key="index">
-          <product-item :data-info="dataInfo"></product-item>
+        <div class="col-md-3 col-xs-6" v-for="(item, index) in dataList" :key="index">
+          <product-item :data-info="item"></product-item>
         </div>
       </div>
     </div>
@@ -23,6 +23,13 @@ export default {
   data () {
     return {
       dataInfo: {}
+    }
+  },
+  props: {
+    dataList: {
+      type: Array,
+      require: true,
+      default: () => []
     }
   },
   components: {

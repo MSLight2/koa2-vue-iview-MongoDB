@@ -157,7 +157,7 @@
                     <div class="review-form">
                       <input class="input" type="text" placeholder="昵称" v-model="nickName">
                       <input class="input" type="email" placeholder="邮箱地址" v-model="userEmail">
-                      <textarea class="input" placeholder="你的评价" v-model="feedBack"></textarea>
+                      <textarea class="input" style="resize:none" placeholder="你的评价" v-model="feedBack"></textarea>
                       <div class="input-rating">
                         <span>你的评分: </span>
                         <div class="stars">
@@ -309,8 +309,8 @@ export default {
         startRate: this.startRate
       })
     },
-    pageChange (val) {
-      console.log(val)
+    pageChange (page) {
+      this.$emit('pageChange', page)
     }
   },
   watch: {

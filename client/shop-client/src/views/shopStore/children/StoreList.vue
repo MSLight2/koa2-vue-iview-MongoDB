@@ -32,11 +32,12 @@
     <!-- pagination -->
     <div class="store-filter clearfix">
       <ul class="store-pagination">
-        <li class="active">1</li>
-        <li><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
+        <Page
+          :current="currentPage"
+          :page-size="pageSize"
+          :total="pageTotal"
+          @on-change="pageChange"
+        />
       </ul>
     </div>
   </div>
@@ -48,11 +49,19 @@ import ProductItem from '@/components/puppetComponent/ProductItem'
 export default {
   data () {
     return {
-      dataInfo: {}
+      dataInfo: {},
+      // 分页
+      currentPage: 1,
+      pageSize: 3,
+      pageTotal: 0
     }
   },
   components: {
     ProductItem
+  },
+  methods: {
+    pageChange (page) {
+    }
   }
 }
 </script>

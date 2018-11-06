@@ -60,6 +60,12 @@
         <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
         <li><a href="#"><i class="fa fa-envelope"></i></a></li>
       </ul>
+      <ul class="product-links">
+        <Button
+          type="primary" size="large" shape="circle"
+          @click="buyNow(dataInfo.goodsId)">立即购买
+        </Button>
+      </ul>
     </div>
     <iview-modal
       :is-show="modalShow"
@@ -160,6 +166,8 @@ export default {
       if (this.goodsCount <= 1) {
         this.goodsCount = 1
       }
+    },
+    buyNow (id) {
     },
     // 去评价
     toEvaluatet () {

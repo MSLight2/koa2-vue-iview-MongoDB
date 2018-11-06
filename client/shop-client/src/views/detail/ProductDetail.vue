@@ -20,12 +20,13 @@
             :evaluate-data="evaluateInfoData"
             :data-info="goodDetailInfo"
             @tabChange="tabChange"
+            @pageChange="pageChange"
             @evaluateSubmit="evaluateSubmit">
           </product-tab>
         </div>
       </div>
     </div>
-    <related-products></related-products>
+    <related-products :data-list="relatedDataList"></related-products>
     <news-letter></news-letter>
     <footer-tmpl></footer-tmpl>
     <iview-modal
@@ -64,6 +65,7 @@ export default {
       },
       goodDetailInfo: {},
       evaluateInfoData: {},
+      relatedDataList: [],
       imgList: [],
       tabIndex: 0
     }
@@ -93,7 +95,7 @@ export default {
     this.goodsId = this.$route.query.id
     if (this.goodsId) {
       this.getGoodsDetailData(this.goodsId)
-      this.getEvaluateData('566962867578')
+      this.getEvaluateData(this.goodsId)
     } else {
       this.$Message.warning('你是真的皮╭(╯^╰)╮')
       setTimeout(() => {
@@ -107,6 +109,17 @@ export default {
       GoodsApi.GetGoodsDetail({ goodsId: id }).then(res => {
         this.goodDetailInfo = res.result
         this.imgList.push(res.result.mainPicPath)
+        this.getGoodsInfoByCategoty()
+      })
+    },
+    // 获取商品
+    getGoodsInfoByCategoty () {
+      let params = {
+        goodsType: this.goodDetailInfo.goodsType,
+        pageSize: 4
+      }
+      GoodsApi.GetGoodsByCategory(params).then(res => {
+        this.relatedDataList = res.result
       })
     },
     // 获取评价
@@ -118,7 +131,6 @@ export default {
       }
       EvaluateApi.GetEvaluateList(params).then(res => {
         if (res.isSuccess) this.evaluateInfoData = res
-        console.log(res)
       })
     },
     // 点击【我来评价】
@@ -132,6 +144,10 @@ export default {
     },
     tabChange (index) {
       this.tabIndex = index
+    },
+    // 分页切换
+    pageChange (page) {
+      this.getEvaluateData(this.goodsId, page)
     },
     // 添加评价
     evaluateSubmit ({ nickName, userEmail, feedBack, startRate }) {
@@ -152,7 +168,6 @@ export default {
           this.$Message.success('评价成功')
           this.getEvaluateData(this.goodsId)
         }
-        console.log(res)
       }).catch((err) => {
         if (err.code >= 1000 & err.code <= 1002) {
           this.modalShow = true
@@ -161,6 +176,8 @@ export default {
         }
       })
     }
+  },
+  watch: {
   }
 }
 </script>

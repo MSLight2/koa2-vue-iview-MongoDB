@@ -30,3 +30,11 @@ input{
 	border:none;
 	outline: none;
 }
+
+.ivu-page-item-active{
+	background-color: #D10024 !important;
+	border: none !important;
+}
+.ivu-page-item-active a{
+	color: #fff !important;
+} 
