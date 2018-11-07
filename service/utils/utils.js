@@ -39,8 +39,8 @@ let responseJSON = ({result, code, isSuccess, errMsg}) => {
 let repPagination = ({page = 1, pageSize = 10, total = 0}) => {
   return {
     paginationModule: {
-      page: page,
-      pageSize: pageSize ,
+      page: Number(page),
+      pageSize: Number(pageSize),
       pageCount: Math.ceil(total / pageSize),
       total: total
     }

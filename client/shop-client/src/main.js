@@ -4,6 +4,7 @@ import router from './router/router'
 import store from './store/store'
 import SetGlobalFilters from '@/utils/GlobalFilters'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
+import './style/iconfont/iconfont';
 import jQuery from 'jquery'
 import 'swiper/dist/css/swiper.css'
 import 'iview/dist/styles/iview.css'
@@ -16,7 +17,8 @@ import {
   Spin,
   Icon,
   Modal,
-  Page
+  Page,
+  Slider
 } from 'iview'
 // iview组件
 Vue.component('Button', Button)
@@ -27,6 +29,7 @@ Vue.component('Spin', Spin)
 Vue.component('Icon', Icon)
 Vue.component('Modal', Modal)
 Vue.component('Page', Page)
+Vue.component('Slider', Slider)
 Vue.prototype.$Message = Message
 
 window.jQuery = window.$ = jQuery

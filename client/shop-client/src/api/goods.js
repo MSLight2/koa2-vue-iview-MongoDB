@@ -18,7 +18,7 @@ export const GetGoodsByCategory = (params) => {
 /**
  * 获取商品列表
  * @method get
- * @param {商品类型} goodsType
+ * @param {商品类型} goodsType : Array
  * @param {查询页数} page
  * @param {返回行数} pageSize
  * @param {搜索字段} searchWords

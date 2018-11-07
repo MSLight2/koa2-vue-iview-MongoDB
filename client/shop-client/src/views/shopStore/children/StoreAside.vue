@@ -5,51 +5,45 @@
       <h3 class="aside-title">分类</h3>
       <div class="checkbox-filter">
         <div class="input-checkbox">
-          <input type="checkbox" id="category-1">
+          <input type="checkbox" :value="1" id="category-1" v-model="goodsTypeCheck">
           <label for="category-1">
             <span></span>
-            笔记本
-            <small>(120)</small>
+            电脑
           </label>
         </div>
         <div class="input-checkbox">
-          <input type="checkbox" id="category-2">
+          <input type="checkbox" :value="2" id="category-2" v-model="goodsTypeCheck">
           <label for="category-2">
             <span></span>
             智能手机
-            <small>(740)</small>
           </label>
         </div>
         <div class="input-checkbox">
-          <input type="checkbox" id="category-3">
+          <input type="checkbox" :value="3" id="category-3" v-model="goodsTypeCheck">
           <label for="category-3">
             <span></span>
-            照相机
-            <small>(1450)</small>
+            耳机
           </label>
         </div>
         <div class="input-checkbox">
-          <input type="checkbox" id="category-4">
+          <input type="checkbox" :value="4" id="category-4" v-model="goodsTypeCheck">
           <label for="category-4">
             <span></span>
-            配件
-            <small>(578)</small>
+            相机
           </label>
         </div>
         <div class="input-checkbox">
-          <input type="checkbox" id="category-5">
+          <input type="checkbox" :value="5" id="category-5" v-model="goodsTypeCheck">
           <label for="category-5">
             <span></span>
-            耳机
-            <small>(120)</small>
+            家电
           </label>
         </div>
         <div class="input-checkbox">
-          <input type="checkbox" id="category-6">
+          <input type="checkbox" :value="6" id="category-6" v-model="goodsTypeCheck">
           <label for="category-6">
             <span></span>
-            显示器
-            <small>(740)</small>
+            AI智能
           </label>
         </div>
       </div>
@@ -58,14 +52,15 @@
     <div class="aside">
       <h3 class="aside-title">价格</h3>
       <div class="price-filter">
+        <Slider v-model="sliderPrice" :tip-format="hideFormat" :max="sliderMax"></Slider>
         <div class="input-number price-min">
-          <input id="price-min" type="number" value="0">
+          <input id="price-min" type="number" v-model="minPrice" value="1">
           <span class="qty-up">+</span>
           <span class="qty-down">-</span>
         </div>
         <span>-</span>
         <div class="input-number price-max">
-          <input id="price-max" type="number" value="0">
+          <input id="price-max" type="number" v-model="sliderPrice" value="1">
           <span class="qty-up">+</span>
           <span class="qty-down">-</span>
         </div>
@@ -73,69 +68,21 @@
     </div>
     <!-- brand -->
     <div class="aside">
-      <h3 class="aside-title">品牌</h3>
-      <div class="checkbox-filter">
-        <div class="input-checkbox">
-          <input type="checkbox" id="brand-1">
-          <label for="brand-1">
-            <span></span>
-            小米
-            <small>(578)</small>
-          </label>
-        </div>
-        <div class="input-checkbox">
-          <input type="checkbox" id="brand-2">
-          <label for="brand-2">
-            <span></span>
-            华为
-            <small>(125)</small>
-          </label>
-        </div>
-        <div class="input-checkbox">
-          <input type="checkbox" id="brand-3">
-          <label for="brand-3">
-            <span></span>
-            苹果
-            <small>(755)</small>
-          </label>
-        </div>
-        <div class="input-checkbox">
-          <input type="checkbox" id="brand-4">
-          <label for="brand-4">
-            <span></span>
-            宏碁
-            <small>(578)</small>
-          </label>
-        </div>
-        <div class="input-checkbox">
-          <input type="checkbox" id="brand-5">
-          <label for="brand-5">
-            <span></span>
-            联想
-            <small>(125)</small>
-          </label>
-        </div>
-        <div class="input-checkbox">
-          <input type="checkbox" id="brand-6">
-          <label for="brand-6">
-            <span></span>
-            华硕
-            <small>(755)</small>
-          </label>
-        </div>
-      </div>
+      <Button
+        type="primary" size="large" shape="circle"
+        @click="sureFilter">确 定</Button>
     </div>
     <!-- Top selling -->
     <div class="aside">
-      <h3 class="aside-title">热门商品</h3>
-      <div class="product-widget" v-for="index in 3" :key="index">
+      <h3 class="aside-title">其它商品</h3>
+      <div class="product-widget" v-for="(item, index) in otherData" :key="index">
         <div class="product-img">
-          <img src="@/assets/img/product01.png" alt="">
+          <img :src="item.mainPicPath" alt="">
         </div>
-        <div class="product-body">
-          <p class="product-category">Category</p>
-          <h3 class="product-name"><a href="#">product name goes here</a></h3>
-          <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+        <div class="product-body" @click="goDetailPage(item.goodsId)">
+          <p class="product-category">{{item.goodsType | filterGoodsType}}</p>
+          <h3 class="product-name">{{item.title}}</h3>
+          <h4 class="product-price">￥{{item.originalPrice | formatPrice}} <del class="product-old-price">￥{{item.showPrice | formatPrice}}</del></h4>
         </div>
       </div>
     </div>
@@ -146,7 +93,51 @@
 export default {
   data () {
     return {
+      minPrice: 1,
+      sliderPrice: 1,
+      sliderMax: 100,
+      goodsTypeCheck: []
+    }
+  },
+  props: {
+    otherData: {
+      type: Array,
+      require: true,
+      default: () => []
+    }
+  },
+  methods: {
+    hideFormat () {
+      return null
+    },
+    sureFilter () {
+      this.$emit('sureFilter', this.goodsTypeCheck, this.minPrice, this.sliderPrice)
+    },
+    goDetailPage (id) {
+      this.$router.push({
+        name: 'detail',
+        query: { id: id }
+      })
     }
   }
 }
 </script>
+
+<style scoped>
+  .aside button{
+    width: 100%;
+  }
+  .aside >>> .ivu-btn-primary{
+    background-color: #D10024;
+    border-color: #D10024;
+  }
+  .price-filter >>> .ivu-slider-button{
+    border: 2px solid #D10024;
+  }
+  .price-filter >>> .ivu-slider-bar{
+    background: #D10024;
+  }
+  .product-body{
+    cursor: pointer;
+  }
+</style>

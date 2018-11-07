@@ -64,7 +64,7 @@ let getDateForGoodsType = async (ctx) => {
  */
 let getStoreGoodsList = async (ctx) => {
   let {
-    goodsType = 0,
+    goodsType = [],
     page = 1,
     pageSize = 9,
     searchWords = null,
@@ -79,31 +79,41 @@ let getStoreGoodsList = async (ctx) => {
   pageSize = pageSize ? parseInt(pageSize) : 9;
   let skipCount = pageskip * pageSize;
 
-  if (filterRange) {
-    let rangeArr = filterRange.split('-');
-    minPrice = parseFloat(rangeArr[0] || 0);
-    maxPrice = parseFloat(rangeArr[1] || null);
-  }
-  let sqlWhere = null;
-  if (goodsType) sqlWhere = {'goodsType': goodsType};
-  if (searchWords) sqlWhere['title'] = {'$regex': searchWords, '$options': '$g'};
-  if (minPrice && maxPrice) sqlWhere['showPrice'] = {'$gte': Number(minPrice), '$lte': Number(maxPrice)};
-  // 排序字段
-  let sortObj = null;
-  if (Number(orderType) === 0) sortObj = {'sold': sortOrder};
-  if (Number(orderType) === 1) sortObj = {'showPrice': sortOrder};
-
   try {
+    if (filterRange) {
+      let rangeArr = filterRange.split('-');
+      minPrice = parseFloat(rangeArr[0] || 0);
+      maxPrice = parseFloat(rangeArr[1] || null);
+    }
+    let sqlWhere = null;
+    goodsType = JSON.parse(goodsType)
+    if (goodsType.length > 0) sqlWhere = {'goodsType': {'$in': [...goodsType]}};
+    if (searchWords) sqlWhere['title'] = {'$regex': searchWords, '$options': '$g'};
+    if (minPrice || maxPrice) sqlWhere['showPrice'] = {'$gte': Number(minPrice), '$lte': Number(maxPrice)};
+    // 排序字段
+    let sortObj = null;
+    if (Number(orderType) === 0) sortObj = {'sold': Number(sortOrder)};
+    if (Number(orderType) === 1) sortObj = {'showPrice': Number(sortOrder)};
+
     let goods = await GoodsModule.find(sqlWhere)
       .skip(skipCount)
       .limit(pageSize)
       .sort(sortObj)
       .exec();
-    ctx.body = Utils.responseJSON({
-      result: goods,
-      isSuccess: true,
-      code: Code.successCode
-    })
+    let goodsCount = await GoodsModule.find(sqlWhere).count();
+
+    ctx.body = {
+      ...Utils.responseJSON({
+        result: goods,
+        isSuccess: true,
+        code: Code.successCode
+      }),
+      ...Utils.repPagination({
+        page: page,
+        pageSize: pageSize,
+        total: goodsCount
+      })
+    }
   } catch (error) {
     ctx.body = Utils.responseJSON({errMsg: '查询数据出错', code: Code.dbErr});
   }

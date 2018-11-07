@@ -149,4 +149,7 @@ export default {
   .product .product-body .product-rating>i.no{
     color: #eee;
   }
+  .product-img{
+    max-height: 260px;
+  }
 </style>
