@@ -1,5 +1,6 @@
 let Utils = require('../utils/utils');
 let ShopCartModule = require('../module/shopCart/ShopCart');
+let GoodsModule = require('../module/goods/Goods');
 let Code = require('../config/errCode');
 
 /**
@@ -16,15 +17,21 @@ let getShoppingCart = async (ctx) => {
   let sqlWhere = {'userId': userId};
   
   try {
-    let shopCarts = await ShopCartModule.findOne(sqlWhere,
-      'userId goodsId number status create_time update_time');
+    let shopCarts = await ShopCartModule.find(sqlWhere);
+    // let goodsIds = [];
+    // shopCarts.forEach(item => {
+    //   goodsIds.push(item.goodsId)
+    // })
+    // let goodsDate = await GoodsModule.find({'goodsId': { '$in': goodsIds } },
+    //   'goodsType title showPrice mainPicPath')
 
     ctx.body = Utils.responseJSON({
-      result: { dataInfo: shopCarts },
+      result: shopCarts,
       isSuccess: true,
       code: Code.successCode
     })
   } catch (error) {
+    console.log(error)
     ctx.body = Utils.responseJSON({errMsg: '购物车查询出错', code: Code.dbErr});
   }
 }

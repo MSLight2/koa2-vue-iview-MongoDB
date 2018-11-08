@@ -54,15 +54,29 @@
       <div class="price-filter">
         <Slider v-model="sliderPrice" :tip-format="hideFormat" :max="sliderMax"></Slider>
         <div class="input-number price-min">
-          <input id="price-min" type="number" v-model="minPrice" value="1">
-          <span class="qty-up">+</span>
-          <span class="qty-down">-</span>
+          <input
+            id="price-min"
+            type="number"
+            @blur="minPriceChange"
+            @change="minPriceChange"
+            v-model="minPrice"
+            value="1"
+          >
+          <span class="qty-up" @click="minInc">+</span>
+          <span class="qty-down" @click="minDesc">-</span>
         </div>
         <span>-</span>
         <div class="input-number price-max">
-          <input id="price-max" type="number" v-model="sliderPrice" value="1">
-          <span class="qty-up">+</span>
-          <span class="qty-down">-</span>
+          <input
+            id="price-max"
+            type="number"
+            @blur="maxPriceChange"
+            @change="maxPriceChange"
+            v-model="maxPrice"
+            value="1"
+          >
+          <span class="qty-up" @click="maxInc">+</span>
+          <span class="qty-down" @click="maxDesc">-</span>
         </div>
       </div>
     </div>
@@ -90,10 +104,12 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
       minPrice: 1,
+      maxPrice: 1,
       sliderPrice: 1,
       sliderMax: 100,
       goodsTypeCheck: []
@@ -105,6 +121,11 @@ export default {
       require: true,
       default: () => []
     }
+  },
+  computed: {
+    ...mapGetters([
+      'getStorePriceType'
+    ])
   },
   methods: {
     hideFormat () {
@@ -118,6 +139,64 @@ export default {
         name: 'detail',
         query: { id: id }
       })
+    },
+    minInc () {
+      this.minPrice += 1
+      if (this.minPrice > this.sliderMax) this.minPrice = this.sliderMax
+    },
+    minDesc () {
+      this.minPrice -= 1
+      if (this.minPrice < 0) this.minPrice = 0
+    },
+    maxInc () {
+      this.maxPrice += 1
+      if (this.maxPrice > this.sliderMax) this.maxPrice = this.sliderMax
+    },
+    maxDesc () {
+      this.maxPrice -= 1
+      if (this.maxPrice < this.minPrice) this.maxPrice = this.minPrice
+    },
+    minPriceChange () {
+      if (this.minPrice < 0) this.minPrice = 0
+      if (this.minPrice > this.sliderMax) this.minPrice = this.sliderMax
+    },
+    maxPriceChange () {
+      if (this.maxPrice > this.sliderMax) this.maxPrice = this.sliderMax
+      if (this.maxPrice < this.minPrice) this.maxPrice = this.minPrice
+    }
+  },
+  watch: {
+    sliderPrice () {
+      this.maxPrice = this.sliderPrice
+    },
+    maxPrice () {
+      this.sliderPrice = Number(this.maxPrice)
+    },
+    getStorePriceType () {
+      switch (this.getStorePriceType) {
+        case 0:
+          this.sliderMax = 999999
+          break
+        case 1:
+          this.sliderMax = 100
+          break
+        case 2:
+          this.sliderMax = 500
+          break
+        case 3:
+          this.sliderMax = 1000
+          break
+        case 4:
+          this.sliderMax = 5000
+          break
+        case 5:
+          this.sliderMax = 999999
+          break
+        default:
+          this.sliderMax = 999999
+          break
+      }
+      if (this.maxPrice > this.sliderMax) this.maxPrice = this.sliderMax
     }
   }
 }

@@ -2349,3 +2349,21 @@ textarea.input {
   cursor: pointer;
   margin-right: 20px;
 }
+/* empty cart */
+.empty-cart{
+  height: 400px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.empty-icon i{
+  color: #D10024;
+  font-size: 100px;
+}
+.empty-txt{
+  color: #999999;
+  margin: 10px 0;
+  font-size: 24px;
+}

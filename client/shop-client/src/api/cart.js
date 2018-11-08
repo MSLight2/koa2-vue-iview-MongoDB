@@ -15,7 +15,6 @@ export const GetCartList = (params) => {
 /**
  * 添加、编辑购物车
  * @method post
- * @param {用户id}  userId
  * @param {商品id}  goodsId
  * @param {商品数量}  goodsNum
  * @param {是否为编辑}  isEdit

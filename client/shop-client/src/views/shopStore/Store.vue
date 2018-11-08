@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 import HeaderTmpl from '@/components/header/HeaderTmpl'
 import FooterTmpl from '@/components/puppetComponent/FooterTmpl'
 import NavBar from '@/components/puppetComponent/NavBar'
@@ -88,6 +89,9 @@ export default {
     }
   },
   methods: {
+    ...mapMutations([
+      'STORE_PRICE_TYPE'
+    ]),
     fetchData () {
       let params = {
         goodsType: JSON.stringify(this.goodsTypeArr),
@@ -110,6 +114,9 @@ export default {
     // 价格/销量
     filterChange (type) {
       this.currentPage = 1
+      this.minPrice = null
+      this.maxPrice = null
+      this.resetGoodsType()
       switch (type) {
         case 0:
           this.orderType = null
@@ -131,6 +138,10 @@ export default {
     // 价格筛选
     priceChange (type) {
       this.currentPage = 1
+      this.minPrice = null
+      this.maxPrice = null
+      this.resetGoodsType()
+      this.STORE_PRICE_TYPE(type)
       switch (type) {
         case 0:
           this.filterRange = null
@@ -157,7 +168,24 @@ export default {
       this.fetchData()
     },
     sureFilter (goodsTypeArr, min, max) {
-      console.log(goodsTypeArr)
+      this.currentPage = 1
+      this.filterRange = null
+      if (goodsTypeArr.length <= 0) {
+        this.$Message.warning('请选择商品类目')
+        return
+      }
+      this.goodsTypeArr = []
+      goodsTypeArr.forEach(item => {
+        this.goodsTypeArr.push(item)
+      })
+      this.minPrice = min
+      this.maxPrice = max
+      this.fetchData()
+    },
+    resetGoodsType () {
+      this.goodsType = this.$route.query.type
+      this.goodsTypeArr = []
+      this.goodsTypeArr.push(parseInt(this.goodsType))
     },
     // 分页切换
     pageChange (page) {

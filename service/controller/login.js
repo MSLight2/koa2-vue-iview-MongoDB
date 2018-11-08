@@ -71,7 +71,7 @@ let login = async (ctx, next) => {
       && CryptoUtils.md5Encode(password) === users.password) {
       repData = Utils.responseJSON({
         result: {
-          token: jwt.sign({ userId: users['_id'] }, SecretConfig.secret, { expiresIn: '1h' })
+          token: jwt.sign({ userId: users['_id'] }, SecretConfig.secret, { expiresIn: '8h' })
         },
         isSuccess: true,
         code: Code.successCode
