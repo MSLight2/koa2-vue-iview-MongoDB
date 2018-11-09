@@ -121,7 +121,7 @@ export default {
         case 0:
           this.orderType = null
           this.sortOrder = null
-          break;
+          break
         case 1:
           // 销量
           this.orderType = 0

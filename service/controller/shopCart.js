@@ -1,6 +1,5 @@
 let Utils = require('../utils/utils');
 let ShopCartModule = require('../module/shopCart/ShopCart');
-let GoodsModule = require('../module/goods/Goods');
 let Code = require('../config/errCode');
 
 /**
@@ -17,13 +16,32 @@ let getShoppingCart = async (ctx) => {
   let sqlWhere = {'userId': userId};
   
   try {
-    let shopCarts = await ShopCartModule.find(sqlWhere);
-    // let goodsIds = [];
-    // shopCarts.forEach(item => {
-    //   goodsIds.push(item.goodsId)
-    // })
-    // let goodsDate = await GoodsModule.find({'goodsId': { '$in': goodsIds } },
-    //   'goodsType title showPrice mainPicPath')
+    // 数据库关联查询
+    let shopCarts = await ShopCartModule.aggregate([
+      {
+        $match: sqlWhere
+      },
+      {
+        $lookup:
+          {
+            from: "goods",
+            localField: "goodsId",
+            foreignField: "goodsId",
+            as: "goodsId_docs"
+          }
+      },
+      // 查询结果不显示的项
+      {
+        $project:
+          {
+            _id: 0,
+            'goodsId_docs._id': 0,
+            'goodsId_docs.discountPrice': 0,
+            'goodsId_docs.originalPrice': 0,
+            'goodsId_docs.sold': 0
+          }
+      }   
+    ]).exec();
 
     ctx.body = Utils.responseJSON({
       result: shopCarts,
@@ -31,7 +49,6 @@ let getShoppingCart = async (ctx) => {
       code: Code.successCode
     })
   } catch (error) {
-    console.log(error)
     ctx.body = Utils.responseJSON({errMsg: '购物车查询出错', code: Code.dbErr});
   }
 }

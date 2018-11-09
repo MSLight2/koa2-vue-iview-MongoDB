@@ -51,7 +51,8 @@
 export default {
   data () {
     return {
-      modalShow: false
+      modalShow: false,
+      closeVal: ''
     }
   },
   props: {
@@ -102,10 +103,14 @@ export default {
   methods: {
     close (val) {
       this.modalShow = false
-      this.$emit('close', val)
+      this.closeVal = val
     },
     showStatus (val) {
-      if (!val) this.$emit('close', val)
+      if (!val) {
+        this.$emit('close', this.closeVal)
+      } else {
+        this.closeVal = 'cancel'
+      }
     }
   },
   watch: {

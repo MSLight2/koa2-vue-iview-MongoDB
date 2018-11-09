@@ -2262,8 +2262,8 @@ textarea.input {
 }
 
 .cli-img-img{
-  height: 150px;
-  width: 150px;
+  height: 130px;
+  width: 130px;
   background: #FFF;
 }
 
@@ -2272,7 +2272,7 @@ textarea.input {
   width: 100%;
 }
 
-.cli-price{font-weight: 600;}
+.cli-price{font-weight: 600; font-size: 16px;}
 
 .cli-qty{
   display: flex;
@@ -2311,6 +2311,7 @@ textarea.input {
 .cli-total{
   color: #D10024;
   font-weight: 600;
+  font-size: 18px;
 }
 
 /* cart bottom */

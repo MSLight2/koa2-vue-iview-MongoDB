@@ -1,7 +1,6 @@
 <template>
   <div>
     <header-tmpl></header-tmpl>
-    <nav-bar></nav-bar>
     <bread-crumb :titles="breadCrumbTitles"></bread-crumb>
     <div class="section">
       <div class="container">

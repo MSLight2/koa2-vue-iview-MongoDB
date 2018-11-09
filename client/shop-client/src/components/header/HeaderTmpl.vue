@@ -126,10 +126,10 @@ export default {
       this.cartListShow = !this.cartListShow
     },
     checkCart () {
-      this.$router.push({ name: 'checkout' })
+      this.$router.replace({ name: 'cart' })
     },
     buyNow () {
-      this.$router.push({ name: 'cart' })
+      this.$router.replace({ name: 'checkout' })
     },
     forbitSubmit (e) {
       e.preventDefault()
