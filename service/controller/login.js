@@ -117,7 +117,7 @@ let regist = async (ctx) => {
     // 注册
     let Users = new UsersModule({
       name: nickName,
-      age: '',
+      age: 0,
       sex: -1,
       email: registType === 'email' ? userName : '',
       address: '',
