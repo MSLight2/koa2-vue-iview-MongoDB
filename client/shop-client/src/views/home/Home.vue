@@ -120,7 +120,7 @@ export default {
         this.userInfoData = res.result.dataInfo
         console.log(res)
       }).catch(() => {
-        this.$Message.error('服务器不想理你，请稍后重试')
+        this.$Message.error('服务器休息中，请稍后重试')
       })
     },
     // 通过类目获取商品数

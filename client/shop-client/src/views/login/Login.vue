@@ -31,6 +31,7 @@
             :type="[pwdIconOpen ? 'text' : 'password']"
             maxlength="30"
             placeholder="密码"
+            @change="pwdChange"
             @blur="inputBlur">
           <i
             class="login-icon iconfont icon-password-view"
@@ -68,6 +69,7 @@
 <script>
 import JellyCanvas from '@/components/puppetComponent/JellyCanvas'
 import LoginUtils from '@/utils/login'
+import MD5 from 'js-md5'
 import * as Api from '@/api/login'
 
 export default {
@@ -87,13 +89,19 @@ export default {
   },
   mounted () {
     this.inputUserName = LoginUtils.getName()
-    this.inputPassword = LoginUtils.getPwd()
+    if (LoginUtils.getPwd()) {
+      this.reminedPwdChenck = true
+      this.inputPassword = LoginUtils.getPwd()
+    }
   },
   methods: {
     fetchLogin () {
       let postData = {
         userName: this.inputUserName,
         password: this.inputPassword
+      }
+      if (!LoginUtils.getPwd()) {
+        postData.password = MD5.hex(this.inputPassword)
       }
       this.loading = true
       Api.UserLogin(postData).then(res => {
@@ -102,10 +110,15 @@ export default {
           this.$Message.error(res.errMsg)
           return
         }
+        if (this.reminedPwdChenck) {
+          LoginUtils.setPwd(MD5.hex(this.inputPassword))
+        } else {
+          LoginUtils.setPwd('')
+        }
         this.$router.replace('/')
       }).catch(() => {
         this.loading = false
-        this.$Message.error('连接出错，请稍后重试')
+        this.$Message.error('服务器休息中，请稍后重试')
       })
     },
     // 切换密码显示
@@ -132,11 +145,6 @@ export default {
       if (!this.inputUserName || !this.inputPassword) return
       if (this.userErrorMsg || this.pwdErrorMsg) return
       LoginUtils.setName(this.inputUserName)
-      if (this.reminedPwdChenck) {
-        LoginUtils.setPwd(this.inputPassword)
-      } else {
-        LoginUtils.setPwd('')
-      }
       this.fetchLogin()
     },
     goReset () {
@@ -144,6 +152,9 @@ export default {
     },
     goRegister () {
       this.$router.push('register')
+    },
+    pwdChange () {
+      LoginUtils.setPwd('')
     }
   }
 }

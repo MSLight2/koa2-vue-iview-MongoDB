@@ -4,7 +4,7 @@
     <div class="regist-cnt">
       <div class="regist-form">
         <Form
-          ref="registFormValidate"
+          ref="registFormValidates"
           :model="registFormValidate"
           :rules="ruleValidate"
           :label-width="80">
@@ -40,7 +40,6 @@
             </FormItem>
         </Form>
         <div class="regist-btn">
-          <div class="" @click="registerAndReset"></div>
           <Button
             @click="registerAndReset"
             class="rg-btn"
@@ -56,6 +55,8 @@
 
 <script>
 import Utils from '@/utils/utils'
+import * as Api from '@/api/login'
+import MD5 from 'js-md5'
 
 export default {
   data () {
@@ -121,14 +122,71 @@ export default {
     },
     // 注册或重置
     registerAndReset () {
-      if (this.isRegisterRoute) {
-        // 注册
-      } else {
-        // 重置
+      this.$refs['registFormValidates'].validate(valid => {
+        if (valid) {
+          console.log(this.isRegisterRoute)
+          if (this.isRegisterRoute) {
+            // 注册
+            this.register()
+          } else {
+            // 重置
+            this.reset()
+          }
+        }
+      })
+    },
+    // 注册
+    register () {
+      let params = {
+        userName: this.registFormValidate.name,
+        nickName: this.registFormValidate.nickName,
+        password: MD5.hex(this.registFormValidate.pwd),
+        passwordAgian: MD5.hex(this.registFormValidate.pwdAgain)
       }
+      Api.UserRegist(params).then(res => {
+        if (res.errMsg) {
+          this.$Message.error(res.errMsg)
+        } else {
+          this.$Message.success('注册成功')
+          setTimeout(() => {
+            this.$router.replace({ name: 'login' })
+          }, 2000)
+        }
+      }).catch(() => {
+        this.$Message.error('服务器休息中，请稍后重试')
+      })
+    },
+    // 重置密码
+    reset () {
+      let params = {
+        userName: this.registFormValidate.name,
+        password: MD5.hex(this.registFormValidate.pwd),
+        passwordAgian: MD5.hex(this.registFormValidate.pwdAgain)
+      }
+      Api.UserResetPassword(params).then(res => {
+        if (res.errMsg) {
+          this.$Message.error(res.errMsg)
+        } else {
+          this.$Message.success('密码已重置')
+          setTimeout(() => {
+            this.$router.replace({ name: 'login' })
+          }, 2000)
+        }
+      }).catch(() => {
+        this.$Message.error('服务器休息中，请稍后重试')
+      })
     },
     goLogin () {
       this.$router.replace('login')
+    }
+  },
+  watch: {
+    '$route': () => {
+      if (this.$route.name === 'register') {
+        this.isRegisterRoute = true
+      } else {
+        this.isRegisterRoute = false
+      }
     }
   }
 }
