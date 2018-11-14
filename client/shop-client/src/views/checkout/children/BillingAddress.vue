@@ -4,22 +4,62 @@
       <div class="section-title">
         <h3 class="title">收货地址</h3>
       </div>
-      <div class="form-group">
-        <input class="input" type="text" name="first-name" placeholder="姓名、昵称" v-model="orderName">
-      </div>
-      <div class="form-group">
-        <input class="input" type="email" name="email" placeholder="邮箱" v-model="orderEmail">
-      </div>
-      <div class="form-group">
-        <input class="input" type="text" name="address" placeholder="详细地址" v-model="orderAddress">
-      </div>
-      <div class="form-group">
-        <input class="input" type="text" name="city" placeholder="省-市" v-model="orderCity">
-      </div>
-      <div class="form-group">
-        <input class="input" type="tel" name="tel" placeholder="手机号码" v-model="orderPhone">
-      </div>
-      <div class="form-group">
+      <Form
+        ref="addressForms"
+        :model="addressForm"
+        :rules="addressFormRule">
+          <div class="form-group">
+            <Input
+              v-model="addressForm.orderName"
+              placeholder="姓名、昵称"
+              size="large"
+              :maxlength="30"
+            />
+          </div>
+          <div class="form-group">
+            <Input
+              type="email"
+              v-model="addressForm.orderEmail"
+              placeholder="邮箱"
+              size="large"
+              :maxlength="30"
+            />
+          </div>
+          <div class="form-group">
+            <Input
+              type="text"
+              v-model="addressForm.orderAddress"
+              placeholder="详细地址"
+              size="large"
+              :maxlength="40"
+            />
+          </div>
+          <div class="form-group">
+            <Input
+              type="text"
+              v-model="addressForm.orderCity"
+              placeholder="省-市"
+              size="large"
+              :maxlength="30"
+            />
+          </div>
+          <div class="form-group">
+            <Input
+              type="text"
+              v-model="addressForm.orderPhone"
+              placeholder="手机号码"
+              size="large"
+              :maxlength="30"
+            />
+          </div>
+          <div class="form-group">
+            <div class="input-checkbox">
+              <input type="checkbox" id="create-account" value="addAccount" v-model="orderCreateCheck">
+              <label for="create-account"><span></span>设为默认地址?</label>
+            </div>
+          </div>
+      </Form>
+      <!--<div class="form-group">
         <div class="input-checkbox">
           <input type="checkbox" id="create-account" value="addAccount" v-model="orderCreateCheck">
           <label for="create-account">
@@ -31,9 +71,9 @@
             <input class="input" type="password" name="password" placeholder="输入你的密码" v-model="orderCreatePwd">
           </div>
         </div>
-      </div>
+      </div>-->
     </div>
-    <div class="shiping-details">
+    <div class="shiping-details" v-if="addressList.length > 0">
       <div class="section-title">
         <h3 class="title">其它搜货地址</h3>
       </div>
@@ -44,21 +84,55 @@
           是否新增其它搜货地址?
         </label>
         <div class="caption">
-          <div class="form-group">
-            <input class="input" type="text" name="first-name" placeholder="姓名、昵称" v-model="addOrderName">
-          </div>
-          <div class="form-group">
-            <input class="input" type="email" name="email" placeholder="邮箱" v-model="addOrderEmail">
-          </div>
-          <div class="form-group">
-            <input class="input" type="text" name="address" placeholder="详细地址" v-model="addOrderAddress">
-          </div>
-          <div class="form-group">
-            <input class="input" type="text" name="city" placeholder="省-市" v-model="addOrderCity">
-          </div>
-          <div class="form-group">
-            <input class="input" type="tel" name="tel" placeholder="手机号码" v-model="addOrderPhone">
-          </div>
+          <Form
+            ref="otherAddressForms"
+            :model="otherAddressForm"
+            :rules="otheAddressFormRule">
+              <div class="form-group">
+                <Input
+                  v-model="otherAddressForm.addOrderName"
+                  placeholder="姓名、昵称"
+                  size="large"
+                  :maxlength="30"
+                />
+              </div>
+              <div class="form-group">
+                <Input
+                  type="email"
+                  v-model="otherAddressForm.addOrderEmail"
+                  placeholder="邮箱"
+                  size="large"
+                  :maxlength="30"
+                />
+              </div>
+              <div class="form-group">
+                <Input
+                  type="text"
+                  v-model="otherAddressForm.addOrderAddress"
+                  placeholder="详细地址"
+                  size="large"
+                  :maxlength="40"
+                />
+              </div>
+              <div class="form-group">
+                <Input
+                  type="text"
+                  v-model="otherAddressForm.addOrderCity"
+                  placeholder="省-市"
+                  size="large"
+                  :maxlength="30"
+                />
+              </div>
+              <div class="form-group">
+                <Input
+                  type="text"
+                  v-model="otherAddressForm.addOrderPhone"
+                  placeholder="手机号码"
+                  size="large"
+                  :maxlength="30"
+                />
+              </div>
+          </Form>
         </div>
       </div>
     </div>
@@ -72,23 +146,50 @@
 export default {
   data () {
     return {
-      orderName: '',
-      orderEmail: '',
-      orderAddress: '',
-      orderCity: '',
-      orderPhone: '',
       orderCreateCheck: [],
       orderCreatePwd: '',
       addOrderCheck: [],
-      addOrderName: '',
-      addOrderEmail: '',
-      addOrderAddress: '',
-      addOrderCity: '',
-      addOrderPhone: '',
-      orderRemarks: ''
+      orderRemarks: '',
+      addressForm: {
+        orderName: '',
+        orderEmail: '',
+        orderAddress: '',
+        orderCity: '',
+        orderPhone: ''
+      },
+      addressFormRule: {
+      },
+      otherAddressForm: {
+        addOrderName: '',
+        addOrderEmail: '',
+        addOrderAddress: '',
+        addOrderCity: '',
+        addOrderPhone: ''
+      },
+      otheAddressFormRule: {
+      }
+    }
+  },
+  props: {
+    addressList: {
+      type: Array,
+      require: true,
+      default: () => []
     }
   },
   methods: {
+  },
+  watch: {
+    addressList () {
+      if (this.addressList.length > 0) {
+        let dataItem = this.addressList[0]
+        this.addressForm.orderName = dataItem.nickName
+        this.addressForm.orderEmail = dataItem.email
+        this.addressForm.orderAddress = dataItem.detailAddress
+        this.addressForm.orderCity = dataItem.city
+        this.addressForm.orderPhone = dataItem.phone
+      }
+    }
   }
 }
 </script>

@@ -6,6 +6,7 @@ let Code = require('../config/errCode');
  * 获取用户收货地址
  * @method get
  * @param {用户id} userId
+ * @param {是否取默认地址} isDefault
  */
 let getAddressList = async ctx => {
   let validateTokenResult = Utils.validateToken(ctx);
@@ -13,8 +14,14 @@ let getAddressList = async ctx => {
   let {userId = ''} = validateTokenResult;
   if (Utils.isEmpty(userId)) return ctx.body = Utils.responseJSON({errMsg: '用户id是必须的，请传入token'});
 
+  let {isDefault = null} = ctx.query
+
   try {
-    let addresses = await AddressModule.find({'userId': userId}, null);
+    let sqlWhere = {'userId': userId}
+    if (isDefault) {
+      sqlWhere['isDefault'] = false
+    }
+    let addresses = await AddressModule.find(sqlWhere);
     ctx.body = Utils.responseJSON({
       result: addresses,
       isSuccess: true,
@@ -29,6 +36,7 @@ let getAddressList = async ctx => {
  * 添加收货地址
  * @method post
  * @param {用户id} userId
+ * @param {昵称} nickName
  * @param {邮箱地址} email
  * @param {详细地址} detailAddress
  * @param {城市} city
@@ -42,6 +50,7 @@ let addAddress = async ctx => {
   if (Utils.isEmpty(userId)) return ctx.body = Utils.responseJSON({errMsg: '用户id是必须的，请传入token'});
 
   let {
+    nickName = '',
     email = '',
     detailAddress = '',
     city = '',
@@ -56,6 +65,7 @@ let addAddress = async ctx => {
   try {
     let address = new AddressModule({
       userId: userId,
+      nickName: nickName,
       email: email,
       detailAddress: detailAddress,
       city: city,
@@ -160,7 +170,6 @@ let deleteAddress = async ctx => {
       code: Code.successCode
     })
   } catch (error) {
-    console.log(error)
     ctx.body = Utils.responseJSON({errMsg: '删除数据出错', code: Code.dbErr});
   }
 }

@@ -31,6 +31,7 @@ Vue.component('Modal', Modal)
 Vue.component('Page', Page)
 Vue.component('Slider', Slider)
 Vue.prototype.$Message = Message
+Vue.prototype.$Modal = Modal
 
 window.jQuery = window.$ = jQuery
 Vue.use(VueAwesomeSwiper)

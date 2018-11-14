@@ -1,4 +1,5 @@
 let CheckoutModule = require('../module/checkout/Checkout');
+let ShopCartModule = require('../module/shopCart/ShopCart');
 let Utils = require('../utils/utils');
 let Code = require('../config/errCode');
 
@@ -14,8 +15,33 @@ let getCheckoutList = async ctx => {
   if (Utils.isEmpty(userId)) return ctx.body = Utils.responseJSON({errMsg: '用户id是必须的，请传入token'});
 
   try {
-    let checkouts = await CheckoutModule.find({'userId': userId}, null);
+    let checkouts = await CheckoutModule.aggregate([
+      {
+        $match: {'userId': userId}
+      },
+      {
+        $lookup:
+          {
+            from: "goods",
+            localField: "goodsId",
+            foreignField: "goodsId",
+            as: "goodsId_docs"
+          }
+      },
+      // 查询结果不显示的项
+      {
+        $project:
+          {
+            _id: 0,
+            'goodsId_docs._id': 0,
+            'goodsId_docs.discountPrice': 0,
+            'goodsId_docs.originalPrice': 0,
+            'goodsId_docs.sold': 0
+          }
+      }   
+    ]).exec();
     if (!checkouts) return ctx.body = Utils.responseJSON({errMsg: '此用户无订单数据'});
+
     ctx.body = Utils.responseJSON({
       result: checkouts,
       isSuccess: true,
@@ -31,9 +57,6 @@ let getCheckoutList = async ctx => {
  * @method post
  * @param {用户id} userId
  * @param {商品购物列表} goodsCartList
- * @param {商品id} goodsId
- * @param {商品数} goodsNum
- * @param {商品备注} goodsRemark
  */
 let addCheckout = async ctx => {
   let validateTokenResult = Utils.validateToken(ctx);
@@ -42,32 +65,19 @@ let addCheckout = async ctx => {
   if (Utils.isEmpty(userId)) return ctx.body = Utils.responseJSON({errMsg: '用户id是必须的，请传入token'});
 
   try {
-    // let {goodsId = '', goodsNum = 1, goodsRemark = ''} = ctx.request.body;
-    // if (!goodsId) return ctx.body = Utils.responseJSON({errMsg: '商品id是必须的'});
-
-    // let checkout = await CheckoutModule.findOne({'userId': userId, 'goodsId': goodsId});
-    // if (checkout) return ctx.body = Utils.responseJSON({errMsg: '已存在该订单，不可重复下单'});
-
-    // let newCheckout = new CheckoutModule({
-    //   userId: userId,
-    //   goodsId: goodsId,
-    //   goodsNum: goodsNum,
-    //   createTime: new Date().getTime(),
-    //   payTime: null,
-    //   tradeStatus: 0,
-    //   payStatus: 0,
-    //   orderNumber: Utils.createUniqueOrderNumber(goodsId),
-    //   remarks: goodsRemark
-    // })
-    // await newCheckout.save();
-
     let {goodsCartList = '[]'} = ctx.request.body;
     goodsCartList = JSON.parse(goodsCartList);
     if (goodsCartList.length <= 0) return ctx.body = Utils.responseJSON({errMsg: '商品数不能为空'});
     if (goodsCartList.some(i => i.goodsId === '' || i.goodsId === null )) {
       return ctx.body = Utils.responseJSON({errMsg: '商品id不能为空'});
     }
-    if (goodsCartList.some(i => i.goodsNum <= 0)) return ctx.body = Utils.responseJSON({errMsg: '商品数不能小于1件'});
+    if (goodsCartList.some(i => i.goodsNum <= 0)) {
+      return ctx.body = Utils.responseJSON({errMsg: '商品数不能小于1件'});
+    }
+
+    let goodsIdArr = goodsCartList.map(item => {return item.goodsId})
+    let checkout = await CheckoutModule.findOne({'userId': userId, 'goodsId': {'$in': goodsIdArr}});
+    if (checkout) return ctx.body = Utils.responseJSON({errMsg: '包含已存在的订单，不可重复下单'});
 
     let innerGoodsCartList = []
     goodsCartList.forEach(item => {
@@ -86,10 +96,14 @@ let addCheckout = async ctx => {
       dataItem.goodsId = item.goodsId
       dataItem.goodsNum = item.goodsNum
       dataItem.createTime = new Date().getTime()
+      dataItem.orderNumber = Utils.createUniqueOrderNumber(item.goodsId)
       
       innerGoodsCartList.push(dataItem)
     })
-    await GoodsModule.insertMany(innerGoodsCartList)
+    await CheckoutModule.insertMany(innerGoodsCartList)
+
+    // 生成订单成功，清除空应用户的购物车
+    await ShopCartModule.deleteMany({'userId': userId})
 
     ctx.body = Utils.responseJSON({
       result: '已生成订单',

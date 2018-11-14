@@ -12,6 +12,7 @@
               <Input
                 v-model="registFormValidate.name"
                 placeholder="手机号/邮箱"
+                size="large"
                 :maxlength="40"
               />
             </FormItem>
@@ -19,6 +20,7 @@
               <Input
                 v-model="registFormValidate.nickName"
                 placeholder="昵称"
+                size="large"
                 :maxlength="20"
               />
             </FormItem>
@@ -27,6 +29,7 @@
                 type="password"
                 v-model="registFormValidate.pwd"
                 placeholder="密码"
+                size="large"
                 :maxlength="20"
               />
             </FormItem>
@@ -35,6 +38,7 @@
                 type="password"
                 v-model="registFormValidate.pwdAgain"
                 placeholder="确认密码"
+                size="large"
                 :maxlength="20"
               />
             </FormItem>

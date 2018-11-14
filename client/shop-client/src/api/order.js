@@ -15,9 +15,7 @@ export const GetCheckoutList = (params) => {
 /**
  * 生成订单
  * @method post
- * @param {商品id} goodsId
- * @param {商品数} goodsNum
- * @param {商品备注} goodsRemark
+ * @param {商品购物列表} goodsCartList
  */
 export const AddCheckout = (data) => {
   return axios({

@@ -9,13 +9,9 @@
         <div><strong>金额</strong></div>
       </div>
       <div class="order-products">
-        <div class="order-col">
-          <div>1x Product Name Goes Here</div>
-          <div>$980.00</div>
-        </div>
-        <div class="order-col">
-          <div>2x Product Name Goes Here</div>
-          <div>$980.00</div>
+        <div class="order-col" v-for="(item, index) in dataList" :key="index">
+          <div class="order-title"><strong>{{item.goodsNum}}</strong>x {{item.goodsId_docs[0].title}}</div>
+          <div>￥{{item.goodsId_docs[0].showPrice}}</div>
         </div>
       </div>
       <div class="order-col">
@@ -24,46 +20,28 @@
       </div>
       <div class="order-col">
         <div><strong>总金额</strong></div>
-        <div><strong class="order-total">$2940.00</strong></div>
+        <div><strong class="order-total">￥{{totalPayPrice | formatPrice}}</strong></div>
       </div>
     </div>
     <div class="payment-method">
       <div class="input-radio">
-        <input type="radio" name="payment" id="payment-1" value="1" v-model="typePick">
-        <label for="payment-1">
-          <span></span>
-          网银
-        </label>
-        <div class="caption">
-          <p>支持各大银行网银支付</p>
-        </div>
+        <input type="radio" name="payment" id="payment-2" value="1" v-model="typePick">
+        <label for="payment-2"><span></span>微信</label>
       </div>
       <div class="input-radio">
-        <input type="radio" name="payment" id="payment-2" value="2" v-model="typePick">
-        <label for="payment-2">
-          <span></span>
-          信用卡
-        </label>
-        <div class="caption">
-          <p>支持中国银行、工商银行、农商银行、建设银行、广发银行</p>
-        </div>
+        <input type="radio" name="payment" id="payment-3" value="2" v-model="typePick">
+        <label for="payment-3"><span></span>支付宝</label>
       </div>
       <div class="input-radio">
-        <input type="radio" name="payment" id="payment-3" value="3" v-model="typePick">
-        <label for="payment-3">
-          <span></span>
-          快捷支付
-        </label>
-        <div class="caption">
-          <p>支付宝、微信、QQ钱包</p>
-        </div>
+        <input type="radio" name="payment" id="payment-1" value="3" v-model="typePick">
+        <label for="payment-1"><span></span>网银</label>
+        <div class="caption"><p>支持各大银行网银支付</p></div>
       </div>
     </div>
     <div class="input-checkbox">
       <input type="checkbox" id="terms" value="agree" v-model="userIsAgren">
       <label for="terms">
-        <span></span>
-        我已经阅读并接受<a href="#">条款</a>
+        <span></span>我已经阅读并接受<a href="javascript:;" @click="showRule">条款</a>
       </label>
     </div>
     <a href="javascript:;" class="primary-btn order-submit" @click="payNow">立即支付</a>
@@ -79,16 +57,42 @@ export default {
     }
   },
   props: {
-    dataInfo: {
-      type: Object,
+    dataList: {
+      type: Array,
       require: true,
-      default: () => {}
+      default: () => []
+    }
+  },
+  computed: {
+    totalPayPrice () {
+      let total = 0
+      this.dataList.forEach(item => {
+        total = total + (Number(item.goodsId_docs[0].showPrice) * item.goodsNum)
+      })
+      return total
     }
   },
   methods: {
     payNow () {
       this.$emit('payNow', this.typePick, this.userIsAgren)
+    },
+    // 条款
+    showRule () {
+      this.$Modal.confirm({
+        title: '条款说明',
+        okText: '知道啦',
+        content: '<p>1、法律怎么样你就怎么来，不能违法乱纪。</p><p>2、你自己造成的我一概不负责。</p><p>3、我没干啥，要有事一定是你瞎搞。</p><p>4、最后：少年！我劝你善良╭(╯^╰)╮</p>'
+      })
     }
   }
 }
 </script>
+
+<style scoped>
+  .order-title{
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+</style>

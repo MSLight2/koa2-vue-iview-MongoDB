@@ -211,15 +211,24 @@ export default {
         this.$Message.error('请登录后在试！')
         return
       }
-      let params = {
-        goodsId: '',
-        goodsNum: ''
-      }
+      let postArr = []
+      this.cartDataList.forEach((item, index) => {
+        let postItem = {
+          goodsId: '',
+          goodsNum: 0
+        }
+        postItem.goodsId = item.goodsId
+        postItem.goodsNum = this.cartCount[index].count
+        postArr.push(postItem)
+      })
       this.submitLoading = true
-      OrderApi.AddCheckout(params).then(res => {
-        console.log(res)
+      OrderApi.AddCheckout({ goodsCartList: JSON.stringify(postArr) }).then(res => {
         this.submitLoading = false
-        this.$router.push({ name: 'checkout' })
+        if (res.isSuccess) {
+          this.$router.replace({ name: 'checkout' })
+        } else {
+          this.$Message.error(res.errMsg)
+        }
       }).catch(err => {
         this.submitLoading = false
         if (err.code >= 1000 & err.code <= 1002) {
