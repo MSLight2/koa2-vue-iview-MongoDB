@@ -153,7 +153,7 @@ export default {
         } else {
           this.$Message.success('注册成功')
           setTimeout(() => {
-            this.$router.replace({ name: 'login' })
+            this.$router.go(-1)
           }, 2000)
         }
       }).catch(() => {
@@ -173,7 +173,7 @@ export default {
         } else {
           this.$Message.success('密码已重置')
           setTimeout(() => {
-            this.$router.replace({ name: 'login' })
+            this.$router.go(-1)
           }, 2000)
         }
       }).catch(() => {
@@ -181,7 +181,7 @@ export default {
       })
     },
     goLogin () {
-      this.$router.replace('login')
+      this.$router.go(-1)
     }
   },
   watch: {
