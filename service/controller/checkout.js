@@ -143,8 +143,27 @@ let deleteCheckout = async ctx => {
   }
 }
 
+/**
+ * 修改订状态
+ * @method post
+ * @param {用户id} userId
+ * @param {商品id} goodsId
+ */
+let editCheckoutStutas = async ctx => {
+}
+
+/**
+ * 获取支付订单状态
+ * @method get
+ * @param {用户id} userId
+ */
+let getCheckoutStutas = async ctx => {
+}
+
 module.exports = {
   getCheckoutList: ['GET', '/api/getCheckoutList' , getCheckoutList],
   addCheckout: ['POST', '/api/addCheckout' , addCheckout],
-  deleteCheckout: ['POST', '/api/deleteCheckout' , deleteCheckout]
+  deleteCheckout: ['POST', '/api/deleteCheckout' , deleteCheckout],
+  deleteCheckout: ['POST', '/api/editCheckoutStutas' , editCheckoutStutas],
+  deleteCheckout: ['GET', '/api/getCheckoutStutas' , getCheckoutStutas]
 }
