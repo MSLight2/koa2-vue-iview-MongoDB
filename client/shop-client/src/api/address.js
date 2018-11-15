@@ -15,6 +15,7 @@ export const GetAddress = (params) => {
 /**
  * 添加用户收货地址
  * @method post
+ * @param {昵称} nickName
  * @param {邮箱地址} email
  * @param {详细地址} detailAddress
  * @param {城市} city
@@ -33,6 +34,7 @@ export const AddAddress = (data) => {
  * 编辑用户收货地址
  * @method post
  * @param {地址id} addressId
+ * @param {昵称} nickName
  * @param {邮箱地址} email
  * @param {详细地址} detailAddress
  * @param {城市} city

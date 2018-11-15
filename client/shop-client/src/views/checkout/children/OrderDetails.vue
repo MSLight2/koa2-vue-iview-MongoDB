@@ -74,6 +74,15 @@ export default {
   },
   methods: {
     payNow () {
+      if (this.dataList.length <= 0) return
+      if (this.typePick === '') {
+        this.$Message.warning('请选择支付方式')
+        return
+      }
+      if (this.userIsAgren.length <= 0) {
+        this.$Message.warning('你是否阅读并接受【条款】？')
+        return
+      }
       this.$emit('payNow', this.typePick, this.userIsAgren)
     },
     // 条款

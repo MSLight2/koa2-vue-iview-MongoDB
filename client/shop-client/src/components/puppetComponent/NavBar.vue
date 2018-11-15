@@ -32,7 +32,14 @@ export default {
   },
   methods: {
     categotyChange (index) {
-      this.$emit('categotyChange', index)
+      if (index) {
+        this.$router.push({
+          name: 'store',
+          query: { type: index }
+        })
+      } else {
+       this.$router.replace('/') 
+      }
     }
   }
 }

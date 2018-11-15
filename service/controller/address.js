@@ -19,9 +19,12 @@ let getAddressList = async ctx => {
   try {
     let sqlWhere = {'userId': userId}
     if (isDefault) {
-      sqlWhere['isDefault'] = false
+      sqlWhere['isDefault'] = true
     }
     let addresses = await AddressModule.find(sqlWhere);
+    if (addresses.length <= 0) {
+      addresses = await AddressModule.find({'userId': userId});
+    }
     ctx.body = Utils.responseJSON({
       result: addresses,
       isSuccess: true,
@@ -63,6 +66,8 @@ let addAddress = async ctx => {
   if (!detailAddress || !city) return ctx.body = Utils.responseJSON({errMsg: '城市或详细地址不能为空'});
 
   try {
+    let addresses = await AddressModule.find({'userId': userId});
+    if (addresses.length >= 5) return ctx.body = Utils.responseJSON({errMsg: '每人最多添加5条收货地址'});
     let address = new AddressModule({
       userId: userId,
       nickName: nickName,
@@ -88,6 +93,7 @@ let addAddress = async ctx => {
  * @method post
  * @param {用户id} userId
  * @param {地址id} addressId
+ * @param {昵称} nickName
  * @param {邮箱地址} email
  * @param {详细地址} detailAddress
  * @param {城市} city
@@ -101,6 +107,7 @@ let editAddress = async ctx => {
   if (Utils.isEmpty(userId)) return ctx.body = Utils.responseJSON({errMsg: '用户id是必须的，请传入token'});
 
   let {
+    nickName = '',
     email = '',
     addressId = '',
     detailAddress = '',
@@ -124,20 +131,23 @@ let editAddress = async ctx => {
       return ctx.body = Utils.responseJSON({errMsg: '手机号码格式不正确'});
     }
   }
+  if (nickName) updateOption['nickName'] = nickName;
   if (city) updateOption['city'] = city;
   if (detailAddress) updateOption['detailAddress'] = detailAddress;
   
   try {
     // 设置为默认地址的另外处理
     if (isDefault) {
-      await AddressModule.updateMany({'isDefault': true}, {$set: {'isDefault': false}}).exec();
-      updateOption['isDefault'] = isDefault;
+      await AddressModule.findOneAndUpdate({'isDefault': true}, {$set: {'isDefault': false}}).exec();
+      updateOption['isDefault'] = true;
+    } else {
+      updateOption['isDefault'] = false;
     }
 
     let doc = await AddressModule.findByIdAndUpdate({'_id': addressId}, {$set: updateOption});
     if (!doc) return ctx.body = Utils.responseJSON({errMsg: '改地址不存在'});
     ctx.body = Utils.responseJSON({
-      result: '地址已更新',
+      result: '收货地址已更新',
       isSuccess: true,
       code: Code.successCode
     })

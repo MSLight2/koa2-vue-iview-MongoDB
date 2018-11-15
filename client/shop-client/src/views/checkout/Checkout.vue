@@ -7,7 +7,8 @@
         <div class="row">
           <!-- Billing Details -->
           <billing-address
-            :address-list="addressData">
+            :address-list="addressData"
+            @reload="fetchAddress">
           </billing-address>
           <!-- Order Details -->
           <order-details

@@ -49,7 +49,8 @@
                         <span>{{averageStar}}</span>
                         <div class="rating-stars">
                           <i class="fa fa-star" v-for="item in averageStar" :key="item"></i>
-                          <i class="fa fa-star-o" v-for="i in (5 - averageStar)" :key="i"></i>
+                          <!-- eslint-disable-next-line -->
+                          <i class="fa fa-star-o" v-for="i in (5 - averageStar)"></i>
                         </div>
                       </div>
                       <ul class="rating">
@@ -131,7 +132,8 @@
                             <p class="date">{{item.createTime | formatDate}}</p>
                             <div class="review-rating">
                               <i class="fa fa-star" v-for="item in item.rate" :key="item"></i>
-                              <i class="fa fa-star-o empty" v-for="i in (5 - item.rate)" :key="i"></i>
+                              <!-- eslint-disable-next-line -->
+                              <i class="fa fa-star-o empty" v-for="i in (5 - item.rate)"></i>
                             </div>
                           </div>
                           <div class="review-body">

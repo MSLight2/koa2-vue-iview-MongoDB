@@ -128,7 +128,6 @@ export default {
     registerAndReset () {
       this.$refs['registFormValidates'].validate(valid => {
         if (valid) {
-          console.log(this.isRegisterRoute)
           if (this.isRegisterRoute) {
             // 注册
             this.register()
