@@ -148,7 +148,7 @@ export default {
       }
       Api.UserRegist(params).then(res => {
         if (res.errMsg) {
-          this.$Message.error(res.errMsg)
+          this.$Message.warning(res.errMsg)
         } else {
           this.$Message.success('注册成功')
           setTimeout(() => {
@@ -168,7 +168,7 @@ export default {
       }
       Api.UserResetPassword(params).then(res => {
         if (res.errMsg) {
-          this.$Message.error(res.errMsg)
+          this.$Message.warning(res.errMsg)
         } else {
           this.$Message.success('密码已重置')
           setTimeout(() => {

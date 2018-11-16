@@ -16,5 +16,7 @@ module.exports = {
   // 一般验证错误码
   validateErrCode: 44,
   // 操作数据库出错
-  dbErr: 50
+  dbErr: 50,
+  // 支付失败
+  payFail: 60
 }

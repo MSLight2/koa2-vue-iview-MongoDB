@@ -17,7 +17,7 @@ let getCheckoutList = async ctx => {
   try {
     let checkouts = await CheckoutModule.aggregate([
       {
-        $match: {'userId': userId}
+        $match: {'userId': userId, 'payStatus': {'$lte': 1}}
       },
       {
         $lookup:
@@ -68,7 +68,7 @@ let addCheckout = async ctx => {
     let {goodsCartList = '[]'} = ctx.request.body;
     goodsCartList = JSON.parse(goodsCartList);
     if (goodsCartList.length <= 0) return ctx.body = Utils.responseJSON({errMsg: '商品数不能为空'});
-    if (goodsCartList.some(i => i.goodsId === '' || i.goodsId === null )) {
+    if (goodsCartList.some(i => i.goodsId === '' || i.goodsId === null)) {
       return ctx.body = Utils.responseJSON({errMsg: '商品id不能为空'});
     }
     if (goodsCartList.some(i => i.goodsNum <= 0)) {
@@ -76,7 +76,9 @@ let addCheckout = async ctx => {
     }
 
     let goodsIdArr = goodsCartList.map(item => {return item.goodsId})
-    let checkout = await CheckoutModule.findOne({'userId': userId, 'goodsId': {'$in': goodsIdArr}});
+    let checkout = await CheckoutModule.findOne(
+      {'userId': userId, 'goodsId': {'$in': goodsIdArr}, 'payStatus': {'$lte': 1}}
+    );
     if (checkout) return ctx.body = Utils.responseJSON({errMsg: '包含已存在的订单，不可重复下单'});
 
     let innerGoodsCartList = []
@@ -144,12 +146,45 @@ let deleteCheckout = async ctx => {
 }
 
 /**
- * 修改订状态
+ * 修改订状态（支付）
  * @method post
  * @param {用户id} userId
- * @param {商品id} goodsId
+ * @param {商品id数组} goodsIdList
+ * @param {支付金额} payPrice
  */
-let editCheckoutStutas = async ctx => {
+let editCheckoutStatus = async ctx => {
+  let validateTokenResult = Utils.validateToken(ctx);
+  if (validateTokenResult.errMsg) return ctx.body = validateTokenResult;
+  let {userId = ''} = validateTokenResult;
+  if (Utils.isEmpty(userId)) return ctx.body = Utils.responseJSON({errMsg: '用户id是必须的，请传入token'});
+
+  try {
+    let {goodsIdList = '[]', payPrice = 0} = ctx.request.body;
+    goodsIdList = JSON.parse(goodsIdList);
+    if (goodsIdList.length <= 0) return ctx.body = Utils.responseJSON({errMsg: '商品id数不能为空'});
+    if (goodsIdList.some(i => i === '' || i === null)) {
+      return ctx.body = Utils.responseJSON({errMsg: '商品id不能为空'});
+    }
+
+    let res = await CheckoutModule.updateMany(
+      {'userId': userId, 'goodsId': {'$in': goodsIdList}},
+      {
+        $set: {
+          'payStatus': 2,
+          'payTime': new Date().getTime()
+        }
+      }
+    );
+    if (res.n <= 0) return ctx.body = Utils.responseJSON({errMsg: '支付失败', code: Code.payFail});
+
+    ctx.body = Utils.responseJSON({
+      result: '成功',
+      isSuccess: true,
+      code: Code.successCode
+    })
+  } catch (error) {
+    ctx.body = Utils.responseJSON({errMsg: '修改数据出错', code: Code.dbErr});
+  }
 }
 
 /**
@@ -157,13 +192,36 @@ let editCheckoutStutas = async ctx => {
  * @method get
  * @param {用户id} userId
  */
-let getCheckoutStutas = async ctx => {
+let getCheckoutStatus = async ctx => {
+  let validateTokenResult = Utils.validateToken(ctx);
+  if (validateTokenResult.errMsg) return ctx.body = validateTokenResult;
+  let {userId = ''} = validateTokenResult;
+  if (Utils.isEmpty(userId)) return ctx.body = Utils.responseJSON({errMsg: '用户id是必须的，请传入token'});
+
+  try {
+    let statusArr = await CheckoutModule.find(
+      {'userId': userId},
+      {tradeStatus: 1, payStatus: 1, _id: 0}
+    )
+    let hasFinished = statusArr.some(item => item.payStatus <= 1)
+
+    ctx.body = {
+      hasFinished: hasFinished,
+      ...Utils.responseJSON({
+        result: statusArr,
+        isSuccess: true,
+        code: Code.successCode
+      })
+    }
+  } catch (error) {
+    ctx.body = Utils.responseJSON({errMsg: '查询数据出错', code: Code.dbErr});
+  }
 }
 
 module.exports = {
   getCheckoutList: ['GET', '/api/getCheckoutList' , getCheckoutList],
   addCheckout: ['POST', '/api/addCheckout' , addCheckout],
   deleteCheckout: ['POST', '/api/deleteCheckout' , deleteCheckout],
-  deleteCheckout: ['POST', '/api/editCheckoutStutas' , editCheckoutStutas],
-  deleteCheckout: ['GET', '/api/getCheckoutStutas' , getCheckoutStutas]
+  editCheckoutStatus: ['POST', '/api/editCheckoutStatus' , editCheckoutStatus],
+  getCheckoutStatus: ['GET', '/api/getCheckoutStatus' , getCheckoutStatus]
 }

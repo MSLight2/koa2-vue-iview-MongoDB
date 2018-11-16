@@ -328,7 +328,7 @@ export default {
               this.$Message.success('保存成功')
               this.$emit('reload')
             } else {
-              this.$Message.error(res.errMsg)
+              this.$Message.warning(res.errMsg)
             }
           }).catch(err => {
             this.btnLoading = false
@@ -365,7 +365,7 @@ export default {
               this.otherAddressForm.addOrderCity = ''
               this.otherAddressForm.addOrderPhone = ''
             } else {
-              this.$Message.error(res.errMsg)
+              this.$Message.warning(res.errMsg)
             }
           }).catch(err => {
             this.btnLoading = false

@@ -107,7 +107,7 @@ export default {
       Api.UserLogin(postData).then(res => {
         this.loading = false
         if (res.errMsg) {
-          this.$Message.error(res.errMsg)
+          this.$Message.warning(res.errMsg)
           return
         }
         if (this.reminedPwdChenck) {

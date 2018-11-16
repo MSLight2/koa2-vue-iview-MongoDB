@@ -63,6 +63,7 @@
       <ul class="product-links">
         <Button
           type="primary" size="large" shape="circle"
+          :loading="btnLoading"
           @click="buyNow(dataInfo.goodsId)">立即购买
         </Button>
       </ul>
@@ -70,9 +71,9 @@
     <iview-modal
       :is-show="modalShow"
       type="warning"
-      content="您还未登录，请登录后再操作"
+      :content="modalText"
       sureText="知道了"
-      @close="modalShow = false">
+      @close="modalClose">
     </iview-modal>
   </div>
 </template>
@@ -80,6 +81,7 @@
 <script>
 import * as CollectionApi from '@/api/collection'
 import * as AddCartApi from '@/api/cart'
+import * as OrderApi from '@/api/order'
 import LoginStorage from '@/utils/login'
 import IviewModal from '@/components/puppetComponent/Modal/IviewModal'
 
@@ -87,8 +89,10 @@ export default {
   data () {
     return {
       modalShow: false,
+      modalText: '您还未登录，请登录后再操作',
       colorSelect: 0,
-      goodsCount: 1
+      goodsCount: 1,
+      btnLoading: false
     }
   },
   components: {
@@ -129,6 +133,7 @@ export default {
       }).catch((err) => {
         if (err.code >= 1000 & err.code <= 1002) {
           this.modalShow = true
+          this.modalText = '您还未登录，请登录后再操作'
         } else {
           this.$Message.error('服务器不想理你，请稍后重试')
         }
@@ -150,6 +155,7 @@ export default {
       }).catch((err) => {
         if (err.code >= 1000 & err.code <= 1002) {
           this.modalShow = true
+          this.modalText = '您还未登录，请登录后再操作'
         } else {
           this.$Message.error('服务器不想理你，请稍后重试')
         }
@@ -167,7 +173,61 @@ export default {
         this.goodsCount = 1
       }
     },
+    modalClose (val) {
+      this.modalShow = false
+      if (val === 'confirm' && this.modalText === '您还有未支付的订单，请支付后再下单') {
+        this.$router.push({ name: 'checkout' })
+      }
+    },
     buyNow (id) {
+      if (!LoginStorage.getToken()) {
+        this.$Message.error('请登录后在试！')
+        return
+      }
+      this.validateWaitePayOrder()
+    },
+    // 判断是否还有未支付的订单
+    validateWaitePayOrder () {
+      this.btnLoading = true
+      OrderApi.GetCheckoutStatus().then(res => {
+        this.btnLoading = false
+        if (res.hasFinished) {
+          this.modalShow = true
+          this.modalText = '您还有未支付的订单，请支付后再下单'
+        } else {
+          this.checkoutNow()
+        }
+      }).catch(err => {
+        this.btnLoading = false
+        if (err.code >= 1000 & err.code <= 1002) {
+          this.$Message.error('登录过期，请重新登录')
+        } else {
+          this.$Message.error('服务器不想理你，请稍后重试')
+        }
+      })
+    },
+    // 生成订单，购买支付
+    checkoutNow () {
+      let postArr = [{
+        goodsId: this.dataInfo.goodsId,
+        goodsNum: this.goodsCount
+      }]
+      this.btnLoading = true
+      OrderApi.AddCheckout({ goodsCartList: JSON.stringify(postArr) }).then(res => {
+        this.btnLoading = false
+        if (res.isSuccess) {
+          this.$router.push({ name: 'checkout' })
+        } else {
+          this.$Message.warning(res.errMsg)
+        }
+      }).catch(err => {
+        this.btnLoading = false
+        if (err.code >= 1000 & err.code <= 1002) {
+          this.$Message.error('登录过期，请重新登录')
+        } else {
+          this.$Message.error('服务器不想理你，请稍后重试')
+        }
+      })
     },
     // 去评价
     toEvaluatet () {

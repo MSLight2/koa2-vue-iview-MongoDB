@@ -225,9 +225,9 @@ export default {
       OrderApi.AddCheckout({ goodsCartList: JSON.stringify(postArr) }).then(res => {
         this.submitLoading = false
         if (res.isSuccess) {
-          this.$router.replace({ name: 'checkout' })
+          this.$router.push({ name: 'checkout' })
         } else {
-          this.$Message.error(res.errMsg)
+          this.$Message.warning(res.errMsg)
         }
       }).catch(err => {
         this.submitLoading = false
