@@ -7,6 +7,7 @@ const ProductDetail = () => import('@/views/detail/ProductDetail.vue')
 const Checkout = () => import('@/views/checkout/Checkout.vue')
 const Store = () => import('@/views/shopStore/Store.vue')
 const Cart = () => import('@/views/cart/Cart.vue')
+const Collection = () => import('@/views/collection/Collection.vue')
 
 Vue.use(Router)
 
@@ -55,6 +56,11 @@ export default new Router({
       path: '/cart',
       name: 'cart',
       component: Cart
+    },
+    {
+      path: '/collection',
+      name: 'collection',
+      component: Collection
     }
   ]
 })

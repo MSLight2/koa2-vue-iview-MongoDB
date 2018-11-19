@@ -5,7 +5,7 @@
         <div class="col-md-12">
           <div class="newsletter">
             <p>登录参与 <strong>NEWSLETTER</strong></p>
-            <form>
+            <form @submit.prevent>
               <input class="input" type="email" placeholder="邮件地址">
               <button class="newsletter-btn"><i class="fa fa-envelope"></i> 发送</button>
             </form>

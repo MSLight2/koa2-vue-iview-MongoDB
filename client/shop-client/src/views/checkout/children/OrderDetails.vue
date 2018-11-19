@@ -8,12 +8,13 @@
         <div><strong>商品列表</strong></div>
         <div><strong>金额</strong></div>
       </div>
-      <div class="order-products">
+      <div class="order-products" v-if="dataList.length > 0">
         <div class="order-col" v-for="(item, index) in dataList" :key="index">
           <div class="order-title"><strong>{{item.goodsNum}}</strong>x {{item.goodsId_docs[0].title}}</div>
           <div>￥{{item.goodsId_docs[0].showPrice}}</div>
         </div>
       </div>
+      <div class="order-col no-order-list" v-else>没有订单o(╥﹏╥)o</div>
       <div class="order-col">
         <div>运费</div>
         <div><strong>免费</strong></div>
@@ -103,5 +104,11 @@ export default {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+  .no-order-list{
+    text-align: center;
+    color: #D10024;
+    margin: 10px 0;
+    font-size: 14px;
   }
 </style>
