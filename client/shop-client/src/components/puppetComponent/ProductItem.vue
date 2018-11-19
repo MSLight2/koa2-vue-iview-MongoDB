@@ -1,7 +1,9 @@
 <template>
   <div class="product spa">
-    <div class="product-img" @click="checkDetail(dataInfo.goodsId)">
-      <img :src="dataInfo.mainPicPath | filterImgUrl" alt="">
+    <div class="product-img"
+      @click="checkDetail(dataInfo.goodsId)"
+      v-lazy-container="{ selector: 'img' }">
+        <img :data-src="dataInfo.mainPicPath | filterImgUrl" alt="">
     </div>
     <div class="product-body">
       <p class="product-category">{{dataInfo.goodsType | filterGoodsType}}</p>

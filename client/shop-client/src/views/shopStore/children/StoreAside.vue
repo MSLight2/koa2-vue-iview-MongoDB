@@ -91,7 +91,7 @@
       <h3 class="aside-title">其它商品</h3>
       <div class="product-widget" v-for="(item, index) in otherData" :key="index">
         <div class="product-img">
-          <img :src="item.mainPicPath" alt="">
+          <img v-lazy="item.mainPicPath" alt="">
         </div>
         <div class="product-body" @click="goDetailPage(item.goodsId)">
           <p class="product-category">{{item.goodsType | filterGoodsType}}</p>

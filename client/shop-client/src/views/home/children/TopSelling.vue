@@ -20,7 +20,7 @@
                   <!-- product widget -->
                   <div class="product-widget" v-for="(item, i) in itemInfo" :key="i">
                     <div class="product-img">
-                      <img :src="item.mainPicPath" alt="">
+                      <img v-lazy="item.mainPicPath" alt="">
                     </div>
                     <div class="product-body" @click="goDetailPage(item.goodsId)">
                       <p class="product-category">{{item.goodsType | filterGoodsType}}</p>
@@ -53,7 +53,7 @@
                   <!-- product widget -->
                   <div class="product-widget" v-for="(item, i) in itemInfo" :key="i">
                     <div class="product-img">
-                      <img :src="item.mainPicPath" alt="">
+                      <img v-lazy="item.mainPicPath" alt="">
                     </div>
                     <div class="product-body" @click="goDetailPage(item.goodsId)">
                       <p class="product-category">{{item.goodsType | filterGoodsType}}</p>
@@ -86,7 +86,7 @@
                   <!-- product widget -->
                   <div class="product-widget" v-for="(item, i) in itemInfo" :key="i">
                     <div class="product-img">
-                      <img :src="item.mainPicPath" alt="">
+                      <img v-lazy="item.mainPicPath" alt="">
                     </div>
                     <div class="product-body" @click="goDetailPage(item.goodsId)">
                       <p class="product-category">{{item.goodsType | filterGoodsType}}</p>

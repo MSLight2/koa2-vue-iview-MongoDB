@@ -4,6 +4,7 @@ import router from './router/router'
 import store from './store/store'
 import SetGlobalFilters from '@/utils/GlobalFilters'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
+import VueLazyload from 'vue-lazyload'
 import './style/iconfont/iconfont';
 import jQuery from 'jquery'
 import 'swiper/dist/css/swiper.css'
@@ -36,6 +37,12 @@ Vue.prototype.$Modal = Modal
 window.jQuery = window.$ = jQuery
 Vue.use(VueAwesomeSwiper)
 SetGlobalFilters(Vue)
+Vue.use(VueLazyload, {
+  preLoad: 1.3,
+  error: require('@/assets/img/loadfail.png'),
+  loading: require('@/assets/img/loading.png'),
+  attempt: 1
+})
 
 Vue.config.productionTip = false
 new Vue({

@@ -17,8 +17,8 @@
               <div class="cart-list">
                 <div class="cart-list-item" v-for="(item, index) in cartDataList" :key="index">
                   <div class="cli-img" @click="checkDetail(item.goodsId)">
-                    <div class="cli-img-img">
-                      <img :src="item.goodsId_docs[0].mainPicPath | filterImgUrl" alt=""/>
+                    <div class="cli-img-img" v-lazy-container="{ selector: 'img' }">
+                      <img :data-src="item.goodsId_docs[0].mainPicPath | filterImgUrl" alt=""/>
                     </div>
                     <p>{{item.goodsId_docs[0].title}}</p>
                   </div>

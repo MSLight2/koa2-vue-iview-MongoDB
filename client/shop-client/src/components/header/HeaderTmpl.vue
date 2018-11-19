@@ -16,7 +16,7 @@
           <!-- SEARCH BAR -->
           <div class="col-md-6">
             <div class="header-search">
-              <form @click="forbitSubmit($event)">
+              <form @submit.prevent>
                 <select class="input-select" v-model="categotySelect" @change="selectChange">
                   <option
                     v-for="(item, index) in categotyList"
@@ -49,38 +49,40 @@
                   <span>购物车</span>
                   <div class="qty">3</div>
                 </a>
-                <div class="cart-dropdown" v-show="cartListShow">
-                  <div class="cart-list">
-                    <div class="product-widget">
-                      <div class="product-img">
-                        <img src="" alt="">
+                <transition name="slide-fade">
+                  <div class="cart-dropdown" v-show="cartListShow">
+                    <div class="cart-list">
+                      <div class="product-widget">
+                        <div class="product-img">
+                          <img src="" alt="">
+                        </div>
+                        <div class="product-body">
+                          <h3 class="product-name"><a href="#">product name goes here</a></h3>
+                          <h4 class="product-price"><span class="qty">1x</span>$980.00</h4>
+                        </div>
+                        <button class="delete"><i class="fa fa-close"></i></button>
                       </div>
-                      <div class="product-body">
-                        <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                        <h4 class="product-price"><span class="qty">1x</span>$980.00</h4>
+                      <div class="product-widget">
+                        <div class="product-img">
+                          <img src="" alt="">
+                        </div>
+                        <div class="product-body">
+                          <h3 class="product-name"><a href="#">product name goes here</a></h3>
+                          <h4 class="product-price"><span class="qty">3x</span>$980.00</h4>
+                        </div>
+                        <button class="delete"><i class="fa fa-close"></i></button>
                       </div>
-                      <button class="delete"><i class="fa fa-close"></i></button>
                     </div>
-                    <div class="product-widget">
-                      <div class="product-img">
-                        <img src="" alt="">
-                      </div>
-                      <div class="product-body">
-                        <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                        <h4 class="product-price"><span class="qty">3x</span>$980.00</h4>
-                      </div>
-                      <button class="delete"><i class="fa fa-close"></i></button>
+                    <div class="cart-summary">
+                      <small>选择商品个数（3）</small>
+                      <h5>SUBTOTAL: $2940.00</h5>
+                    </div>
+                    <div class="cart-btns">
+                      <a href="javascript:;" @click="checkCart">查看购物车</a>
+                      <a href="javascript:;" @click="buyNow">立即购买  <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                   </div>
-                  <div class="cart-summary">
-                    <small>选择商品个数（3）</small>
-                    <h5>SUBTOTAL: $2940.00</h5>
-                  </div>
-                  <div class="cart-btns">
-                    <a href="javascript:;" @click="checkCart">查看购物车</a>
-                    <a href="javascript:;" @click="buyNow">立即购买  <i class="fa fa-arrow-circle-right"></i></a>
-                  </div>
-                </div>
+                </transition>
               </div>
               <!-- /Cart -->
             </div>
@@ -130,9 +132,6 @@ export default {
     },
     buyNow () {
       this.$router.replace({ name: 'checkout' })
-    },
-    forbitSubmit (e) {
-      e.preventDefault()
     }
   }
 }
@@ -142,5 +141,22 @@ export default {
   .header-search form .input-select,
   .header-search form .search-btn{
     vertical-align: top;
+  }
+  .cart-dropdown{
+    top: 40px;
+    -webkit-box-shadow: 0px 0px 0px 2px #E4E7ED;
+    box-shadow: 0px 0px 6px 0px #E4E7ED;
+  }
+  .cart-dropdown .cart-btns{
+    margin: 0 0;
+    display: flex;
+    justify-content: space-around;
+  }
+  .cart-dropdown .cart-btns>a{
+    border-radius: 18px;
+    width: calc(50% - 15px)
+  }
+  .cart-dropdown .cart-btns>a:first-child{
+    margin-right: 0;
   }
 </style>
