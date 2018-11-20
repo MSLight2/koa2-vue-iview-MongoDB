@@ -3,6 +3,8 @@ import axios from '@/utils/AxiosUtil'
 /**
  * 获取收藏列表
  * @method get
+ * @param {查询页数} page
+ * @param {查询行数} pageSize
  */
 export const GetCollectionList = (params) => {
   return axios({

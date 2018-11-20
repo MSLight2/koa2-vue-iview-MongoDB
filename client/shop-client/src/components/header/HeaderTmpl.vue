@@ -7,7 +7,7 @@
         <div class="row">
           <!-- LOGO -->
           <div class="col-md-3">
-            <div class="header-logo">
+            <div class="header-logo" title="首页">
               <a href="javascript:;" class="logo" @click="goHome">
                 <img src="@/assets/img/logo.png" alt="">
               </a>
@@ -35,7 +35,7 @@
             <div class="header-ctn">
               <!-- Wishlist -->
               <div>
-                <a href="javascript:;">
+                <a  @click="gotoCollectionPage">
                   <i class="fa fa-heart-o"></i>
                   <span>收藏</span>
                   <div class="qty">2</div>
@@ -126,6 +126,9 @@ export default {
     },
     switchCart () {
       this.cartListShow = !this.cartListShow
+    },
+    gotoCollectionPage () {
+      this.$router.replace({ name: 'collection' })
     },
     checkCart () {
       this.$router.replace({ name: 'cart' })

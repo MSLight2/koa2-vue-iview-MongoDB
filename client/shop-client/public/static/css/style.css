@@ -2372,13 +2372,14 @@ textarea.input {
 	15 -> COLLECTION PAGE
 ===========================================================*/
 .collection-main{
-  min-height: 300px;
+  min-height: 400px;
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
 }
 .collection-item{
   width: 180px;
+  max-height: 235px;
   margin-right: 15px;
   margin-top: 20px;
   border-radius: 3px;
@@ -2407,15 +2408,17 @@ textarea.input {
   transition: all 0.3s ease-in-out;
 }
 .collection-img img{
-  transition: all 0.3s ease-in-out;
   width: 100%;
   height: 100%;
 }
-.collection-img img:hover{
-  transform: scale(1.1);
+.collection-img:hover .col-del-icon,
+.collection-img:hover .col-icon-btm{
+  opacity: 1;
+  transition: all 0.3s ease-in-out;
 }
 /* icon */
 .col-del-icon{
+  opacity: 0;
   position: absolute;
   top: 10px;
   right: 10px;
@@ -2429,23 +2432,36 @@ textarea.input {
   border-radius: 50%;
 }
 .col-icon-btm{
+  opacity: 0;
   position: absolute;
-  bottom: 10px;
+  bottom: 0;
   left: 0;
-  width: 100%;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  margin-left: 10px;
 }
 .col-icon-btm .cib-icon{
   z-index: 99;
   width: 30px;
   height: 30px;
   line-height: 30px;
-  text-align: center;
+  padding-left: 7px;
   background:rgba(61, 56, 56, 0.5);
   color: #FFF;
   border-radius: 50%;
+  margin-bottom: 10px;
+  transition: all 0.3s ease-in-out;
+  overflow: hidden;
+}
+.cib-icon span{
+  display: inline-block;
+  width: 60px;
+  line-height: 30px;
+  margin-left: 5px;
+}
+.cib-icon:hover{
+  border-radius: 15px;
+  width: 95px;
 }
 /* detail */
 .collection-desc{

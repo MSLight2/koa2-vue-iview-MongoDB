@@ -40,7 +40,7 @@ let getShoppingCart = async (ctx) => {
             'goodsId_docs.originalPrice': 0,
             'goodsId_docs.sold': 0
           }
-      }   
+      }
     ]).exec();
 
     ctx.body = Utils.responseJSON({

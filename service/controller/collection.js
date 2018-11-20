@@ -69,6 +69,8 @@ let deleteCollection = async (ctx) => {
  * 获取我的收藏
  * @method get
  * @param {用户id} userId
+ * @param {查询页数} page
+ * @param {返回行数} pageSize
  */
 let getCollection = async (ctx) => {
   let validateTokenResult = Utils.validateToken(ctx);
@@ -76,13 +78,60 @@ let getCollection = async (ctx) => {
   let {userId = ''} = validateTokenResult;
   if (Utils.isEmpty(userId)) return ctx.body = Utils.responseJSON({errMsg: '用户id是必须的，请传入token'});
 
+  let {
+    page = 1,
+    pageSize = 18
+  } = ctx.query;
+  let pageskip = page ? parseInt(page) - 1 : 0;
+  if (pageskip < 0) pageskip = 0;
+  pageSize = pageSize ? parseInt(pageSize) : 18;
+  let skipCount = pageskip * pageSize;
+
   try {
-    let collections = await CollectionModule.find({'userId': userId});
-    ctx.body = Utils.responseJSON({
-      result: collections,
-      isSuccess: true,
-      code: Code.successCode
-    })
+    let collections = await CollectionModule.aggregate([
+      {
+        $match: {'userId': userId}
+      },
+      {
+        $lookup:
+          {
+            from: "goods",
+            localField: "goodsId",
+            foreignField: "goodsId",
+            as: "goodsId_docs"
+          }
+      },
+      // 查询结果不显示的项
+      {
+        $project:
+          {
+            _id: 0,
+            'goodsId_docs._id': 0,
+            'goodsId_docs.quantity': 0,
+            'goodsId_docs.originalPrice': 0,
+            'goodsId_docs.sold': 0,
+            'goodsId_docs.goodRate': 0,
+            'goodsId_docs.location': 0
+          }
+      }
+    ])
+    .skip(skipCount)
+    .limit(pageSize)
+    .exec();
+    let goodsCount = await CollectionModule.find({'userId': userId}).count();
+
+    ctx.body = {
+      ...Utils.responseJSON({
+        result: collections,
+        isSuccess: true,
+        code: Code.successCode
+      }),
+      ...Utils.repPagination({
+        page: page,
+        pageSize: pageSize,
+        total: goodsCount
+      })
+    }
   } catch (error) {
     ctx.body = Utils.responseJSON({errMsg: '查询数据出错', code: Code.dbErr})
   }
