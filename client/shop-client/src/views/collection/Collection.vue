@@ -101,7 +101,6 @@ export default {
         this.pageSize = res.paginationModule.pageSize
         this.pageCount = res.paginationModule.pageCount
         this.pageTotal = res.paginationModule.total
-        console.log(res)
       }).catch((err) => {
         this.isEmpty = true
         if (err.code >= 1000 & err.code <= 1002) {
