@@ -32,7 +32,8 @@
             maxlength="30"
             placeholder="密码"
             @change="pwdChange"
-            @blur="inputBlur">
+            @blur="inputBlur"
+            @keyup.enter="login">
           <i
             class="login-icon iconfont icon-password-view"
             v-show="pwdIconOpen"
@@ -51,7 +52,11 @@
         <div class="login-btn-tip">
           <div class="remined-pwd">
             <input type="checkbox" v-model="reminedPwdChenck" id="rmBox">
-            <label class="remined-pwd-label" :class="[reminedPwdChenck ? 'check' : '']" for="rmBox"></label>
+            <label
+              class="remined-pwd-label"
+              :class="[reminedPwdChenck ? 'check' : '']"
+              for="rmBox">
+            </label>
             <span>记住密码</span>
           </div>
           <div class="login-btn-right">

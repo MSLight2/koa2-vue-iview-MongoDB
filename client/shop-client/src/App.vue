@@ -1,10 +1,22 @@
 <template>
   <div id="app">
+    <header-tmpl></header-tmpl>
     <transition name="fade" mode="out-in">
       <router-view/>
     </transition>
   </div>
 </template>
+
+<script>
+import HeaderTmpl from '@/components/header/HeaderTmpl'
+
+export default {
+  name: 'App',
+  components: {
+    HeaderTmpl
+  }
+}
+</script>
 
 <style>
 @import './style/iconfont/iconfont.css';

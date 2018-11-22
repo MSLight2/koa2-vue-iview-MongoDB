@@ -40,6 +40,7 @@
                 placeholder="确认密码"
                 size="large"
                 :maxlength="20"
+                @keyup.enter="registerAndReset"
               />
             </FormItem>
         </Form>

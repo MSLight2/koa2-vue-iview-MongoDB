@@ -1,6 +1,5 @@
 <template>
   <div>
-    <header-tmpl></header-tmpl>
     <bread-crumb :titles="breadCrumbTitles"></bread-crumb>
     <div class="section">
       <div class="container">
@@ -33,7 +32,6 @@
 
 <script>
 import { mapMutations } from 'vuex'
-import HeaderTmpl from '@/components/header/HeaderTmpl'
 import FooterTmpl from '@/components/puppetComponent/FooterTmpl'
 import NavBar from '@/components/puppetComponent/NavBar'
 import NewsLetter from '@/components/puppetComponent/NewsLetter'
@@ -66,7 +64,6 @@ export default {
     }
   },
   components: {
-    HeaderTmpl,
     NavBar,
     BreadCrumb,
     NewsLetter,

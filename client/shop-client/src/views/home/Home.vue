@@ -1,8 +1,5 @@
 <template>
   <div>
-    <header-tmpl
-      :user-info-data="userInfoData">
-    </header-tmpl>
     <nav-bar></nav-bar>
     <section-shop @buyNow="sectionBuyNow"></section-shop>
     <section-slide
@@ -34,7 +31,6 @@
 </template>
 
 <script>
-import HeaderTmpl from '@/components/header/HeaderTmpl'
 import FooterTmpl from '@/components/puppetComponent/FooterTmpl'
 import NavBar from '@/components/puppetComponent/NavBar'
 import SectionShop from '@/views/home/children/SectionShop'
@@ -44,7 +40,6 @@ import TopSelling from '@/views/home/children/TopSelling'
 import NewsLetter from '@/components/puppetComponent/NewsLetter'
 import IviewModal from '@/components/puppetComponent/Modal/IviewModal'
 import * as GoodsApi from '@/api/goods'
-import * as LoginApi from '@/api/login'
 import LoginStorage from '@/utils/login'
 
 export default {
@@ -63,7 +58,6 @@ export default {
       modelContent: '',
       modalSureText: '确定',
       categoryType: 0,
-      userInfoData: {},
       hotInfoData: [],
       recommendInfoData: [],
       // 头部数据
@@ -76,7 +70,6 @@ export default {
     }
   },
   components: {
-    HeaderTmpl,
     NavBar,
     SectionShop,
     SectionSlide,
@@ -109,18 +102,6 @@ export default {
       })
       this.getGoodsInfoByCategoty({ type: 3, size: 9 }, (res) => {
         this.phoneInfoData = res.result
-      })
-    },
-    // 获取登录用户的信息数据
-    getUserInfoData () {
-      if (!LoginStorage.getToken()) {
-        return
-      }
-      LoginApi.getUserInfo().then(res => {
-        this.userInfoData = res.result.dataInfo
-        console.log(res)
-      }).catch(() => {
-        this.$Message.error('服务器休息中，请稍后重试')
       })
     },
     // 通过类目获取商品数

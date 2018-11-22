@@ -95,45 +95,59 @@
 
 <script>
 import TopHeader from './TopHeader'
+import * as LoginApi from '@/api/login'
+import LoginStorage from '@/utils/login'
+
 export default {
   data () {
     return {
       categotyList: ['所有类目', '电脑', '智能手机', '耳机', '相机', '家电', 'AI智能'],
       categotySelect: 0,
       searchContent: '',
-      cartListShow: false
+      cartListShow: false,
+      userInfoData: {}
     }
   },
   components: {
     TopHeader
   },
-  props: {
-    userInfoData: {
-      type: Object,
-      require: true,
-      default: () => {}
-    }
+  mounted () {
+    // this.getUserInfoData()
   },
   methods: {
+    // 获取登录用户的信息数据
+    getUserInfoData () {
+      if (!LoginStorage.getToken()) {
+        return
+      }
+      LoginApi.getUserInfo().then(res => {
+        this.userInfoData = res.result.dataInfo
+      })
+    },
     goHome () {
+      this.cartListShow = false
       this.$router.replace({ name: 'home' })
     },
     selectChange () {
     },
     search () {
       if (!this.searchContent) return
+      this.cartListShow = false
       this.$emit('search', this.searchContent, this.categotySelect)
     },
     switchCart () {
       this.cartListShow = !this.cartListShow
     },
     gotoCollectionPage () {
+      this.cartListShow = false
       this.$router.replace({ name: 'collection' })
     },
     checkCart () {
+      this.cartListShow = false
       this.$router.replace({ name: 'cart' })
     },
     buyNow () {
+      this.cartListShow = false
       this.$router.replace({ name: 'checkout' })
     }
   }
