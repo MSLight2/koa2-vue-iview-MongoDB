@@ -116,6 +116,7 @@ export default {
         onOk: () => {
           CollectionApi.DeleteCollection({ goodsId: id }).then(res => {
             this.$Message.success('收藏已删除')
+            this.$store.dispatch('getCountAction')
             this.fetchData()
           }).catch(err => {
             if (err.code >= 1000 & err.code <= 1002) {
@@ -158,6 +159,7 @@ export default {
 
 <style scoped>
   .empty-collection{
+    margin: 50px 0;
     text-align: center;
   }
   .empty-collection button{

@@ -88,8 +88,26 @@ export default {
       })
     },
     // 立即支付
-    payNow (typePick, userIsAgren) {
+    payNow (typePick, totalPrice) {
+      let goodsIdArr = this.orderDetailDataList.map(item => { return item.goodsId })
+      let propsData = {
+        goodsIdList: JSON.stringify(goodsIdArr),
+        payPrice: totalPrice
+      }
+      OrderApi.EditPayCheckout(propsData).then(res => {
+        if (res.isSuccess) {
+          console.log(res)
+        } else {
+          this.$Message.warning(res.errMsg)
+        }
+      })
     }
   }
 }
 </script>
+
+<style>
+   .ck-checkbox{
+     top: -1px !important;
+   }
+</style>

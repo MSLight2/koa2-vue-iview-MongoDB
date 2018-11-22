@@ -34,6 +34,7 @@ Vue.component('Slider', Slider)
 Vue.prototype.$Message = Message
 Vue.prototype.$Modal = Modal
 
+// 这里使用jQuery是因为轮播插件有依赖jQuery╮(╯▽╰)╭，用空再换= 。=
 window.jQuery = window.$ = jQuery
 Vue.use(VueAwesomeSwiper)
 SetGlobalFilters(Vue)

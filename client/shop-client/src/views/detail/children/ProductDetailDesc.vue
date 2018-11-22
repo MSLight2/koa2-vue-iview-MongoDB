@@ -151,7 +151,10 @@ export default {
       }
       AddCartApi.AddOrEditCart(params).then(res => {
         if (res.errMsg) this.$Message.warning(res.errMsg)
-        if (res.isSuccess) this.$Message.success('商品已在购物车，等你呦(*╹▽╹*)！')
+        if (res.isSuccess) {
+          this.$store.dispatch('getCountAction')
+          this.$Message.success('商品已在购物车，等你呦(*╹▽╹*)！')
+        }
       }).catch((err) => {
         if (err.code >= 1000 & err.code <= 1002) {
           this.modalShow = true

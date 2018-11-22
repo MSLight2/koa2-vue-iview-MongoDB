@@ -79,7 +79,7 @@
           <div class="form-group">
             <div class="input-checkbox" :class="{'not-click': addressList.length > 0 && !isEdit}">
               <input type="checkbox" id="create-account" value="addAccount" v-model="orderCreateCheck">
-              <label for="create-account"><span></span>设为默认地址?</label>
+              <label for="create-account"><span class="ck-checkbox"></span>设为默认地址?</label>
             </div>
           </div>
           <Button
@@ -110,7 +110,7 @@
       <div class="input-checkbox">
         <input type="checkbox" id="shiping-address" value="addAddress" v-model="addOrderCheck">
         <label for="shiping-address">
-          <span></span>
+          <span class="ck-checkbox"></span>
           是否新增其它搜货地址?
         </label>
         <div class="caption">

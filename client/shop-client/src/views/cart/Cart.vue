@@ -191,6 +191,7 @@ export default {
       if (val === 'confirm') {
         CartApi.DeleteCart({ goodsId: this.goodsId }).then(res => {
           this.$Message.success('已删除')
+          this.$store.dispatch('getCountAction')
           this.fetchData()
         }).catch(err => {
           if (err.code >= 1000 & err.code <= 1002) {
@@ -222,6 +223,7 @@ export default {
       OrderApi.AddCheckout({ goodsCartList: JSON.stringify(postArr) }).then(res => {
         this.submitLoading = false
         if (res.isSuccess) {
+          this.$store.dispatch('getCountAction')
           this.$router.push({ name: 'checkout' })
         } else {
           this.$Message.warning(res.errMsg)

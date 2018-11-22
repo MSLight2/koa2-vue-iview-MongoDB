@@ -44,7 +44,7 @@ export const DeleteCheckout = (data) => {
  * @param {商品id数组} goodsIdList
  * @param {支付金额} payPrice
  */
-export const EditCheckout = (data) => {
+export const EditPayCheckout = (data) => {
   return axios({
     method: 'post',
     url: '/api/editCheckoutStatus',

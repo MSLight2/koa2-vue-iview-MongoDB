@@ -42,7 +42,7 @@
     <div class="input-checkbox">
       <input type="checkbox" id="terms" value="agree" v-model="userIsAgren">
       <label for="terms">
-        <span></span>我已经阅读并接受<a href="javascript:;" @click="showRule">条款</a>
+        <span class="ck-checkbox"></span>我已经阅读并接受<a href="javascript:;" @click="showRule">条款</a>
       </label>
     </div>
     <a href="javascript:;" class="primary-btn order-submit" @click="payNow">立即支付</a>
@@ -84,7 +84,7 @@ export default {
         this.$Message.warning('你是否阅读并接受【条款】？')
         return
       }
-      this.$emit('payNow', this.typePick, this.userIsAgren)
+      this.$emit('payNow', this.typePick, this.totalPayPrice)
     },
     // 条款
     showRule () {

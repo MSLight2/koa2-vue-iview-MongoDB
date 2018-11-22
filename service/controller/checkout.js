@@ -150,7 +150,7 @@ let deleteCheckout = async ctx => {
  * @method post
  * @param {用户id} userId
  * @param {商品id数组} goodsIdList
- * @param {支付金额} payPrice
+ * @param {支付金额} payPrice (实际不应前端传支付金额)
  */
 let editCheckoutStatus = async ctx => {
   let validateTokenResult = Utils.validateToken(ctx);
@@ -166,6 +166,14 @@ let editCheckoutStatus = async ctx => {
       return ctx.body = Utils.responseJSON({errMsg: '商品id不能为空'});
     }
 
+    let finds = await CheckoutModule.find({
+      'userId': userId,
+      'goodsId': {'$in': goodsIdList},
+      'payStatus': {'$gte': 2}
+    })
+    if (finds.length > 0) return ctx.body = Utils.responseJSON({errMsg: '该笔订单已支付过了'});
+
+    // 更新状态
     let res = await CheckoutModule.updateMany(
       {'userId': userId, 'goodsId': {'$in': goodsIdList}},
       {

@@ -80,7 +80,6 @@ export default {
     IviewModal
   },
   mounted () {
-    // this.getUserInfoData()
     this.initData()
   },
   methods: {

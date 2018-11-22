@@ -38,7 +38,7 @@
                 <a  @click="gotoCollectionPage">
                   <i class="fa fa-heart-o"></i>
                   <span>收藏</span>
-                  <div class="qty">2</div>
+                  <div class="qty" v-if="collectionCountGetter > 0">{{collectionCountGetter}}</div>
                 </a>
               </div>
               <!-- /Wishlist -->
@@ -47,40 +47,38 @@
                 <a class="dropdown-toggle" @click="switchCart">
                   <i class="fa fa-shopping-cart"></i>
                   <span>购物车</span>
-                  <div class="qty">3</div>
+                  <div class="qty" v-if="cartCountGetter > 0">{{cartCountGetter}}</div>
                 </a>
                 <transition name="slide-fade">
                   <div class="cart-dropdown" v-show="cartListShow">
-                    <div class="cart-list">
-                      <div class="product-widget">
-                        <div class="product-img">
-                          <img src="" alt="">
+                    <template v-if="cartDataList.length > 0">
+                      <div class="cart-list">
+                        <div class="product-widget" v-for="(item, index) in cartDataList" :key="index">
+                          <div class="product-img">
+                            <img v-lazy="item.goodsId_docs[0].mainPicPath" alt="">
+                          </div>
+                          <div class="product-body">
+                            <h3 class="product-name">{{item.goodsId_docs[0].title}}</h3>
+                            <h4 class="product-price"><span class="qty">{{item.number}}x</span>￥{{item.goodsId_docs[0].showPrice | formatPrice}}</h4>
+                          </div>
+                          <button class="delete" @click="deleteCart(item.goodsId)"><i class="fa fa-close"></i></button>
                         </div>
-                        <div class="product-body">
-                          <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                          <h4 class="product-price"><span class="qty">1x</span>$980.00</h4>
-                        </div>
-                        <button class="delete"><i class="fa fa-close"></i></button>
                       </div>
-                      <div class="product-widget">
-                        <div class="product-img">
-                          <img src="" alt="">
-                        </div>
-                        <div class="product-body">
-                          <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                          <h4 class="product-price"><span class="qty">3x</span>$980.00</h4>
-                        </div>
-                        <button class="delete"><i class="fa fa-close"></i></button>
+                      <div class="cart-summary">
+                        <small>选择商品个数（{{cartDataList.length}}）</small>
+                        <h5>总金额: ￥{{totalPrice}}</h5>
                       </div>
+                      <div class="cart-btns">
+                        <a href="javascript:;" @click="checkCart">查看购物车</a>
+                        <a href="javascript:;" @click="buyNow">立即购买  <i class="fa fa-arrow-circle-right"></i></a>
+                      </div>
+                    </template>
+                    <!-- empty cart -->
+                    <div class="cart-list" v-else>
+                      <div class="empty-icon"><i class="login-icon iconfont icon-gouwuche"></i></div>
+                      <p class="empty-txt">购物车什么都没有~</p>
                     </div>
-                    <div class="cart-summary">
-                      <small>选择商品个数（3）</small>
-                      <h5>SUBTOTAL: $2940.00</h5>
-                    </div>
-                    <div class="cart-btns">
-                      <a href="javascript:;" @click="checkCart">查看购物车</a>
-                      <a href="javascript:;" @click="buyNow">立即购买  <i class="fa fa-arrow-circle-right"></i></a>
-                    </div>
+                    <Spin size="large" fix v-if="loading"></Spin>
                   </div>
                 </transition>
               </div>
@@ -94,27 +92,50 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 import TopHeader from './TopHeader'
-import * as LoginApi from '@/api/login'
 import LoginStorage from '@/utils/login'
+import * as LoginApi from '@/api/login'
+import * as CartApi from '@/api/cart'
+import * as OrderApi from '@/api/order'
 
 export default {
   data () {
     return {
+      loading: false,
       categotyList: ['所有类目', '电脑', '智能手机', '耳机', '相机', '家电', 'AI智能'],
       categotySelect: 0,
       searchContent: '',
       cartListShow: false,
-      userInfoData: {}
+      userInfoData: {},
+      cartDataList: []
     }
   },
   components: {
     TopHeader
   },
   mounted () {
-    // this.getUserInfoData()
+    this.getUserInfoData()
+    this.getCountAction()
+  },
+  computed: {
+    ...mapGetters({
+      collectionCountGetter: 'getCollectionCount',
+      cartCountGetter: 'getCartCount'
+    }),
+    totalPrice () {
+      let total = 0
+      this.cartDataList.forEach((item, index) => {
+        total += Number(item.goodsId_docs[0].showPrice) * item.number
+      })
+      if (!total) return '0.00'
+      return total.toFixed(2)
+    }
   },
   methods: {
+    ...mapActions([
+      'getCountAction'
+    ]),
     // 获取登录用户的信息数据
     getUserInfoData () {
       if (!LoginStorage.getToken()) {
@@ -122,6 +143,39 @@ export default {
       }
       LoginApi.getUserInfo().then(res => {
         this.userInfoData = res.result.dataInfo
+      }).catch(() => {
+        this.userInfoData = {}
+      })
+    },
+    // 获取购物车列表
+    getCartListInfo () {
+      this.loading = true
+      CartApi.GetCartList().then(res => {
+        this.loading = false
+        this.cartDataList = res.result
+      }).catch((err) => {
+        this.loading = false
+        if (err.code >= 1000 & err.code <= 1002) {
+          this.$Message.error('登录过期，请重新登录')
+        } else {
+          this.$Message.error('服务器休息中，请稍后重试')
+        }
+      })
+    },
+    // 删除购物车
+    deleteCart (id) {
+      this.loading = true
+      CartApi.DeleteCart({ goodsId: id }).then(res => {
+        this.loading = false
+        this.getCartListInfo()
+        this.getCountAction()
+      }).catch(err => {
+        this.loading = false
+        if (err.code >= 1000 & err.code <= 1002) {
+          this.$Message.error('登录过期，请重新登录')
+        } else {
+          this.$Message.error('服务器休息中，请稍后重试')
+        }
       })
     },
     goHome () {
@@ -130,25 +184,69 @@ export default {
     },
     selectChange () {
     },
+    // 查询
     search () {
       if (!this.searchContent) return
       this.cartListShow = false
       this.$emit('search', this.searchContent, this.categotySelect)
     },
+    // 显示购物车列表
     switchCart () {
+      if (!LoginStorage.getToken()) {
+        this.$Message.warning('请登录后在试')
+        return
+      }
       this.cartListShow = !this.cartListShow
+      if (this.cartListShow) {
+        // 获取购物车列表
+        this.getCartListInfo()
+      }
     },
+    // 进入收藏页
     gotoCollectionPage () {
       this.cartListShow = false
       this.$router.replace({ name: 'collection' })
     },
+    // 查看购物车
     checkCart () {
       this.cartListShow = false
       this.$router.replace({ name: 'cart' })
     },
+    // 立即购买
     buyNow () {
-      this.cartListShow = false
-      this.$router.replace({ name: 'checkout' })
+      if (this.cartDataList.length <= 0) {
+        this.cartListShow = false
+        this.$Message.warning('购物车没有商品，请添加后再来吧~')
+        return
+      }
+      let postArr = []
+      this.cartDataList.forEach((item, index) => {
+        let postItem = {
+          goodsId: '',
+          goodsNum: 0
+        }
+        postItem.goodsId = item.goodsId
+        postItem.goodsNum = item.number
+        postArr.push(postItem)
+      })
+      this.loading = true
+      OrderApi.AddCheckout({ goodsCartList: JSON.stringify(postArr) }).then(res => {
+        this.loading = false
+        if (res.isSuccess) {
+          this.cartListShow = false
+          this.getCountAction()
+          this.$router.replace({ name: 'checkout' })
+        } else {
+          this.$Message.warning(res.errMsg)
+        }
+      }).catch(err => {
+        this.loading = false
+        if (err.code >= 1000 & err.code <= 1002) {
+          this.$Message.error('登录过期，请重新登录')
+        } else {
+          this.$Message.error('服务器不想理你，请稍后重试')
+        }
+      })
     }
   }
 }
@@ -161,8 +259,11 @@ export default {
   }
   .cart-dropdown{
     top: 40px;
-    -webkit-box-shadow: 0px 0px 0px 2px #E4E7ED;
     box-shadow: 0px 0px 6px 0px #E4E7ED;
+    border-radius: 3px;
+  }
+  .cart-dropdown .cart-list{
+    text-align: center;
   }
   .cart-dropdown .cart-btns{
     margin: 0 0;
@@ -175,5 +276,18 @@ export default {
   }
   .cart-dropdown .cart-btns>a:first-child{
     margin-right: 0;
+  }
+  .cart-dropdown .product-name{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .cart-dropdown .product-widget{
+    margin: 10px 0;
+  }
+  .cart-dropdown .product-widget .delete{
+    background: #D10024;
+    right: -15px;
+    left: initial;
   }
 </style>

@@ -18,15 +18,17 @@ let getCount = async ctx => {
 
   try {
 
-    let collectionCount = CollectionModule.find(sqlWhere).count();
-    let shopCartCount = ShopCartModule.find(sqlWhere).count();
+    let collectionCount = await CollectionModule.find(sqlWhere).count();
+    let shopCartCount = await ShopCartModule.find(sqlWhere).count();
 
-    ctx.body = {
-      collectionCount: collectionCount,
-      shopCartCount: shopCartCount,
+    ctx.body = Utils.responseJSON({
+      result: {
+        collectionCount: collectionCount,
+        shopCartCount: shopCartCount
+      },
       isSuccess: true,
       code: Code.successCode
-    }
+    })
   } catch (error) {
     ctx.body = Utils.responseJSON({errMsg: '查询出错', code: Code.dbErr});
   }
