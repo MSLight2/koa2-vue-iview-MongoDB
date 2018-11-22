@@ -61,7 +61,12 @@
                             <h3 class="product-name">{{item.goodsId_docs[0].title}}</h3>
                             <h4 class="product-price"><span class="qty">{{item.number}}x</span>￥{{item.goodsId_docs[0].showPrice | formatPrice}}</h4>
                           </div>
-                          <button class="delete" @click="deleteCart(item.goodsId)"><i class="fa fa-close"></i></button>
+                          <button
+                            v-if="$route.name !== 'cart'"
+                            class="delete"
+                            @click="deleteCart(item.goodsId)">
+                              <i class="fa fa-close"></i>
+                          </button>
                         </div>
                       </div>
                       <div class="cart-summary">
@@ -155,11 +160,6 @@ export default {
         this.cartDataList = res.result
       }).catch((err) => {
         this.loading = false
-        if (err.code >= 1000 & err.code <= 1002) {
-          this.$Message.error('登录过期，请重新登录')
-        } else {
-          this.$Message.error('服务器休息中，请稍后重试')
-        }
       })
     },
     // 删除购物车

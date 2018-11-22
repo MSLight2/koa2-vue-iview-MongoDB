@@ -115,7 +115,6 @@ export default {
         content: '<p>亲！确定要删除吗？o(╥﹏╥)o</p>',
         onOk: () => {
           CollectionApi.DeleteCollection({ goodsId: id }).then(res => {
-            this.$Message.success('收藏已删除')
             this.$store.dispatch('getCountAction')
             this.fetchData()
           }).catch(err => {

@@ -190,7 +190,6 @@ export default {
       this.modalShow = false
       if (val === 'confirm') {
         CartApi.DeleteCart({ goodsId: this.goodsId }).then(res => {
-          this.$Message.success('已删除')
           this.$store.dispatch('getCountAction')
           this.fetchData()
         }).catch(err => {
