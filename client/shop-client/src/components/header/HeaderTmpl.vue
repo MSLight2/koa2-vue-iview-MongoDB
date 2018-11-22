@@ -158,7 +158,7 @@ export default {
       CartApi.GetCartList().then(res => {
         this.loading = false
         this.cartDataList = res.result
-      }).catch((err) => {
+      }).catch(() => {
         this.loading = false
       })
     },

@@ -57,7 +57,6 @@
 import FooterTmpl from '@/components/puppetComponent/FooterTmpl'
 import NavBar from '@/components/puppetComponent/NavBar'
 import BreadCrumb from '@/components/puppetComponent/BreadCrumb'
-import IviewModal from '@/components/puppetComponent/Modal/IviewModal'
 import * as CollectionApi from '@/api/collection'
 import LoginStorage from '@/utils/login'
 
