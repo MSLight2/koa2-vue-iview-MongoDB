@@ -9,6 +9,7 @@ const Checkout = () => import('@/views/checkout/Checkout.vue')
 const Store = () => import('@/views/shopStore/Store.vue')
 const Cart = () => import('@/views/cart/Cart.vue')
 const Collection = () => import('@/views/collection/Collection.vue')
+const Success = () => import('@/views/success/Success.vue')
 
 Vue.use(Router)
 
@@ -62,6 +63,11 @@ const router = new Router({
       path: '/collection',
       name: 'collection',
       component: Collection
+    },
+    {
+      path: '/success',
+      name: 'success',
+      component: Success
     }
   ]
 })

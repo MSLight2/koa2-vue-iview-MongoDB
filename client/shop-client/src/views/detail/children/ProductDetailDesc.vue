@@ -36,9 +36,6 @@
             <span class="qty-down" @click="decCount">-</span>
           </div>
         </div>
-        <button class="add-to-cart-btn" @click="addToCart(dataInfo.goodsId)">
-          <i class="fa fa-shopping-cart"></i>加入购物车
-        </button>
       </div>
       <ul class="product-btns">
         <li @click="addToCollection(dataInfo.goodsId)">
@@ -60,12 +57,17 @@
         <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
         <li><a href="#"><i class="fa fa-envelope"></i></a></li>
       </ul>
-      <ul class="product-links">
+      <ul class="product-links produck-btn">
         <Button
           type="primary" size="large" shape="circle"
           :loading="btnLoading"
           @click="buyNow(dataInfo.goodsId)">立即购买
         </Button>
+        <div class="add-to-cart">
+          <button class="add-to-cart-btn" @click="addToCart(dataInfo.goodsId)">
+            <i class="fa fa-shopping-cart"></i>加入购物车
+          </button>
+        </div>
       </ul>
     </div>
     <iview-modal
@@ -129,7 +131,10 @@ export default {
       }
       CollectionApi.AddCollection({ goodsId: id }).then(res => {
         if (res.errMsg) this.$Message.warning(res.errMsg)
-        if (res.isSuccess) this.$Message.success('已收藏！')
+        if (res.isSuccess) {
+          this.$store.dispatch('getCountAction')
+          this.$Message.success('已收藏！')
+        }
       }).catch((err) => {
         if (err.code >= 1000 & err.code <= 1002) {
           this.modalShow = true
@@ -252,5 +257,12 @@ export default {
 <style scoped>
   .g-desc{
     margin-top: 10px;
+  }
+  .produck-btn .add-to-cart{
+    display: inline-block;
+    margin-left: 20px;
+  }
+  .produck-btn .add-to-cart .add-to-cart-btn{
+    height: 36px;
   }
 </style>

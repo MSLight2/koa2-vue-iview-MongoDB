@@ -104,7 +104,7 @@ export default {
       })
     },
     // 通过类目获取商品数
-    async getGoodsInfoByCategoty ({ type = 1, size = 12 }, fn) {
+    getGoodsInfoByCategoty ({ type = 1, size = 12 }, fn) {
       let params = {
         goodsType: type,
         pageSize: size
