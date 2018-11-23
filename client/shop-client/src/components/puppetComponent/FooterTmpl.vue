@@ -7,7 +7,7 @@
           <div class="col-md-3 col-xs-6">
             <div class="footer">
               <h3 class="footer-title">关于我</h3>
-              <p>早起的虫儿被鸟吃.</p>
+              <p style="margin: 10px 0;">早起的虫儿被鸟吃.</p>
               <ul class="footer-links">
                 <li><a href="javascript:;"><i class="fa fa-map-marker"></i>广东省广州市</a></li>
                 <li><a href="javascript:;"><i class="fa fa-phone"></i>13580XXXXXX</a></li>
@@ -44,8 +44,7 @@
               <ul class="footer-links">
                 <li><a href="javascript:;">个人中心</a></li>
                 <li><a target="_black" href="/cart">查看购物车</a></li>
-                <li><a href="javascript:;">收藏</a></li>
-                <li><a href="javascript:;">去购买</a></li>
+                <li><a target="_black" href="/collection">收藏</a></li>
                 <li><a href="javascript:;">帮助</a></li>
               </ul>
             </div>

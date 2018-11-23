@@ -38,3 +38,9 @@ export default {
   }
 }
 </script>
+
+<style>
+  .newsletter form .newsletter-btn{
+    vertical-align: top;
+  }
+</style>

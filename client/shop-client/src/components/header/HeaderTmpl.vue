@@ -41,7 +41,6 @@
                   <div class="qty" v-if="collectionCountGetter > 0">{{collectionCountGetter}}</div>
                 </a>
               </div>
-              <!-- /Wishlist -->
               <!-- Cart -->
               <div class="dropdown open">
                 <a class="dropdown-toggle" @click="switchCart">
