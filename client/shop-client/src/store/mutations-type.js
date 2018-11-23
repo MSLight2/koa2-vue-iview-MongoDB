@@ -1,3 +1,4 @@
 export const STORE_PRICE_TYPE = 'STORE_PRICE_TYPE'
+export const USER_INFO_DATE = 'USER_INFO_DATE'
 export const COOLECTION_COUNT = 'COOLECTION_COUNT'
 export const CART_COUNT = 'CART_COUNT'

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import VuexStore from '@/store/store'
 const Home = () => import('@/views/home/Home.vue')
 const Login = () => import('@/views/login/Login.vue')
 const RegisterAndReset = () => import('@/views/registerAndReset/RegisterAndReset.vue')
@@ -11,7 +12,7 @@ const Collection = () => import('@/views/collection/Collection.vue')
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   scrollBehavior (to, from, savedPosition) {
     return { x: 0, y: 0 }
@@ -64,3 +65,11 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  VuexStore.dispatch('getUserInfoAction')
+  VuexStore.dispatch('getCountAction')
+  next()
+})
+
+export default router

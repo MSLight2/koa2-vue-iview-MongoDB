@@ -1,6 +1,6 @@
 <template>
   <header>
-    <top-header :data-info="userInfoData"></top-header>
+    <top-header :data-info="userInfoGetter"></top-header>
     <div id="header">
       <!-- container -->
       <div class="container">
@@ -100,7 +100,6 @@
 import { mapGetters, mapActions } from 'vuex'
 import TopHeader from './TopHeader'
 import LoginStorage from '@/utils/login'
-import * as LoginApi from '@/api/login'
 import * as CartApi from '@/api/cart'
 import * as OrderApi from '@/api/order'
 
@@ -112,7 +111,6 @@ export default {
       categotySelect: 0,
       searchContent: '',
       cartListShow: false,
-      userInfoData: {},
       cartDataList: []
     }
   },
@@ -120,11 +118,10 @@ export default {
     TopHeader
   },
   mounted () {
-    this.getUserInfoData()
-    this.getCountAction()
   },
   computed: {
     ...mapGetters({
+      userInfoGetter: 'getUserInfoData',
       collectionCountGetter: 'getCollectionCount',
       cartCountGetter: 'getCartCount'
     }),
@@ -141,17 +138,6 @@ export default {
     ...mapActions([
       'getCountAction'
     ]),
-    // 获取登录用户的信息数据
-    getUserInfoData () {
-      if (!LoginStorage.getToken()) {
-        return
-      }
-      LoginApi.getUserInfo().then(res => {
-        this.userInfoData = res.result.dataInfo
-      }).catch(() => {
-        this.userInfoData = {}
-      })
-    },
     // 获取购物车列表
     getCartListInfo () {
       this.loading = true

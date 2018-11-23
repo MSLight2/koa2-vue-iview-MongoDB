@@ -80,8 +80,8 @@ export default {
     // 获取订单列表
     fetchOrder () {
       OrderApi.GetCheckoutList().then(res => {
-        this.orderDetailDataList = res.result || []
         if (res.isSuccess) {
+          this.orderDetailDataList = res.result || []
         } else {
           this.$Message.error(res.errMsg)
         }
@@ -96,7 +96,8 @@ export default {
       }
       OrderApi.EditPayCheckout(propsData).then(res => {
         if (res.isSuccess) {
-          console.log(res)
+          // this.$router.replace({ name: 'home' })
+          // 支付成功页面
         } else {
           this.$Message.warning(res.errMsg)
         }

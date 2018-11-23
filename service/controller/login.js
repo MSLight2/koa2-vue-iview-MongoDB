@@ -17,28 +17,15 @@ let getUserInfo = async (ctx, next) => {
   let {userId = ''} = validateTokenResult;
   if (Utils.isEmpty(userId)) return ctx.body = Utils.responseJSON({errMsg: '用户id是必须的，请传入token'});
   
-  let repData = {};
   let sqlWhere = {'_id': userId};
 
   try {
-    let users = await UsersModule.findById(sqlWhere, null);
-    let userInfo = {
-      _id: users._id,
-      name: users.name,
-      age: users.age,
-      sex: users.sex,
-      email: users.email,
-      address: users.address,
-      nickName: users.nickName,
-      birthday: users.birthday,
-      phone: users.phone
-    }
-    repData = Utils.responseJSON({
-      result: { dataInfo: userInfo },
+    let users = await UsersModule.findById(sqlWhere, {'_id': 0, 'isDelete': 0});
+    ctx.body = Utils.responseJSON({
+      result: { dataInfo: users },
       isSuccess: true,
       code: Code.successCode
-    })
-    ctx.body = repData;
+    });
   } catch (error) {
     ctx.body = Utils.responseJSON({errMsg: '查询数据出错', code: Code.dbErr});
   }

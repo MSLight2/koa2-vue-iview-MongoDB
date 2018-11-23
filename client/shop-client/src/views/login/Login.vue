@@ -86,7 +86,9 @@ export default {
       inputPassword: '',
       userErrorMsg: '',
       pwdErrorMsg: '',
-      loading: false
+      loading: false,
+      fromRouteName: 'home',
+      routeQuery: {}
     }
   },
   components: {
@@ -120,7 +122,7 @@ export default {
         } else {
           LoginUtils.setPwd('')
         }
-        this.$router.replace('/')
+        this.$router.replace({ name: this.fromRouteName, query: this.routeQuery })
       }).catch(() => {
         this.loading = false
         this.$Message.error('服务器休息中，请稍后重试')
@@ -161,6 +163,12 @@ export default {
     pwdChange () {
       LoginUtils.setPwd('')
     }
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.fromRouteName = from.name
+      vm.routeQuery = from.query
+    })
   }
 }
 </script>
