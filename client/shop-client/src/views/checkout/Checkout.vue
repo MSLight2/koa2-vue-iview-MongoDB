@@ -92,12 +92,21 @@ export default {
       let goodsIdArr = this.orderDetailDataList.map(item => { return item.goodsId })
       let propsData = {
         goodsIdList: JSON.stringify(goodsIdArr),
+        payType: parseInt(typePick) || null,
         payPrice: totalPrice
       }
       OrderApi.EditPayCheckout(propsData).then(res => {
         if (res.isSuccess) {
-          // this.$router.replace({ name: 'home' })
           // 支付成功页面
+          this.$router.replace({
+            name: 'success',
+            query: {
+              type: typePick,
+              price: totalPrice,
+              time: new Date().getTime(),
+              payNumber: new Date().getTime() * Math.random().toFixed(1) * 10
+            }
+          })
         } else {
           this.$Message.warning(res.errMsg)
         }

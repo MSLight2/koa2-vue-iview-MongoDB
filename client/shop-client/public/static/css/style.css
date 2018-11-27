@@ -2482,3 +2482,119 @@ textarea.input {
   color: #999999;
   margin-left: 5px;
 }
+/*=========================================================
+	16 -> ORDER PAGE
+===========================================================*/
+.order-content{
+  min-height: 500px;
+}
+.o-order-title{
+  display: flex;
+  align-items: center;
+  height: 45px;
+  line-height: 45px;
+  color: #FFF;
+  background: #D10024;
+  font-size: 16px;
+  box-sizing: border-box;
+  padding: 0 20px;
+}
+.o-order-title .g-detail{
+  width: 475px;
+}
+.o-order-title .g-price{
+  width: 250px;
+  text-align: center;
+}
+.o-order-title .g-type,
+.o-order-title .g-status{
+  flex-grow: 1;
+  text-align: center;
+}
+/* cnt */
+.order-items{
+  margin-top: 10px;
+}
+.order-items:first-child{margin: 0;}
+.order-cnt-top{
+  height: 35px;
+  padding: 0 20px;
+  line-height: 35px;
+  font-size: 14px;
+  color: #666;
+  background: #fafafa;
+}
+.order-cnt-top .order-time{
+  margin-left: 200px;
+}
+.order-cnt-desc{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 150px;
+  padding: 10px 0;
+  overflow: hidden;
+  box-sizing: border-box;
+  border-bottom: 1px dotted #ddd;
+  font-size: 14px;
+}
+.ocd-img{
+  height: 100%;
+  width: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.ocd-img img{
+  display: block;
+  width: 120px;
+  height: 120px;
+  flex-shrink: 0;
+  border-radius: 3px;
+}
+.ocd-img > p{
+  margin-left: 10px;
+  font-weight: 600;
+  font-size: 16px;
+}
+.ocd-img-desc{
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  margin-left: 10px;
+}
+.ocd-img-desc p:first-child{
+  margin-top: 10px;
+  max-width: 300px;
+  max-height: 40px;
+  overflow: hidden;
+  white-space: normal;
+  text-overflow: ellipsis;
+}
+.ocd-img-desc .price{
+  color: #999;
+  margin-bottom: 10px;
+}
+.ocd-price{
+  width: 250px;
+  text-align: center;
+  color: #999999;
+}
+.ocd-price > p:first-child{
+  color: #D10024;
+  font-weight: 600;
+  font-size: 16px;
+}
+.ocd-paytype,
+.ocd-status{
+  flex-grow: 1;
+  text-align: center;
+}
+.ocd-paytype .icon{
+  height: 35px;
+  width: 35px;
+  vertical-align: middle;
+  margin-right: 10px;
+}

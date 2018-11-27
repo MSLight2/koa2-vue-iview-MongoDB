@@ -4,7 +4,7 @@ let Utils = require('../utils/utils');
 let Code = require('../config/errCode');
 
 /**
- * 获取订单
+ * 获取未支付订单
  * @method get
  * @param {用户id} userId
  */
@@ -37,6 +37,56 @@ let getCheckoutList = async ctx => {
             'goodsId_docs.discountPrice': 0,
             'goodsId_docs.originalPrice': 0,
             'goodsId_docs.sold': 0
+          }
+      }   
+    ]).exec();
+    if (!checkouts) return ctx.body = Utils.responseJSON({errMsg: '此用户无订单数据'});
+
+    ctx.body = Utils.responseJSON({
+      result: checkouts,
+      isSuccess: true,
+      code: Code.successCode
+    })
+  } catch (error) {
+    ctx.body = Utils.responseJSON({errMsg: '查询数据出错', code: Code.dbErr});
+  }
+}
+
+/**
+ * 获取已支付订单
+ * @method get
+ * @param {用户id} userId
+ */
+let getPayCheckoutList = async ctx => {
+  let validateTokenResult = Utils.validateToken(ctx);
+  if (validateTokenResult.errMsg) return ctx.body = validateTokenResult;
+  let {userId = ''} = validateTokenResult;
+  if (Utils.isEmpty(userId)) return ctx.body = Utils.responseJSON({errMsg: '用户id是必须的，请传入token'});
+
+  try {
+    let checkouts = await CheckoutModule.aggregate([
+      {
+        $match: {'userId': userId, 'payStatus': {'$gte': 2}}
+      },
+      {
+        $lookup:
+          {
+            from: "goods",
+            localField: "goodsId",
+            foreignField: "goodsId",
+            as: "goodsId_docs"
+          }
+      },
+      // 查询结果不显示的项
+      {
+        $project:
+          {
+            _id: 0,
+            'goodsId_docs._id': 0,
+            'goodsId_docs.discountPrice': 0,
+            'goodsId_docs.originalPrice': 0,
+            'goodsId_docs.sold': 0,
+            'userId': 0
           }
       }   
     ]).exec();
@@ -91,6 +141,8 @@ let addCheckout = async ctx => {
         payTime: null,
         tradeStatus: 0,
         payStatus: 0,
+        payType: null,
+        payPrice: 0,
         orderNumber: '',
         remarks: ''
       }
@@ -150,6 +202,7 @@ let deleteCheckout = async ctx => {
  * @method post
  * @param {用户id} userId
  * @param {商品id数组} goodsIdList
+ * @param {支付方式} payType
  * @param {支付金额} payPrice (实际不应前端传支付金额)
  */
 let editCheckoutStatus = async ctx => {
@@ -159,12 +212,14 @@ let editCheckoutStatus = async ctx => {
   if (Utils.isEmpty(userId)) return ctx.body = Utils.responseJSON({errMsg: '用户id是必须的，请传入token'});
 
   try {
-    let {goodsIdList = '[]', payPrice = 0} = ctx.request.body;
+    let {goodsIdList = '[]', payType = null, payPrice = 0} = ctx.request.body;
     goodsIdList = JSON.parse(goodsIdList);
     if (goodsIdList.length <= 0) return ctx.body = Utils.responseJSON({errMsg: '商品id数不能为空'});
     if (goodsIdList.some(i => i === '' || i === null)) {
       return ctx.body = Utils.responseJSON({errMsg: '商品id不能为空'});
     }
+    if (!Number(payType)) return ctx.body = Utils.responseJSON({errMsg: '支付方式不能为空'});
+    if (!Number(payPrice)) return ctx.body = Utils.responseJSON({errMsg: '付款价格不能小于零'});
 
     let finds = await CheckoutModule.find({
       'userId': userId,
@@ -179,7 +234,9 @@ let editCheckoutStatus = async ctx => {
       {
         $set: {
           'payStatus': 2,
-          'payTime': new Date().getTime()
+          'payTime': new Date().getTime(),
+          'payType': payType,
+          'payPrice': payPrice
         }
       }
     );
@@ -228,6 +285,7 @@ let getCheckoutStatus = async ctx => {
 
 module.exports = {
   getCheckoutList: ['GET', '/api/getCheckoutList' , getCheckoutList],
+  getPayCheckoutList: ['GET', '/api/getPayCheckoutList' , getPayCheckoutList],
   addCheckout: ['POST', '/api/addCheckout' , addCheckout],
   deleteCheckout: ['POST', '/api/deleteCheckout' , deleteCheckout],
   editCheckoutStatus: ['POST', '/api/editCheckoutStatus' , editCheckoutStatus],

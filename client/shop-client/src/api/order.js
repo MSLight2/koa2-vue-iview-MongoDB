@@ -1,13 +1,25 @@
 import axios from '@/utils/AxiosUtil'
 
 /**
- * 获取订单
+ * 获取未支付订单
  * @method get
  */
 export const GetCheckoutList = (params) => {
   return axios({
     method: 'get',
     url: '/api/getCheckoutList',
+    params: params
+  })
+}
+
+/**
+ * 获取已支付订单
+ * @method get
+ */
+export const GetPayCheckoutList = (params) => {
+  return axios({
+    method: 'get',
+    url: '/api/getPayCheckoutList',
     params: params
   })
 }

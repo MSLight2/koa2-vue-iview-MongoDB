@@ -6,6 +6,7 @@ const Login = () => import('@/views/login/Login.vue')
 const RegisterAndReset = () => import('@/views/registerAndReset/RegisterAndReset.vue')
 const ProductDetail = () => import('@/views/detail/ProductDetail.vue')
 const Checkout = () => import('@/views/checkout/Checkout.vue')
+const Order = () => import('@/views/order/Order.vue')
 const Store = () => import('@/views/shopStore/Store.vue')
 const Cart = () => import('@/views/cart/Cart.vue')
 const Collection = () => import('@/views/collection/Collection.vue')
@@ -48,6 +49,11 @@ const router = new Router({
       path: '/checkout',
       name: 'checkout',
       component: Checkout
+    },
+    {
+      path: '/order',
+      name: 'order',
+      component: Order
     },
     {
       path: '/store',

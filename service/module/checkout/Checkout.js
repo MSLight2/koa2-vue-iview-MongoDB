@@ -15,6 +15,8 @@ var checkoutSchema = new Schema({
   payTime: String,
   tradeStatus: Number,
   payStatus: Number,
+  payType: Number,
+  payPrice: Number,
   orderNumber: String,
   remarks: String
 }, {versionKey: false})
