@@ -2598,3 +2598,23 @@ textarea.input {
   vertical-align: middle;
   margin-right: 10px;
 }
+/*=========================================================
+	17 -> USER CENTER PAGE
+===========================================================*/
+.user-main{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #F4F5F7;
+  display: flex;
+}
+.user-left{
+  background: #fff;
+  width: 15%;
+  box-shadow: 2px 0 10px 2px #BFBFBF;
+}
+.user-right{
+  flex-grow: 1;
+}
