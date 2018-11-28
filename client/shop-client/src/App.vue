@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <header-tmpl></header-tmpl>
+    <header-tmpl v-if="$route.name !== 'userCenter'"></header-tmpl>
     <transition name="fade" mode="out-in">
       <router-view/>
     </transition>

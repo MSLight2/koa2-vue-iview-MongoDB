@@ -14,7 +14,9 @@
       </ul>
       <ul class="header-links pull-right">
         <li v-if="dataInfo.name !== undefined">
-          <a href="javascript:;"><i class="fa fa-user-o"></i> 欢迎您 <u>{{dataInfo.nickName || dataInfo.name}}</u></a>
+          <a href="javascript:;" @click="goUserCenter">
+            <i class="fa fa-user-o"></i> 欢迎您 <u>{{dataInfo.nickName || dataInfo.name}}</u>
+          </a>
         </li>
         <li v-else>
           <a href="javascript:;" @click="goLogin"><i class="fa fa-user-o"></i> 登录/注册</a>
@@ -42,6 +44,9 @@ export default {
   methods: {
     goLogin () {
       this.$router.replace({ name: 'login' })
+    },
+    goUserCenter () {
+      this.$router.push({ name: 'userCenter' })
     }
   }
 }

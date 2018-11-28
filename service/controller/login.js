@@ -17,9 +17,8 @@ let getUserInfo = async (ctx, next) => {
   let {userId = ''} = validateTokenResult;
   if (Utils.isEmpty(userId)) return ctx.body = Utils.responseJSON({errMsg: '用户id是必须的，请传入token'});
   
-  let sqlWhere = {'_id': userId};
-
   try {
+    let sqlWhere = {'_id': userId};
     let users = await UsersModule.findById(sqlWhere, {'_id': 0, 'isDelete': 0});
     ctx.body = Utils.responseJSON({
       result: { dataInfo: users },
@@ -58,7 +57,11 @@ let login = async (ctx, next) => {
       && CryptoUtils.md5Encode(password) === users.password) {
       repData = Utils.responseJSON({
         result: {
-          token: jwt.sign({ userId: users['_id'] }, SecretConfig.secret, { expiresIn: '8h' })
+          token: jwt.sign(
+            { userId: users['_id'] },
+            SecretConfig.secret,
+            { expiresIn: SecretConfig.tokenExpire }
+          )
         },
         isSuccess: true,
         code: Code.successCode

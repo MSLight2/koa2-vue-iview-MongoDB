@@ -11,6 +11,7 @@ const Store = () => import('@/views/shopStore/Store.vue')
 const Cart = () => import('@/views/cart/Cart.vue')
 const Collection = () => import('@/views/collection/Collection.vue')
 const Success = () => import('@/views/success/Success.vue')
+const UserCenter = () => import('@/views/userCenter/UserCenter.vue')
 
 Vue.use(Router)
 
@@ -74,13 +75,20 @@ const router = new Router({
       path: '/success',
       name: 'success',
       component: Success
+    },
+    {
+      path: '/userCenter',
+      name: 'userCenter',
+      component: UserCenter
     }
   ]
 })
 
 router.beforeEach((to, from, next) => {
-  VuexStore.dispatch('getUserInfoAction')
-  VuexStore.dispatch('getCountAction')
+  if (to.name !== 'userCenter') {
+    VuexStore.dispatch('getUserInfoAction')
+    VuexStore.dispatch('getCountAction')
+  }
   next()
 })
 
