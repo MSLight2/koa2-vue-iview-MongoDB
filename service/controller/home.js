@@ -85,10 +85,10 @@ let getStoreGoodsList = async (ctx) => {
       minPrice = parseFloat(rangeArr[0] || 0);
       maxPrice = parseFloat(rangeArr[1] || null);
     }
-    let sqlWhere = null;
+    let sqlWhere = {};
     goodsType = JSON.parse(goodsType)
     if (goodsType.length > 0) sqlWhere = {'goodsType': {'$in': [...goodsType]}};
-    if (searchWords) sqlWhere['title'] = {'$regex': searchWords, '$options': '$g'};
+    if (searchWords) sqlWhere['title'] = {'$regex': searchWords, '$options': 'im'};
     if (minPrice || maxPrice) sqlWhere['showPrice'] = {'$gte': Number(minPrice), '$lte': Number(maxPrice)};
     // 排序字段
     let sortObj = null;

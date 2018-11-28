@@ -25,7 +25,12 @@
                     >{{item}}
                   </option>
                 </select>
-                <input v-model="searchContent" class="input" placeholder="请输入要搜索的商品">
+                <input
+                  v-model="searchContent"
+                  maxlength="30"
+                  class="input"
+                  placeholder="请输入要搜索的商品"
+                >
                 <button class="search-btn" @click="search">搜索</button>
               </form>
             </div>
@@ -173,7 +178,26 @@ export default {
     search () {
       if (!this.searchContent) return
       this.cartListShow = false
-      this.$emit('search', this.searchContent, this.categotySelect)
+      if (this.$route.name === 'store') {
+        this.$router.replace({
+          name: 'store',
+          query: {
+            type: this.categotySelect,
+            keywords: this.searchContent
+          }
+        })
+      } else {
+        this.$router.push({
+          name: 'store',
+          query: {
+            type: this.categotySelect,
+            keywords: this.searchContent
+          }
+        }, () => {
+          this.categotySelect = 0
+          this.searchContent = ''
+        })
+      }
     },
     // 显示购物车列表
     switchCart () {

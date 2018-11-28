@@ -72,23 +72,27 @@ export default {
     StoreList
   },
   mounted () {
-    this.goodsType = this.$route.query.type
-    if (this.goodsType) {
-      this.goodsTypeArr = []
-      this.goodsTypeArr.push(parseInt(this.goodsType))
-      this.fetchData()
-      this.getOtherGoods(parseInt(this.goodsType))
-    } else {
-      this.$Message.warning('你是真的皮╭(╯^╰)╮')
-      setTimeout(() => {
-        this.$router.go(-1)
-      }, 3000)
-    }
+    this.init()
   },
   methods: {
     ...mapMutations([
       'STORE_PRICE_TYPE'
     ]),
+    init () {
+      this.goodsType = this.$route.query.type
+      this.searchWords = this.$route.query.keywords
+      if (this.goodsType || this.searchWords) {
+        this.goodsTypeArr = []
+        if (parseInt(this.goodsType)) this.goodsTypeArr.push(parseInt(this.goodsType))
+        this.fetchData()
+        this.getOtherGoods(parseInt(this.goodsType))
+      } else {
+        this.$Message.warning('你是真的皮╭(╯^╰)╮')
+        setTimeout(() => {
+          this.$router.go(-1)
+        }, 3000)
+      }
+    },
     fetchData () {
       let params = {
         goodsType: JSON.stringify(this.goodsTypeArr),
@@ -102,10 +106,12 @@ export default {
         pageSize: this.pageSize
       }
       GoodsApi.GetGoodsList(params).then(res => {
-        this.goodsDataList = res.result
-        this.currentPage = res.paginationModule.page
-        this.pageSize = res.paginationModule.pageSize
-        this.pageTotal = res.paginationModule.total
+        if (res.isSuccess) {
+          this.goodsDataList = res.result
+          this.currentPage = res.paginationModule.page
+          this.pageSize = res.paginationModule.pageSize
+          this.pageTotal = res.paginationModule.total
+        }
       })
     },
     // 价格/销量
@@ -200,6 +206,11 @@ export default {
       GoodsApi.GetGoodsByCategory(params).then(res => {
         this.otherGoodsData = res.result
       })
+    }
+  },
+  watch: {
+    "$route": function () {
+      this.init()
     }
   }
 }
