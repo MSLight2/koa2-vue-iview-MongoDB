@@ -2601,14 +2601,42 @@ textarea.input {
 /*=========================================================
 	17 -> USER CENTER PAGE
 ===========================================================*/
-.user-main{
+.user-box{
   position: absolute;
-  top: 0;
   left: 0;
   right: 0;
+  top: 0;
   bottom: 0;
-  background: #F4F5F7;
   display: flex;
+  overflow: hidden;
+}
+.user-box-bg{
+  position: absolute;
+  left: -9%;
+  top: -80%;
+  width: 80%;
+  height: 400%;
+  background: #D9DDDE;
+  transform: rotateZ(-45deg);
+}
+.user-box-txt{
+  width: 100%;
+  height: 100%;
+  text-align: right;
+  background: #D10024;
+  color: #f7788d;
+  font-size: 340px;
+  line-height: 350px;
+}
+.user-main{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 90%;
+  height: 80%;
+  display: flex;
+  background: rgb(243, 244, 246, .9);
+  transform: translate(-50%, -50%);
 }
 .user-left{
   background: #fff;
