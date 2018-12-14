@@ -2643,6 +2643,44 @@ textarea.input {
   width: 15%;
   box-shadow: 2px 0 10px 2px #BFBFBF;
 }
+.user-left .title{
+  margin-top: 20px;
+  text-align: center;
+  text-transform: uppercase;
+}
+.user-left .user-img{
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+}
+.user-img .img-icon{
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  margin: 0 auto;
+}
+.user-img img{
+  height: 100%;
+  width: 100%;
+}
+.user-img p{
+  margin-top: 10px;
+}
 .user-right{
   flex-grow: 1;
+}
+.user-left-list{
+  margin-top: 20px;
+}
+.user-left-item{
+  cursor: pointer;
+  height: 40px;
+  line-height: 40px;
+  color: #999;
+  padding-left: 30px;
+}
+.user-left-item .login-icon{
+  margin-right: 10px;
+  font-size: 20px;
+  vertical-align: sub;
 }

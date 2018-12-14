@@ -4,9 +4,11 @@
     <div class="user-box-txt">ELEC<br/>TRO</div>
     <div class="user-main">
       <div class="user-left">
-        <h4>Electro.</h4>
+        <h4 class="title">Electro.</h4>
         <div class="user-img">
-          <img src="" alt=""/>
+          <div class="img-icon">
+             <img src="http://thirdwx.qlogo.cn/mmopen/vi_32/ztSCiaznRSyMN9lcpSCOaccqicyoIUtp3WcsJt4JTkxJeJgvodGeDJpjrZdmtQeBFMEGVFiaMFWU7V3GYiaPx1EcjQ/132" alt=""/>
+          </div>
           <p>飞来一只菜鸡</p>
         </div>
         <ul class="user-left-list">
