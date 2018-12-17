@@ -2656,12 +2656,12 @@ textarea.input {
 .user-img .img-icon{
   height: 100px;
   width: 100px;
-  border-radius: 50%;
   margin: 0 auto;
 }
 .user-img img{
   height: 100%;
   width: 100%;
+  border-radius: 50%;
 }
 .user-img p{
   margin-top: 10px;
@@ -2683,4 +2683,7 @@ textarea.input {
   margin-right: 10px;
   font-size: 20px;
   vertical-align: sub;
+}
+.user-left-list .active{
+  color: #333;
 }

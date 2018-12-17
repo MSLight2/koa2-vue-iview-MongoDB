@@ -12,6 +12,10 @@ const Cart = () => import('@/views/cart/Cart.vue')
 const Collection = () => import('@/views/collection/Collection.vue')
 const Success = () => import('@/views/success/Success.vue')
 const UserCenter = () => import('@/views/userCenter/UserCenter.vue')
+const UserMsg = () => import('@/views/userCenter/children/UserMsg.vue')
+const UserOrder = () => import('@/views/userCenter/children/Order.vue')
+const UserCollection = () => import('@/views/userCenter/children/Collection.vue')
+const UserAddress= () => import('@/views/userCenter/children/Address.vue')
 
 Vue.use(Router)
 
@@ -77,9 +81,35 @@ const router = new Router({
       component: Success
     },
     {
-      path: '/userCenter',
+      path: '/userCenter/:id',
       name: 'userCenter',
-      component: UserCenter
+      component: UserCenter,
+      children: [
+        {
+          path: '',
+          component: UserMsg
+        },
+        {
+          path: 'userMsg',
+          name: 'userMsg',
+          component: UserMsg
+        },
+        {
+          path: 'userOrder',
+          name: 'userOrder',
+          component: UserOrder
+        },
+        {
+          path: 'userCollection',
+          name: 'userCollection',
+          component: UserCollection
+        },
+        {
+          path: 'userAddress',
+          name: 'userAddress',
+          component: UserAddress
+        }
+      ]
     }
   ]
 })
