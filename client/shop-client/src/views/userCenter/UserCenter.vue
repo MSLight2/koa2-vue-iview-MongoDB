@@ -7,7 +7,7 @@
         <h4 class="title">Electro.</h4>
         <div class="user-img">
           <div class="img-icon">
-             <img src="http://img5.duitang.com/uploads/item/201411/07/20141107164412_v284V.jpeg" alt=""/>
+             <img src="https://img3.doubanio.com/view/photo/albumcover/public/p2516893255.webp" alt=""/>
           </div>
           <p>飞来一只菜鸡</p>
         </div>

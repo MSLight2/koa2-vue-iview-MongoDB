@@ -46,7 +46,10 @@ export default {
       this.$router.replace({ name: 'login' })
     },
     goUserCenter () {
-      this.$router.push({ name: 'userCenter' })
+      this.$router.push({
+        name: 'userMsg',
+        params: { id: 'userMsg' }
+      })
     }
   }
 }

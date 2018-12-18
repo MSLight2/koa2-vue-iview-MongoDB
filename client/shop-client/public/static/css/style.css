@@ -2635,8 +2635,9 @@ textarea.input {
   width: 90%;
   height: 80%;
   display: flex;
-  background: rgb(243, 244, 246, .9);
+  background: rgb(243, 244, 246, .95);
   transform: translate(-50%, -50%);
+  box-shadow: 0 0 3px 0 #eee;
 }
 .user-left{
   background: #fff;
@@ -2668,6 +2669,7 @@ textarea.input {
 }
 .user-right{
   flex-grow: 1;
+  padding: 30px 70px;
 }
 .user-left-list{
   margin-top: 20px;
@@ -2686,4 +2688,36 @@ textarea.input {
 }
 .user-left-list .active{
   color: #333;
+  border-left: 4px solid #D10024;
+  padding-left: 26px;
+}
+/* user header */
+.user-header{
+  position: relative;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+.user-btn{
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.user-btn > button {
+  margin-left: 20px;
+}
+.user-motto{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 50px;
+  margin-top: 15px;
+  overflow: hidden;
+}
+.user-motto .motto{
+  max-width: 500px;
+  max-height: 45px;
+  line-height: 15px;
+  font-size: 14px;
+  color: #999;
+  overflow: hidden;
 }
