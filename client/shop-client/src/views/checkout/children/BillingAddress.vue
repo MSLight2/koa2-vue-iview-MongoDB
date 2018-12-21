@@ -210,17 +210,17 @@ export default {
       },
       addressFormRule: {
         orderName: [
-          { required: true, message: '请填写名字/昵称', trigger: 'blur' },
+          { required: true, message: '请填写名字/昵称', trigger: 'blur' }
         ],
         orderEmail: [
           { required: true, message: '请填写邮箱地址', trigger: 'blur' },
           { validator: this.validateEmail, trigger: 'blur' }
         ],
         orderAddress: [
-          { required: true, message: '请填写详细地址', trigger: 'blur' },
+          { required: true, message: '请填写详细地址', trigger: 'blur' }
         ],
         orderCity: [
-          { required: true, message: '请填写所在的省-市', trigger: 'blur' },
+          { required: true, message: '请填写所在的省-市', trigger: 'blur' }
         ],
         orderPhone: [
           { required: true, message: '请填写手机号码', trigger: 'blur' },
@@ -236,17 +236,17 @@ export default {
       },
       otheAddressFormRule: {
         addOrderName: [
-          { required: true, message: '请填写名字/昵称', trigger: 'blur' },
+          { required: true, message: '请填写名字/昵称', trigger: 'blur' }
         ],
         addOrderEmail: [
           { required: true, message: '请填写邮箱地址', trigger: 'blur' },
           { validator: this.validateEmail, trigger: 'blur' }
         ],
         addOrderAddress: [
-          { required: true, message: '请填写详细地址', trigger: 'blur' },
+          { required: true, message: '请填写详细地址', trigger: 'blur' }
         ],
         addOrderCity: [
-          { required: true, message: '请填写所在的省-市', trigger: 'blur' },
+          { required: true, message: '请填写所在的省-市', trigger: 'blur' }
         ],
         addOrderPhone: [
           { required: true, message: '请填写手机号码', trigger: 'blur' },
@@ -284,7 +284,7 @@ export default {
         let _isDefault = this.orderCreateCheck.length > 0 ? true : ''
         let { nickName, email, detailAddress, city, phone, isDefault } = originalData
         let { orderName, orderEmail, orderAddress, orderCity, orderPhone } = compareData
-        if (nickName !== orderName || email !== orderEmail || detailAddress !== orderAddress || city !== orderCity || phone !== orderPhone ||isDefault !== _isDefault) {
+        if (nickName !== orderName || email !== orderEmail || detailAddress !== orderAddress || city !== orderCity || phone !== orderPhone || isDefault !== _isDefault) {
           return true
         } else {
           return false
@@ -414,7 +414,7 @@ export default {
   .billing-details >>> .ivu-btn-error{
     background-color: #D10024;
     border-color: #D10024;
-  },
+  }
   .not-click{
     pointer-events: none;
     color: #ccc;
