@@ -19,7 +19,12 @@ import {
   Icon,
   Modal,
   Page,
-  Slider
+  Slider,
+  DatePicker,
+  Radio,
+  RadioGroup,
+  Option,
+  Select
 } from 'iview'
 // iview组件
 Vue.component('Button', Button)
@@ -31,6 +36,11 @@ Vue.component('Icon', Icon)
 Vue.component('Modal', Modal)
 Vue.component('Page', Page)
 Vue.component('Slider', Slider)
+Vue.component('DatePicker', DatePicker)
+Vue.component('Radio', Radio)
+Vue.component('RadioGroup', RadioGroup)
+Vue.component('Option', Option)
+Vue.component('Select', Select)
 Vue.prototype.$Message = Message
 Vue.prototype.$Modal = Modal
 

@@ -2721,3 +2721,16 @@ textarea.input {
   color: #999;
   overflow: hidden;
 }
+.user-info{
+  padding: 20px 0;
+}
+.user-info form{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.user-input1,
+.user-input2{
+  min-width: 300px;
+  flex-grow: 1
+}

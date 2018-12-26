@@ -19,5 +19,5 @@ app.use(bodyParser());
 // 注册路由需放到bodyParser后面
 app.use(registerRouter());
 app.listen(3000, () => {
-  console.log('service has running in 3000 port')
+  console.log('Service is already running on port 3000')
 })
