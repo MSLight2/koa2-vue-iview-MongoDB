@@ -122,6 +122,7 @@ export default {
         } else {
           LoginUtils.setPwd('')
         }
+        if (this.fromRouteName === 'register') this.fromRouteName = 'home'
         this.$router.replace({ name: this.fromRouteName, query: this.routeQuery })
       }).catch(() => {
         this.loading = false

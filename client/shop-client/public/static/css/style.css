@@ -2734,3 +2734,12 @@ textarea.input {
   min-width: 300px;
   flex-grow: 1
 }
+.edit-btm-btn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+.edit-btm-btn button:last-child{
+  margin-left: 20px;
+}
