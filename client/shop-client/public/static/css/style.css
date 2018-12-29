@@ -2721,6 +2721,13 @@ textarea.input {
   color: #999;
   overflow: hidden;
 }
+.user-motto .motto-input{
+  height: 40px;
+  line-height: 40px;
+  font-size: 14px;
+  background: transparent;
+  width: 500px;
+}
 .user-info{
   padding: 20px 0;
 }
@@ -2742,4 +2749,67 @@ textarea.input {
 }
 .edit-btm-btn button:last-child{
   margin-left: 20px;
+}
+.user-info-detail{
+  position: relative;
+  padding: 20px 0;
+  font-size: 15px;
+}
+.user-info-detail ul li{
+  height: 40px;
+  line-height: 40px;
+  max-width: 800px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: #333;
+}
+.user-info-detail span{
+  display: inline-block;
+  width: 80px;
+  text-align: right;
+  color: #D10024;
+  font-weight: 600;
+}
+.user-info-detail .flash-txt{
+  position: absolute;
+  top: 40px;
+  right: 0;
+  padding: 0 20px;
+  font-size: 18px;
+  color: #666;
+  height: 200px;
+  width: 400px;
+  overflow: hidden;
+  line-height: 35px;
+  text-align: left;
+}
+.flash-txt .cursor{
+  display: inline-block;
+  font-size: 22px;
+  color: #D10024;
+  height: 24px;
+  line-height: 24px;
+  animation: cursorAnim 1.3s infinite;
+}
+.smile-icon{
+  position: absolute;
+  right: 40px;
+  bottom: 40px;
+}
+.smile-icon .icon{
+  width: 40px;
+  height: 40px;
+}
+.user-h3{
+  padding-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+}
+@keyframes cursorAnim{
+  0%,100%{
+    opacity: 0;
+  }
+  40%,60%{
+    opacity: 1;
+  }
 }

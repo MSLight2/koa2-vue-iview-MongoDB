@@ -13,23 +13,23 @@
         </div>
         <ul class="user-left-list">
           <li
-            :class="{'user-left-item': true, 'active': $route.name === 'userMsg'}"
-            @click="userChildrenActive('userMsg')">
+            :class="{'user-left-item': true, 'active': currentActive === 0}"
+            @click="userChildrenActive(0, 'userMsg')">
               <i class="login-icon iconfont icon-gerenziliao"></i>个人资料
           </li>
           <li
-            :class="{'user-left-item': true, 'active': $route.name === 'userOrder'}"
-            @click="userChildrenActive('userOrder')">
+            :class="{'user-left-item': true, 'active': currentActive === 1}"
+            @click="userChildrenActive(1, 'userOrder')">
               <i class="login-icon iconfont icon-dingdan1"></i>全部订单
           </li>
           <li
-            :class="{'user-left-item': true, 'active': $route.name === 'userCollection'}"
-            @click="userChildrenActive('userCollection')">
+            :class="{'user-left-item': true, 'active': currentActive === 2}"
+            @click="userChildrenActive(2, 'userCollection')">
               <i class="login-icon iconfont icon-shoucang"></i>我的收藏
           </li>
           <li
-            :class="{'user-left-item': true, 'active': $route.name === 'userAddress'}"
-            @click="userChildrenActive('userAddress')">
+            :class="{'user-left-item': true, 'active': currentActive === 3}"
+            @click="userChildrenActive(3, 'userAddress')">
               <i class="login-icon iconfont icon-dizhi-01"></i>收货地址
           </li>
         </ul>
@@ -46,10 +46,12 @@ export default {
   name: 'UserCenter',
   data () {
     return {
+      currentActive: 0
     }
   },
   methods: {
-    userChildrenActive (children) {
+    userChildrenActive (index, children) {
+      this.currentActive = index
       this.$router.replace({
         name: children
       })

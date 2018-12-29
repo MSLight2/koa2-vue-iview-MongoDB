@@ -3,11 +3,12 @@
     <div class="user-header">
       <h3>个人资料</h3>
       <div class="user-btn">
-        <Button type="primary" shape="circle" icon="ios-create">编辑</Button>
+        <Button type="primary" shape="circle" icon="ios-create" @click="editInfo">编辑</Button>
         <Button type="error" shape="circle" icon="md-close">注销</Button>
       </div>
       <div class="user-motto">
-        <p class="motto">人的一生很短，也很长。世事无常，活在当下，珍惜身边爱你和你所爱。</p>
+        <p class="motto" v-if="!isEditMotto">人的一生很短，也很长。世事无常，活在当下，珍惜身边爱你和你所爱。</p>
+        <input class="motto-input" type="text" maxlength="50" placeholder="请输入你的座右铭">
         <Button type="error" shape="circle" icon="md-brush"></Button>
       </div>
     </div>
@@ -54,11 +55,30 @@
       </Form>
     </div>
     <div class="edit-btm-btn">
-      <Button type="primary" size="large" icon="ios-close">取消</Button>
-      <Button type="success" size="large" icon="md-checkmark">保存</Button>
+      <Button type="primary" size="large" icon="ios-close" @click="cancelEdit">取消</Button>
+      <Button type="success" size="large" icon="md-checkmark" @click="saveEdit">保存</Button>
     </div>
     </template>
     <template v-else>
+      <div class="user-info-detail">
+        <ul>
+          <li><span class="left-label">昵称：</span>nidfjdfjk</li>
+          <li><span class="left-label">姓名：</span>次啊叽叽叽叽</li>
+          <li><span class="left-label">年龄：</span>18</li>
+          <li><span class="left-label">性别：</span>男</li>
+          <li><span class="left-label">邮箱：</span>7878@qq.com</li>
+          <li><span class="left-label">电话号码：</span>135784514575152</li>
+          <li><span class="left-label">地址：</span>jfjkdhfklsdfjsklgnnfjngdfjkghdklgjdlfkjgdlg</li>
+          <li><span class="left-label">出生日期：</span>2015-08-12</li>
+        </ul>
+        <div class="flash-txt">{{printMottoStr}}<i class="cursor" v-if="!isPrintFinished">|</i></div>
+      </div>
+      <div class="smile-icon" @click="showMottoAgain">
+        <!-- eslint-disable -->
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon--happy-"></use>
+        </svg>
+      </div>
     </template>
   </div>
 </template>
@@ -69,7 +89,12 @@ export default {
     return {
       ageList: [],
       selectAge: '',
+      isEditMotto: true,
       isEdit: false,
+      mottoStr: '人的一生很短，也很长。世事无常，活在当下，珍惜身边爱你和你所爱。',
+      printMottoStr: '',
+      isPrintFinished: true,
+      interval: null,
       formValidate: {
         name: '',
         nickName: '',
@@ -87,11 +112,47 @@ export default {
   mounted () {
     this.initAge()
   },
+  beforeDestroy () {
+    if (this.interval) clearInterval(this.interval)
+  },
   methods: {
     initAge () {
       for (let i = 16; i <= 100; i++) {
         this.ageList.push({ value: i.toString(), label: i.toString() })
       }
+    },
+    showMottoAgain () {
+      if (this.isPrintFinished) {
+        clearInterval(this.interval)
+        this.mottoPrinting()
+      }
+    },
+    mottoPrinting () {
+      let len = this.mottoStr.length
+      let current = 1
+      this.isPrintFinished = false
+      this.interval = setInterval(() => {
+        if (current > len - 1) {
+          current = 1
+          this.isPrintFinished = true
+          clearInterval(this.interval)
+          return
+        }
+        this.printMottoStr = this.mottoStr.substring(0, current)
+        current++
+      }, 200)
+    },
+    // 编辑
+    editInfo () {
+      this.isEdit = true
+    },
+    // 保存
+    saveEdit () {
+      this.isEdit = false
+    },
+    // 取消
+    cancelEdit () {
+      this.isEdit = false
     }
   }
 }

@@ -1,5 +1,7 @@
 <template>
-  <div></div>
+  <div>
+    <h3 class="user-h3">个人收藏</h3>
+  </div>
 </template>
 
 <script>
