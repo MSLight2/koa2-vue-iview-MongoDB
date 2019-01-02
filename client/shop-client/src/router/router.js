@@ -15,7 +15,7 @@ const UserCenter = () => import('@/views/userCenter/UserCenter.vue')
 const UserMsg = () => import('@/views/userCenter/children/UserMsg.vue')
 const UserOrder = () => import('@/views/userCenter/children/Order.vue')
 const UserCollection = () => import('@/views/userCenter/children/Collection.vue')
-const UserAddress= () => import('@/views/userCenter/children/Address.vue')
+const UserAddress = () => import('@/views/userCenter/children/Address.vue')
 
 Vue.use(Router)
 

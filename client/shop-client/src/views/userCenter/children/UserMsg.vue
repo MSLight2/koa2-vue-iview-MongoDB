@@ -8,7 +8,7 @@
       </div>
       <div class="user-motto">
         <p class="motto" v-if="!isEditMotto">人的一生很短，也很长。世事无常，活在当下，珍惜身边爱你和你所爱。</p>
-        <input class="motto-input" type="text" maxlength="50" placeholder="请输入你的座右铭">
+        <input class="motto-input" type="text" maxlength="50" placeholder="请输入你的座右铭" v-else>
         <Button type="error" shape="circle" icon="md-brush"></Button>
       </div>
     </div>
@@ -89,7 +89,7 @@ export default {
     return {
       ageList: [],
       selectAge: '',
-      isEditMotto: true,
+      isEditMotto: false,
       isEdit: false,
       mottoStr: '人的一生很短，也很长。世事无常，活在当下，珍惜身边爱你和你所爱。',
       printMottoStr: '',
