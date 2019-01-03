@@ -101,6 +101,7 @@ export default {
         path: []
       },
       cartDataList: [],
+      computeList: [],
       isEmpty: false,
       cartCount: [
         { count: 1 }
@@ -122,7 +123,7 @@ export default {
   computed: {
     totalPrice () {
       let total = 0
-      this.cartDataList.forEach((item, index) => {
+      this.computeList.forEach((item, index) => {
         total += Number(item.goodsId_docs[0].showPrice) * item.number
       })
       if (!total) return '0.00'
@@ -142,6 +143,7 @@ export default {
         this.cartCount = []
         this.cartDataList.forEach(item => {
           this.cartCount.push({ count: item.number })
+          this.computeList.push(item)
         })
       }).catch((err) => {
         this.isEmpty = true
@@ -165,16 +167,19 @@ export default {
       if (this.cartCount[index].count > 9999) {
         this.cartCount[index].count = 9999
       }
+      this.computeList[index].number = this.cartCount[index].count
     },
     decCount (index) {
       this.cartCount[index].count -= 1
       if (this.cartCount[index].count <= 1) {
         this.cartCount[index].count = 1
       }
+      this.computeList[index].number = this.cartCount[index].count
     },
     countChange (index) {
       if (this.cartCount[index].count <= 1) this.cartCount[index].count = 1
       if (this.cartCount[index].count > 9999) this.cartCount[index].count = 9999
+      this.computeList[index].number = this.cartCount[index].count
     },
     // 删除购物车
     deleteCart (index) {

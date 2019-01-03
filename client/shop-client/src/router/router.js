@@ -115,7 +115,8 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.name !== 'userCenter') {
+  let noFetchArr = ['userCenter', 'userMsg', 'userOrder', 'userCollection', 'userAddress']
+  if (noFetchArr.indexOf(to.name) === -1) {
     VuexStore.dispatch('getUserInfoAction')
     VuexStore.dispatch('getCountAction')
   }

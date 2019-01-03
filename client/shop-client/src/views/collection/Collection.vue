@@ -5,7 +5,7 @@
       <div class="container">
         <div class="row">
           <div class="collection-title">商品收藏（{{pageTotal}}）</div>
-          <div class="collection-main"  v-if="!isEmpty && collectionList.length > 0">
+          <div class="collection-main" v-if="!isEmpty && collectionList.length > 0">
             <div class="collection-item" v-for="(item, index) in collectionList" :key="index">
               <div class="collection-img" v-lazy-container="{ selector: 'img' }">
                 <img :data-src="item.goodsId_docs[0].mainPicPath | filterImgUrl" alt=""/>
@@ -115,6 +115,7 @@ export default {
         onOk: () => {
           CollectionApi.DeleteCollection({ goodsId: id }).then(res => {
             this.$store.dispatch('getCountAction')
+            this.currentPage = 1
             this.fetchData()
           }).catch(err => {
             if (err.code >= 1000 & err.code <= 1002) {

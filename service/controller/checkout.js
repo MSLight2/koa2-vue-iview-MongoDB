@@ -103,6 +103,76 @@ let getPayCheckoutList = async ctx => {
 }
 
 /**
+ * 获取已所有订单
+ * @method get
+ * @param {用户id} userId
+ * @param {查询页数} page
+ * @param {返回行数} pageSize
+ */
+let getAllOrders = async ctx => {
+  let validateTokenResult = Utils.validateToken(ctx);
+  if (validateTokenResult.errMsg) return ctx.body = validateTokenResult;
+  let {userId = ''} = validateTokenResult;
+  if (Utils.isEmpty(userId)) return ctx.body = Utils.responseJSON({errMsg: '用户id是必须的，请传入token'});
+
+  let {
+    page = 1,
+    pageSize = 10
+  } = ctx.query;
+  let pageskip = page ? parseInt(page) - 1 : 0;
+  if (pageskip < 0) pageskip = 0;
+  pageSize = pageSize ? parseInt(pageSize) : 10;
+  let skipCount = pageskip * pageSize;
+
+  try {
+    let checkouts = await CheckoutModule.aggregate([
+      {
+        $match: {'userId': userId}
+      },
+      {
+        $lookup:
+          {
+            from: "goods",
+            localField: "goodsId",
+            foreignField: "goodsId",
+            as: "goodsId_docs"
+          }
+      },
+      {
+        $project:
+          {
+            _id: 0,
+            'goodsId_docs._id': 0,
+            'goodsId_docs.originalPrice': 0,
+            'goodsId_docs.sold': 0,
+            'userId': 0
+          }
+      }   
+    ])
+    .skip(skipCount)
+    .limit(pageSize)
+    .exec();
+    if (!checkouts) return ctx.body = Utils.responseJSON({errMsg: '此用户无订单数据'});
+    let checkoutCount = await CheckoutModule.find({'userId': userId}).count();
+
+    ctx.body = {
+      ...Utils.responseJSON({
+        result: checkouts,
+        isSuccess: true,
+        code: Code.successCode
+      }),
+      ...Utils.repPagination({
+        page: page,
+        pageSize: pageSize,
+        total: checkoutCount
+      })
+    }
+  } catch (error) {
+    ctx.body = Utils.responseJSON({errMsg: '查询数据出错', code: Code.dbErr});
+  }
+}
+
+/**
  * 生成订单
  * @method post
  * @param {用户id} userId
@@ -286,6 +356,7 @@ let getCheckoutStatus = async ctx => {
 module.exports = {
   getCheckoutList: ['GET', '/api/getCheckoutList' , getCheckoutList],
   getPayCheckoutList: ['GET', '/api/getPayCheckoutList' , getPayCheckoutList],
+  getAllOrders: ['GET', '/api/getAllOrders' , getAllOrders],
   addCheckout: ['POST', '/api/addCheckout' , addCheckout],
   deleteCheckout: ['POST', '/api/deleteCheckout' , deleteCheckout],
   editCheckoutStatus: ['POST', '/api/editCheckoutStatus' , editCheckoutStatus],

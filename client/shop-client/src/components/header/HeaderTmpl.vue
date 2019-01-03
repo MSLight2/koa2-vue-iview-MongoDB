@@ -148,6 +148,11 @@ export default {
       CartApi.GetCartList().then(res => {
         this.loading = false
         this.cartDataList = res.result
+        if (this.cartDataList.length <= 0) {
+          setTimeout(() => {
+            this.cartListShow = false
+          }, 1500)
+        }
       }).catch(() => {
         this.loading = false
       })

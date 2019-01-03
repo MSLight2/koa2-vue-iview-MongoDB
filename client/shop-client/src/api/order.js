@@ -25,6 +25,18 @@ export const GetPayCheckoutList = (params) => {
 }
 
 /**
+ * 获取所有订单
+ * @method get
+ */
+export const GetAllOrders = (params) => {
+  return axios({
+    method: 'get',
+    url: '/api/getAllOrders',
+    params: params
+  })
+}
+
+/**
  * 生成订单
  * @method post
  * @param {商品购物列表} goodsCartList

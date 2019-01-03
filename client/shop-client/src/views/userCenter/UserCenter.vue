@@ -33,6 +33,15 @@
               <i class="login-icon iconfont icon-dizhi-01"></i>收货地址
           </li>
         </ul>
+        <div class="user-left-home">
+          <Button
+            type="error"
+            shape="circle"
+            icon="md-home"
+            ghost
+            @click="goHome">首页
+          </Button>
+        </div>
       </div>
       <div class="user-right">
         <router-view></router-view>
@@ -55,7 +64,22 @@ export default {
       this.$router.replace({
         name: children
       })
+    },
+    goHome () {
+      this.$router.replace({ name: 'home' })
     }
   }
 }
 </script>
+
+<style>
+  .usercenter-empty{
+    text-align: center;
+    margin-top: 100px;
+  }
+  .user-store-filter{
+    position: absolute;
+    right: 60px;
+    bottom: 20px;
+  }
+</style>
