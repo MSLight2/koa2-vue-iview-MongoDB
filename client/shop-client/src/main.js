@@ -5,7 +5,7 @@ import store from './store/store'
 import SetGlobalFilters from '@/utils/GlobalFilters'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import VueLazyload from 'vue-lazyload'
-import './style/iconfont/iconfont';
+import './style/iconfont/iconfont'
 import jQuery from 'jquery'
 import 'swiper/dist/css/swiper.css'
 import 'iview/dist/styles/iview.css'
@@ -24,7 +24,8 @@ import {
   Radio,
   RadioGroup,
   Option,
-  Select
+  Select,
+  Drawer
 } from 'iview'
 // iview组件
 Vue.component('Button', Button)
@@ -41,6 +42,7 @@ Vue.component('Radio', Radio)
 Vue.component('RadioGroup', RadioGroup)
 Vue.component('Option', Option)
 Vue.component('Select', Select)
+Vue.component('Drawer', Drawer)
 Vue.prototype.$Message = Message
 Vue.prototype.$Modal = Modal
 

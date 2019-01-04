@@ -19,16 +19,25 @@
         </div>
       </div>
     </div>
+    <drawer-list
+      :is-show="drawerShow"
+      @close="drawerShow = false"
+      @sureSubmit="sureSubmit"></drawer-list>
   </div>
 </template>
 
 <script>
 import * as AddressApi from '@/api/address'
+import DrawerList from './DrawerList'
 export default {
   data () {
     return {
-      addressList: []
+      addressList: [],
+      drawerShow: false
     }
+  },
+  components: {
+    DrawerList
   },
   mounted () {
     this.fetchData()
@@ -54,6 +63,11 @@ export default {
     },
     // 编辑地址
     editAdress () {
+      this.drawerShow = true
+    },
+    // 确定修改
+    sureSubmit () {
+      this.drawerShow = false
     },
     // 删除地址
     deleteAddress (id) {
