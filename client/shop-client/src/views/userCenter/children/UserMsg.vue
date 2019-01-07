@@ -16,11 +16,11 @@
     <div class="user-info">
       <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
         <div class="user-input1">
-          <FormItem label="昵称" prop="name">
-            <Input v-model="formValidate.name" placeholder="请输入昵称"/>
+          <FormItem label="姓名" prop="name">
+            <Input v-model="formValidate.name" placeholder="请输入姓名"/>
           </FormItem>
-          <FormItem label="姓名" prop="nickName">
-            <Input v-model="formValidate.nickName" placeholder="请输入姓名"/>
+          <FormItem label="昵称" prop="nickName">
+            <Input v-model="formValidate.nickName" placeholder="请输入昵称"/>
           </FormItem>
           <FormItem label="年龄" prop="age">
             <Select v-model="formValidate.age" style="width:200px" placeholder="请选择年龄">

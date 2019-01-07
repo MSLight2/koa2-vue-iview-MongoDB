@@ -21,11 +21,8 @@ let getAddressList = async ctx => {
     let sqlWhere = {'userId': userId}
     if (isDefault) {
       sqlWhere['isDefault'] = true
-      // addresses = await AddressModule.find(sqlWhere);
     }
     addresses = await AddressModule.find(sqlWhere);
-    // if (addresses.length <= 0) {
-    // }
     ctx.body = Utils.responseJSON({
       result: addresses,
       isSuccess: true,

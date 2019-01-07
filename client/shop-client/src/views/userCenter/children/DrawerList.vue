@@ -7,43 +7,27 @@
       :mask-closable="false"
       @on-close="close"
     >
-      <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
-        <FormItem label="昵称" prop="name">
-          <Input v-model="formValidate.name" placeholder="请输入昵称"/>
+      <Form ref="userAddresFroms" :model="formValidate" :rules="ruleValidate" :label-width="100">
+        <FormItem label="昵称" prop="nickName">
+          <Input v-model="formValidate.nickName" placeholder="请输入昵称" :maxlength="20"/>
         </FormItem>
-        <FormItem label="姓名" prop="nickName">
-          <Input v-model="formValidate.nickName" placeholder="请输入姓名"/>
+        <FormItem label="邮箱地址" prop="email">
+          <Input v-model="formValidate.email" placeholder="请输入邮箱地址" :maxlength="30"/>
         </FormItem>
-        <FormItem label="年龄" prop="age">
-          <Select v-model="formValidate.age" style="width:200px" placeholder="请选择年龄">
-            <Option
-              v-for="item in ageList"
-              :value="item.value"
-              :key="item.value">{{ item.label }}
-            </Option>
-          </Select>
+        <FormItem label="手机号码" prop="phone">
+          <Input v-model="formValidate.phone" placeholder="请输入手机号码" :maxlength="11"/>
         </FormItem>
-        <FormItem label="性别" prop="sex">
-          <RadioGroup v-model="formValidate.sex">
-            <Radio label="male">男</Radio>
-            <Radio label="female">女</Radio>
+        <FormItem label="省市" prop="city">
+          <Input v-model="formValidate.city" placeholder="请输入省市" :maxlength="20"/>
+        </FormItem>
+        <FormItem label="详细地址" prop="address">
+          <Input v-model="formValidate.address" placeholder="请输入详细地址" :maxlength="100"/>
+        </FormItem>
+        <FormItem label="是否为默认地址" prop="isDefault">
+          <RadioGroup v-model="formValidate.isDefault">
+            <Radio label="true">是</Radio>
+            <Radio label="false">否</Radio>
           </RadioGroup>
-        </FormItem>
-        <FormItem label="邮箱" prop="email">
-          <Input v-model="formValidate.email" placeholder="请输入邮箱地址"/>
-        </FormItem>
-        <FormItem label="电话号码" prop="phone">
-          <Input v-model="formValidate.phone" placeholder="请输入电话号码"/>
-        </FormItem>
-        <FormItem label="地址" prop="address">
-          <Input v-model="formValidate.address" placeholder="请输入详细地址"/>
-        </FormItem>
-        <FormItem label="出生日期" prop="birthday">
-          <DatePicker
-            v-model="formValidate.birthday"
-            :editable="false" type="date"
-            placeholder="请选择日期">
-          </DatePicker>
         </FormItem>
       </Form>
       <div class="demo-drawer-footer">
@@ -55,36 +39,34 @@
 </template>
 
 <script>
+import Utils from '@/utils/utils'
 export default {
   data () {
     return {
       showDrawer: false,
-      ageList: [],
+      cityList: [],
       formValidate: {
-        name: '',
         nickName: '',
-        sex: 'male',
-        age: '',
         email: '',
         phone: '',
+        city: '',
         address: '',
-        birthday: ''
+        isDefault: 'false'
       },
       ruleValidate: {
-        name: [
-          { required: true, message: '请填写用户名', trigger: 'blur' }
-        ],
         nickName: [
           { required: true, message: '请填写昵称', trigger: 'blur' }
         ],
-        age: [
-          { required: true, type: 'string', message: '请选择年龄', trigger: 'change' }
-        ],
         email: [
-          { required: true, message: '请填写邮箱地址', trigger: 'blur' }
+          { required: true, message: '请填写邮箱地址', trigger: 'blur' },
+          { validator: this.validateUserEmail, trigger: 'blur' }
         ],
         phone: [
-          { required: true, message: '请填写手机号码', trigger: 'blur' }
+          { required: true, message: '请填写手机号码', trigger: 'blur' },
+          { validator: this.validateUserPhone, trigger: 'blur' }
+        ],
+        city: [
+          { required: true, message: '请填写省市', trigger: 'blur' }
         ],
         address: [
           { required: true, message: '请填写收货地址', trigger: 'blur' }
@@ -93,7 +75,6 @@ export default {
     }
   },
   mounted () {
-    this.initAge()
   },
   props: {
     isShow: {
@@ -104,37 +85,72 @@ export default {
     title: {
       type: String,
       default: '编辑信息'
+    },
+    dataInfo: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    },
+    openType: {
+      type: String,
+      default: 'add'
     }
   },
   methods: {
-    initAge () {
-      for (let i = 16; i <= 100; i++) {
-        this.ageList.push({ value: i.toString(), label: i.toString() })
-      }
-    },
     close () {
       this.$emit('close')
     },
     sureSubmit () {
-      this.$emit('sureSubmit')
+      this.$refs['userAddresFroms'].validate(valid => {
+        if (valid) {
+          console.log(this.formValidate)
+          this.$emit('sureSubmit', this.formValidate)
+        }
+      })
+    },
+    // 验证
+    validateUserEmail (rule, value, callback) {
+      if (!Utils.isEmail(value)) {
+        return callback(new Error('邮箱格式不正确'))
+      }
+      callback()
+    },
+    validateUserPhone (rule, value, callback) {
+      if (!Utils.isPhone(value)) {
+        return callback(new Error('手机号码式不正确'))
+      }
+      callback()
     }
   },
   watch: {
     isShow () {
       this.showDrawer = this.isShow
+    },
+    dataInfo () {
+      if (this.openType === 'edit') {
+        this.formValidate.nickName = this.dataInfo.nickName
+        this.formValidate.email = this.dataInfo.email
+        this.formValidate.phone = this.dataInfo.phone
+        this.formValidate.city = this.dataInfo.city
+        this.formValidate.address = this.dataInfo.detailAddress
+        this.formValidate.isDefault = this.dataInfo.isDefault ? 'true' : 'false'
+      } else {
+        this.formValidate.nickName = ''
+        this.formValidate.email = ''
+        this.formValidate.phone = ''
+        this.formValidate.city = ''
+        this.formValidate.address = ''
+        this.formValidate.isDefault = 'false'
+      }
     }
   }
 }
 </script>
 <style>
   .demo-drawer-footer{
-    width: 100%;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    border-top: 1px solid #e8e8e8;
     padding: 10px 16px;
-    text-align: right;
+    text-align: center;
     background: #fff;
   }
 </style>

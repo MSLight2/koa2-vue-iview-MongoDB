@@ -1,6 +1,6 @@
 export default {
   isPhone (val) {
-    if (/^1[34578][0-9]{9}$/g.test(val)) {
+    if (/^1[3456789][0-9]{9}$/g.test(val)) {
       return true
     } else {
       return false
