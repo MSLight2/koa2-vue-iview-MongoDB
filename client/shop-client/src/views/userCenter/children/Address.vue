@@ -30,7 +30,8 @@
       :data-info="addressInfo"
       :open-type="openType"
       @close="drawerShow = false"
-      @sureSubmit="sureSubmit"></drawer-list>
+      @sureSubmit="sureSubmit">
+    </drawer-list>
   </div>
 </template>
 

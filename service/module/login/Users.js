@@ -18,6 +18,7 @@ var usersSchema = new Schema({
   birthday: {type: Date, default: Date.now},
   phone: String,
   password: String,
+  motto: String,
   isDelete: Boolean
 }, {versionKey: false})
 

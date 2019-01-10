@@ -56,3 +56,37 @@ export const getUserInfo = (params) => {
     params: params
   })
 }
+
+/**
+ * 编辑用户信息
+ * @method post
+ * @param {姓名} name
+ * @param {昵称} nickName
+ * @param {年龄} age
+ * @param {性别} sex
+ * @param {邮箱} email
+ * @param {地址} address
+ * @param {生日} birthday
+ * @param {电话} phone
+ * @param {座右铭} motto 非必传
+ */
+export const EditUserInfo = (data) => {
+  return axios({
+    method: 'post',
+    url: '/api/editUserInfo',
+    data: data
+  })
+}
+
+/**
+ * 编辑用户座右铭
+ * @method post
+ * @param {座右铭} motto
+ */
+export const EditUserMotto = (data) => {
+  return axios({
+    method: 'post',
+    url: '/api/editUserMotto',
+    data: data
+  })
+}

@@ -170,9 +170,100 @@ let resetPassword = async (ctx) => {
   }
 }
 
+/**
+ * 编辑用户信息
+ * @method post
+ * @param {姓名} name
+ * @param {昵称} nickName
+ * @param {年龄} age
+ * @param {性别} sex
+ * @param {邮箱} email
+ * @param {地址} address
+ * @param {生日} birthday
+ * @param {电话} phone
+ * @param {座右铭} motto 非必传
+ */
+let editUserInfo = async (ctx) => {
+  let validateTokenResult = Utils.validateToken(ctx);
+  if (validateTokenResult.errMsg) return ctx.body = validateTokenResult;
+  let {userId = ''} = validateTokenResult;
+  if (Utils.isEmpty(userId)) return ctx.body = Utils.responseJSON({errMsg: '用户id是必须的，请传入token'});
+
+  try {
+    let {
+      name = '',
+      nickName = '',
+      age = 0,
+      sex = 0,
+      email = '',
+      address = '',
+      birthday = '',
+      phone = '',
+      motto = ''
+    } = ctx.request.body;
+    if (!name || !nickName || !age || !email || !address || !birthday || !phone) {
+      return ctx.body = Utils.responseJSON({errMsg: '缺少必传字段'});
+    }
+    if (!Utils.isPhoneNumber(phone)) {
+      return ctx.body = Utils.responseJSON({errMsg: '手机号码格式不正确'});
+    }
+    if (!Utils.isEmail(email)) {
+      return ctx.body = Utils.responseJSON({errMsg: '邮箱地址格式不正确'});
+    }
+    let updateWhere = {
+      'name': name,
+      'nickName': nickName,
+      'age': parseInt(age) || 0,
+      'sex': parseInt(sex) || 0,
+      'email': email,
+      'address': address,
+      'birthday': birthday,
+      'phone': phone
+    };
+    if (motto) updateWhere['motto'] = motto
+    let doc = await UsersModule.findOneAndUpdate({'_id': userId}, {$set: updateWhere});
+    if (!doc) return ctx.body = Utils.responseJSON({errMsg: '改用户不存在'});
+    ctx.body = Utils.responseJSON({
+      result: '用户信息已更新',
+      isSuccess: true,
+      code: Code.successCode
+    });
+  } catch (error) {
+    ctx.body = Utils.responseJSON({errMsg: '更新数据出错', code: Code.dbErr});
+  }
+}
+
+/**
+ * 编辑座右铭
+ * @method post
+ * @param {座右铭} motto
+ */
+let editUserMotto = async (ctx) => {
+  let validateTokenResult = Utils.validateToken(ctx);
+  if (validateTokenResult.errMsg) return ctx.body = validateTokenResult;
+  let {userId = ''} = validateTokenResult;
+  if (Utils.isEmpty(userId)) return ctx.body = Utils.responseJSON({errMsg: '用户id是必须的，请传入token'});
+
+  try {
+    let { motto = '' } = ctx.request.body;
+    if (!motto) return ctx.body = Utils.responseJSON({errMsg: '座右铭字段是必须的'});
+    let doc = await UsersModule.findOneAndUpdate({'_id': userId}, {$set: {'motto': motto}});
+    if (!doc) if (!doc) return ctx.body = Utils.responseJSON({errMsg: '改用户不存在'});
+    ctx.body = Utils.responseJSON({
+      result: '座右铭已更新',
+      isSuccess: true,
+      code: Code.successCode
+    });
+  } catch (error) {
+    ctx.body = Utils.responseJSON({errMsg: '更新数据出错', code: Code.dbErr});
+  }
+}
+
 module.exports = {
   getUserInfo: ['GET', '/api/userInfo', getUserInfo],
   login: ['POST', '/api/login', login],
   regist: ['POST', '/api/regist', regist],
-  resetPassword: ['POST', '/api/resetPassword', resetPassword]
+  resetPassword: ['POST', '/api/resetPassword', resetPassword],
+  editUserInfo: ['POST', '/api/editUserInfo', editUserInfo],
+  editUserMotto: ['POST', '/api/editUserMotto', editUserMotto]
 }

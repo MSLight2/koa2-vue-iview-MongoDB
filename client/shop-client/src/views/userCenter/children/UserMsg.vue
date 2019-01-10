@@ -14,13 +14,13 @@
     </div>
     <template v-if="isEdit">
     <div class="user-info">
-      <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
+      <Form ref="userMsgForms" :model="formValidate" :rules="ruleValidate" :label-width="80">
         <div class="user-input1">
           <FormItem label="姓名" prop="name">
-            <Input v-model="formValidate.name" placeholder="请输入姓名"/>
+            <Input v-model="formValidate.name" placeholder="请输入姓名" :maxlength="20"/>
           </FormItem>
           <FormItem label="昵称" prop="nickName">
-            <Input v-model="formValidate.nickName" placeholder="请输入昵称"/>
+            <Input v-model="formValidate.nickName" placeholder="请输入昵称" :maxlength="20"/>
           </FormItem>
           <FormItem label="年龄" prop="age">
             <Select v-model="formValidate.age" style="width:200px" placeholder="请选择年龄">
@@ -40,36 +40,47 @@
         </div>
         <div class="user-input2">
           <FormItem label="邮箱" prop="email">
-            <Input v-model="formValidate.email" placeholder="请输入邮箱地址"/>
+            <Input v-model="formValidate.email" placeholder="请输入邮箱地址" :maxlength="30"/>
           </FormItem>
           <FormItem label="电话号码" prop="phone">
-            <Input v-model="formValidate.phone" placeholder="请输入电话号码"/>
+            <Input v-model="formValidate.phone" placeholder="请输入电话号码" :maxlength="11"/>
           </FormItem>
           <FormItem label="地址" prop="address">
-            <Input v-model="formValidate.address" placeholder="请输入详细地址"/>
+            <Input v-model="formValidate.address" placeholder="请输入详细地址" :maxlength="50"/>
           </FormItem>
           <FormItem label="出生日期" prop="birthday">
-            <DatePicker v-model="formValidate.birthday" type="date" placeholder="请选择日期"></DatePicker>
+            <DatePicker
+              v-model="formValidate.birthday"
+              type="date"
+              :editable="false"
+              placeholder="请选择日期">
+            </DatePicker>
           </FormItem>
         </div>
       </Form>
     </div>
     <div class="edit-btm-btn">
       <Button type="primary" size="large" icon="ios-close" @click="cancelEdit">取消</Button>
-      <Button type="success" size="large" icon="md-checkmark" @click="saveEdit">保存</Button>
+      <Button
+        type="success"
+        size="large"
+        icon="md-checkmark"
+        :loading="btnLoading"
+        @click="saveEdit">保存
+      </Button>
     </div>
     </template>
     <template v-else>
       <div class="user-info-detail">
         <ul>
-          <li><span class="left-label">昵称：</span>nidfjdfjk</li>
-          <li><span class="left-label">姓名：</span>次啊叽叽叽叽</li>
-          <li><span class="left-label">年龄：</span>18</li>
-          <li><span class="left-label">性别：</span>男</li>
-          <li><span class="left-label">邮箱：</span>7878@qq.com</li>
-          <li><span class="left-label">电话号码：</span>135784514575152</li>
-          <li><span class="left-label">地址：</span>jfjkdhfklsdfjsklgnnfjngdfjkghdklgjdlfkjgdlg</li>
-          <li><span class="left-label">出生日期：</span>2015-08-12</li>
+          <li><span class="left-label">昵称：</span>{{userInfoData.nickName || '----'}}</li>
+          <li><span class="left-label">姓名：</span>{{userInfoData.name || '----'}}</li>
+          <li><span class="left-label">年龄：</span>{{userInfoData.age || '18岁？嗯哼~'}}</li>
+          <li><span class="left-label">性别：</span>{{userInfoData.sex ? '男' : '女'}}</li>
+          <li><span class="left-label">邮箱：</span>{{userInfoData.email || '----'}}</li>
+          <li><span class="left-label">电话号码：</span>{{userInfoData.phone || 'xxxxxx'}}</li>
+          <li><span class="left-label">地址：</span>{{userInfoData.address || '----（你是住空中吗？）'}}</li>
+          <li><span class="left-label">出生日期：</span>{{userInfoData.birthday | formatDate}}</li>
         </ul>
         <div class="flash-txt">{{printMottoStr}}<i class="cursor" v-if="!isPrintFinished">|</i></div>
       </div>
@@ -84,9 +95,16 @@
 </template>
 
 <script>
+import Utils from '@/utils/utils'
+import { mapGetters } from 'vuex'
+import moment from 'moment'
+import { EditUserInfo, EditUserMotto } from '@/api/login'
+
 export default {
   data () {
     return {
+      userInfoData: {},
+      btnLoading: false,
       ageList: [],
       selectAge: '',
       isEditMotto: false,
@@ -106,14 +124,48 @@ export default {
         birthday: ''
       },
       ruleValidate: {
+        name: [
+          { required: true, message: '请填写名字', trigger: 'blur' }
+        ],
+        nickName: [
+          { required: true, message: '请填写昵称', trigger: 'blur' }
+        ],
+        age: [
+          { required: true, type: 'string', message: '请选择年龄', trigger: 'change' }
+        ],
+        email: [
+          { required: true, message: '请填写邮箱地址', trigger: 'blur' },
+          { validator: this.validateUserEmail, trigger: 'blur' }
+        ],
+        phone: [
+          { required: true, message: '请填写号码', trigger: 'blur' },
+          { validator: this.validateUserPhone, trigger: 'blur' }
+        ],
+        address: [
+          { required: true, message: '请填写详细地址', trigger: 'blur' }
+        ],
+        birthday: [
+          { required: true, type: 'date', message: '请选择出生日期', trigger: 'change' }
+        ]
       }
     }
   },
   mounted () {
     this.initAge()
+    this.userInfoData = this.userInfoGetter
   },
   beforeDestroy () {
     if (this.interval) clearInterval(this.interval)
+  },
+  computed: {
+    ...mapGetters({
+      userInfoGetter: 'getUserInfoData'
+    })
+  },
+  watch: {
+    getUserInfoData () {
+      this.userInfoData = this.userInfoGetter
+    }
   },
   methods: {
     initAge () {
@@ -144,15 +196,75 @@ export default {
     },
     // 编辑
     editInfo () {
+      this.formValidate.name = this.userInfoData.name
+      this.formValidate.nickName = this.userInfoData.nickName
+      this.formValidate.age = this.userInfoData.age + ''
+      this.formValidate.sex = this.userInfoData.sex ? 'male' : 'female'
+      this.formValidate.email = this.userInfoData.email
+      this.formValidate.address = this.userInfoData.address
+      this.formValidate.birthday = this.userInfoData.birthday || null
+      this.formValidate.phone = this.userInfoData.phone
       this.isEdit = true
     },
     // 保存
     saveEdit () {
-      this.isEdit = false
+      this.$refs['userMsgForms'].validate(valid => {
+        if (valid) {
+          let postData = {
+            name: this.formValidate.name,
+            nickName: this.formValidate.nickName,
+            age: parseInt(this.formValidate.age) || 0,
+            sex: this.formValidate.sex === 'male' ? 1 : 0,
+            email: this.formValidate.email,
+            address: this.formValidate.address,
+            birthday: this.formValidate.birthday,
+            phone: this.formValidate.phone
+          }
+          EditUserInfo(postData).then(res => {
+            this.isEdit = false
+            this.btnLoading = false
+            if (res.isSuccess) {
+              this.$Message.success('保存成功')
+              this.$store.dispatch('getUserInfoAction')
+            } else {
+              this.$Message.warning(res.errMsg)
+            }
+          }).catch(err => {
+            this.btnLoading = false
+            if (err.code >= 1000 & err.code <= 1002) {
+              this.$Message.error('登录过期，请重新登录')
+            } else {
+              this.$Message.error('服务器休息中，请稍后重试')
+            }
+          })
+        }
+      })
     },
     // 取消
     cancelEdit () {
       this.isEdit = false
+    },
+    // 验证
+    validateUserEmail (rule, value, callback) {
+      if (!Utils.isEmail(value)) {
+        return callback(new Error('邮箱格式不正确'))
+      }
+      callback()
+    },
+    validateUserPhone (rule, value, callback) {
+      if (!Utils.isPhone(value)) {
+        return callback(new Error('手机号码式不正确'))
+      }
+      callback()
+    }
+  },
+  filters: {
+    formatDate (val) {
+      if (val) {
+        return moment(val).format('YYYY-MM-DD')
+      } else {
+        return '无（你是石头蹦出来的吗？）'
+      }
     }
   }
 }
