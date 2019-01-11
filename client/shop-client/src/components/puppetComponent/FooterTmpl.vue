@@ -42,7 +42,7 @@
             <div class="footer">
               <h3 class="footer-title">服务</h3>
               <ul class="footer-links">
-                <li><a href="javascript:;">个人中心</a></li>
+                <li><a target="_black" href="/userCenter/user">个人中心</a></li>
                 <li><a target="_black" href="/cart">查看购物车</a></li>
                 <li><a target="_black" href="/collection">收藏</a></li>
                 <li><a href="javascript:;">帮助</a></li>

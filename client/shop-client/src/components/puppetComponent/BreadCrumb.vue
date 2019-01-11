@@ -7,7 +7,12 @@
           <ul class="breadcrumb-tree">
             <li
               v-for="(item, index) in titles.titleArr" :key="index">
-                <a href="javascript:;" v-if="titles.titleArr.length - 1 !== index">{{item}}</a>
+                <a
+                  v-if="titles.titleArr.length - 1 !== index"
+                  href="javascript:;"
+                  @click="goHome(index)"
+                  >{{item}}
+                </a>
                 <template v-else>{{item}}</template>
             </li>
           </ul>
@@ -34,6 +39,11 @@ export default {
           path: []
         }
       )
+    }
+  },
+  methods: {
+    goHome (index) {
+      if (index === 0) this.$router.replace({ name: 'home' })
     }
   }
 }

@@ -44,7 +44,7 @@ export default {
   data () {
     return {
       breadCrumbTitles: {
-        titleArr: ['首页', '笔记本', '电脑'],
+        titleArr: ['首页'],
         path: []
       },
       goodsType: null,
@@ -81,6 +81,7 @@ export default {
     init () {
       this.goodsType = this.$route.query.type
       this.searchWords = this.$route.query.keywords
+      this.setCrumbs()
       if (this.goodsType || this.searchWords) {
         this.goodsTypeArr = []
         if (parseInt(this.goodsType)) this.goodsTypeArr.push(parseInt(this.goodsType))
@@ -91,6 +92,31 @@ export default {
         setTimeout(() => {
           this.$router.go(-1)
         }, 3000)
+      }
+    },
+    setCrumbs () {
+      switch (parseInt(this.goodsType)) {
+        case 1:
+          this.breadCrumbTitles.titleArr.push('电脑')
+          break
+        case 2:
+          this.breadCrumbTitles.titleArr.push('智能手机')
+          break
+        case 3:
+          this.breadCrumbTitles.titleArr.push('耳机')
+          break
+        case 4:
+          this.breadCrumbTitles.titleArr.push('相机')
+          break
+        case 5:
+          this.breadCrumbTitles.titleArr.push('家电')
+          break
+        case 6:
+          this.breadCrumbTitles.titleArr.push('AI智能')
+          break
+        default:
+          this.breadCrumbTitles.titleArr.push('商品')
+          break
       }
     },
     fetchData () {
@@ -209,7 +235,7 @@ export default {
     }
   },
   watch: {
-    "$route": function () {
+    '$route': function () {
       this.init()
     }
   }
