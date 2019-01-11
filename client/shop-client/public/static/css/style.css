@@ -2717,17 +2717,19 @@ textarea.input {
 .user-motto{
   display: flex;
   align-items: center;
-  justify-content: space-between;
   height: 50px;
   margin-top: 15px;
   overflow: hidden;
+}
+.user-motto-space{
+  justify-content: space-between;
 }
 .user-motto .motto{
   max-width: 500px;
   max-height: 45px;
   line-height: 15px;
   font-size: 14px;
-  color: #999;
+  color: #655c62;
   overflow: hidden;
 }
 .user-motto .motto-input{
@@ -2736,6 +2738,9 @@ textarea.input {
   font-size: 14px;
   background: transparent;
   width: 500px;
+  box-shadow: 0 0 5px 0 #fff;
+  margin-left: 5px;
+  padding-left: 5px;
 }
 .user-info{
   padding: 20px 0;
@@ -2790,15 +2795,15 @@ textarea.input {
   height: 200px;
   width: 400px;
   overflow: hidden;
-  line-height: 35px;
+  line-height: 30px;
   text-align: left;
 }
 .flash-txt .cursor{
   display: inline-block;
   font-size: 22px;
   color: #D10024;
-  height: 24px;
-  line-height: 24px;
+  height: 22px;
+  line-height: 22px;
   animation: cursorAnim 1.3s infinite;
 }
 .smile-icon{

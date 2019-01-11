@@ -6,10 +6,42 @@
         <Button type="primary" shape="circle" icon="ios-create" @click="editInfo">编辑</Button>
         <Button type="error" shape="circle" icon="md-close">注销</Button>
       </div>
-      <div class="user-motto">
-        <p class="motto" v-if="!isEditMotto">人的一生很短，也很长。世事无常，活在当下，珍惜身边爱你和你所爱。</p>
-        <input class="motto-input" type="text" maxlength="50" placeholder="请输入你的座右铭" v-else>
-        <Button type="error" shape="circle" icon="md-brush"></Button>
+      <div class="user-motto" :class="{'user-motto-space': isEditMotto}">
+        <p class="motto" v-if="!isEditMotto">{{userInfoData.motto || '你的座右铭'}}</p>
+        <input
+          v-else
+          v-model="userMotto"
+          class="motto-input"
+          type="text"
+          maxlength="50"
+          placeholder="请输入你的座右铭"
+          @keyup.enter="saveEditMotto"
+        >
+        <Button
+          v-if="!isEditMotto"
+          type="text"
+          shape="circle"
+          icon="md-brush"
+          @click="editMotto">
+        </Button>
+        <template v-else>
+          <div>
+            <Button
+              style="margin-right: 10px;"
+              type="primary"
+              shape="circle"
+              icon="md-close"
+              @click="isEditMotto = false">
+            </Button>
+            <Button
+              type="success"
+              shape="circle"
+              icon="md-checkmark"
+              :loading="btnLoading"
+              @click="saveEditMotto">
+            </Button>
+          </div>
+        </template>
       </div>
     </div>
     <template v-if="isEdit">
@@ -105,6 +137,7 @@ export default {
     return {
       userInfoData: {},
       btnLoading: false,
+      userMotto: '',
       ageList: [],
       selectAge: '',
       isEditMotto: false,
@@ -153,6 +186,7 @@ export default {
   mounted () {
     this.initAge()
     this.userInfoData = this.userInfoGetter
+    if (this.userInfoGetter.motto) this.mottoStr = this.userInfoGetter.motto
   },
   beforeDestroy () {
     if (this.interval) clearInterval(this.interval)
@@ -163,8 +197,9 @@ export default {
     })
   },
   watch: {
-    getUserInfoData () {
+    userInfoGetter () {
       this.userInfoData = this.userInfoGetter
+      if (this.userInfoGetter.motto) this.mottoStr = this.userInfoGetter.motto
     }
   },
   methods: {
@@ -184,7 +219,7 @@ export default {
       let current = 1
       this.isPrintFinished = false
       this.interval = setInterval(() => {
-        if (current > len - 1) {
+        if (current > len) {
           current = 1
           this.isPrintFinished = true
           clearInterval(this.interval)
@@ -220,6 +255,7 @@ export default {
             birthday: this.formValidate.birthday,
             phone: this.formValidate.phone
           }
+          this.btnLoading = true
           EditUserInfo(postData).then(res => {
             this.isEdit = false
             this.btnLoading = false
@@ -237,6 +273,32 @@ export default {
               this.$Message.error('服务器休息中，请稍后重试')
             }
           })
+        }
+      })
+    },
+    // 编辑座右铭
+    editMotto () {
+      this.isEditMotto = true
+      this.userMotto = this.userInfoGetter.motto
+    },
+    // 保存座右铭
+    saveEditMotto () {
+      this.btnLoading = true
+      EditUserMotto({ motto: this.userMotto }).then(res => {
+        this.btnLoading = false
+        this.isEditMotto = false
+        if (res.isSuccess) {
+          this.$Message.success('编辑成功')
+          this.$store.dispatch('getUserInfoAction')
+        } else {
+          this.$Message.warning(res.errMsg)
+        }
+      }).catch(err => {
+        this.btnLoading = false
+        if (err.code >= 1000 & err.code <= 1002) {
+          this.$Message.error('登录过期，请重新登录')
+        } else {
+          this.$Message.error('服务器休息中，请稍后重试')
         }
       })
     },
