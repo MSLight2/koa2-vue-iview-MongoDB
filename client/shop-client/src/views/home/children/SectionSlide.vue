@@ -32,6 +32,7 @@
                       <product-item :data-info="item"></product-item>
                     </swiper-slide>
                   </swiper>
+                  <div class="progressive-load" v-else></div>
                 </div>
                 <div class="products-slick-nav">
                   <button class="slick-prev slide-prev" type="button">Previous</button>
@@ -111,5 +112,8 @@ export default {
   }
   .products-slick{
     min-height: 520px;
+  }
+  /* progressive load */
+  .progressive-load{
   }
 </style>

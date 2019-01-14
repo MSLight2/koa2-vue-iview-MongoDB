@@ -220,6 +220,7 @@ export default {
     pageChange (page) {
       this.currentPage = page
       this.fetchData()
+      document.getElementById('breadcrumb').scrollIntoView()
     },
     // 其它商品
     getOtherGoods (type) {
