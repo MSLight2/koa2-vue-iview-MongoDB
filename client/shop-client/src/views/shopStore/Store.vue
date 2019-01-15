@@ -95,6 +95,7 @@ export default {
       }
     },
     setCrumbs () {
+      this.breadCrumbTitles.titleArr = this.breadCrumbTitles.titleArr.slice(0, 1)
       switch (parseInt(this.goodsType)) {
         case 1:
           this.breadCrumbTitles.titleArr.push('电脑')

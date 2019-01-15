@@ -153,8 +153,16 @@ export default {
             this.cartListShow = false
           }, 1500)
         }
-      }).catch(() => {
+      }).catch((err) => {
         this.loading = false
+        if (err.code >= 1000 & err.code <= 1002) {
+          this.$Message.error('登录过期，请重新登录')
+        } else {
+          this.$Message.error('服务器休息中，请稍后重试')
+        }
+        setTimeout(() => {
+          this.cartListShow = false
+        }, 1500)
       })
     },
     // 删除购物车

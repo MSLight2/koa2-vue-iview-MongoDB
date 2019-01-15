@@ -51,7 +51,7 @@
             :loading="loading">
               {{isRegisterRoute ? '注册' : '重置'}}
           </Button>
-          <div class="tip" v-if="isRegisterRoute" @click="goLogin">已有账号？<u>请登录</u></div>
+          <div class="tip" v-if="isRegisterRoute" @click="goLogin">已有账号？<u>去登录</u></div>
         </div>
       </div>
     </div>

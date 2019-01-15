@@ -9,7 +9,7 @@
           <img src="@/assets/img/logo.png" alt="logo">
         </div>
         <p class="login-nick">Electro</p>
-        <p>早上好，欢迎光临！</p>
+        <p>你好，欢迎来到Electro！</p>
       </div>
       <div class="login-input-cnt">
         <div class="login-input-item">

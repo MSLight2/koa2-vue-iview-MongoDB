@@ -32,7 +32,13 @@
                       <product-item :data-info="item"></product-item>
                     </swiper-slide>
                   </swiper>
-                  <div class="progressive-load" v-else></div>
+                  <div class="progressive-load" v-else>
+                    <div class="load-item" v-for="index in 4" :key="index">
+                      <div class="load-img"></div>
+                      <div class="load-t"></div>
+                      <div class="load-p"></div>
+                    </div>
+                  </div>
                 </div>
                 <div class="products-slick-nav">
                   <button class="slick-prev slide-prev" type="button">Previous</button>
@@ -115,5 +121,35 @@ export default {
   }
   /* progressive load */
   .progressive-load{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    align-items: center;
+    overflow: hidden;
+  }
+  .progressive-load .load-item{
+    width: 260px;
+    height: 450px;
+    background: #fbfbfb;
+    display: flex;
+    flex-direction: column;
+  }
+  .progressive-load .load-img{
+    width: 240px;
+    height: 240px;
+    background: #f1f0f0;
+    margin: 0 auto;
+    margin-top: 10px;
+  }
+  .progressive-load .load-t,
+  .progressive-load .load-p{
+    width: 200px;
+    height: 35px;
+    margin-top: 20px;
+    margin-left: 10px;
+    background: #f1f0f0;
+  }
+  .progressive-load .load-p{
+    width: 120px;
   }
 </style>
