@@ -2918,7 +2918,7 @@ textarea.input {
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  border: 1px solid #D10024;
+  box-shadow: 0 0 5px 0 #999;
 }
 .collection-item-desc .img img,
 .order-user-desc .img img{

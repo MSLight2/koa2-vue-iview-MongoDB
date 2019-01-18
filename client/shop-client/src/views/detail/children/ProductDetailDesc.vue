@@ -152,7 +152,7 @@ export default {
       }
       let params = {
         goodsId: id,
-        goodsNum: 1
+        goodsNum: this.goodsCount
       }
       AddCartApi.AddOrEditCart(params).then(res => {
         if (res.errMsg) this.$Message.warning(res.errMsg)

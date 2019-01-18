@@ -126,6 +126,7 @@ export default {
   watch: {
     isShow () {
       this.showDrawer = this.isShow
+      if (this.isShow) this.$refs['userAddresFroms'].resetFields()
     },
     dataInfo () {
       if (this.openType === 'edit') {

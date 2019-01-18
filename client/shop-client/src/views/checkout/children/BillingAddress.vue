@@ -306,7 +306,7 @@ export default {
     // 保存地址
     saveAddress () {
       if (!this.validateIsChange(this.addressList[0], this.addressForm)) {
-        this.$Message.warning('请修改收货地址后在保存')
+        this.$Message.warning('请修改收货地址后再保存')
         return
       }
       this.$refs['addressForms'].validate(valid => {

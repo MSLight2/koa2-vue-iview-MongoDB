@@ -47,7 +47,10 @@ export default {
     },
     goUserCenter () {
       this.$router.push({
-        path: 'userCenter/user'
+        name: 'userCenter',
+        query: {
+          name: 'userMsg'
+        }
       })
     }
   }

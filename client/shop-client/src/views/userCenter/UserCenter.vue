@@ -13,22 +13,34 @@
         </div>
         <ul class="user-left-list">
           <li
-            :class="{'user-left-item': true, 'active': currentActive === 0}"
+            :class="{
+              'user-left-item': true,
+              'active': currentActive === 0 || queryName === 'userMsg'
+            }"
             @click="userChildrenActive(0, 'userMsg')">
               <i class="login-icon iconfont icon-gerenziliao"></i>个人资料
           </li>
           <li
-            :class="{'user-left-item': true, 'active': currentActive === 1}"
+            :class="{
+              'user-left-item': true,
+              'active': currentActive === 1 || queryName === 'userOrder'
+            }"
             @click="userChildrenActive(1, 'userOrder')">
               <i class="login-icon iconfont icon-dingdan1"></i>全部订单
           </li>
           <li
-            :class="{'user-left-item': true, 'active': currentActive === 2}"
+            :class="{
+              'user-left-item': true,
+              'active': currentActive === 2 || queryName === 'userCollection'
+            }"
             @click="userChildrenActive(2, 'userCollection')">
               <i class="login-icon iconfont icon-shoucang"></i>我的收藏
           </li>
           <li
-            :class="{'user-left-item': true, 'active': currentActive === 3}"
+            :class="{
+              'user-left-item': true,
+              'active': currentActive === 3 || queryName === 'userAddress'
+            }"
             @click="userChildrenActive(3, 'userAddress')">
               <i class="login-icon iconfont icon-dizhi-01"></i>收货地址
           </li>
@@ -44,26 +56,56 @@
         </div>
       </div>
       <div class="user-right">
-        <router-view></router-view>
+        <transition name="slide" v-if="queryName === 'userMsg'">
+          <user-msg></user-msg>
+        </transition>
+        <transition name="slide" v-if="queryName === 'userOrder'">
+          <order v-if="queryName === 'userOrder'"></order>
+        </transition>
+        <transition name="slide" v-if="queryName === 'userCollection'">
+          <collection v-if="queryName === 'userCollection'"></collection>
+        </transition>
+        <transition name="slide" v-if="queryName === 'userAddress'">
+          <user-address v-if="queryName === 'userAddress'"></user-address>
+        </transition>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import UserAddress from './children/Address'
+import Collection from './children/Collection'
+import Order from './children/Order'
+import UserMsg from './children/UserMsg'
+
 export default {
   name: 'UserCenter',
   data () {
     return {
-      currentActive: 0
+      currentActive: -1,
+      queryName: 'userMsg'
     }
+  },
+  created () {
+    this.queryName = this.$route.query.name || 'userMsg'
+  },
+  components: {
+    UserAddress,
+    Collection,
+    Order,
+    UserMsg
   },
   methods: {
     userChildrenActive (index, children) {
       this.currentActive = index
       this.$router.replace({
-        name: children
+        name: this.$router.name,
+        query: {
+          name: children
+        }
       })
+      this.queryName = children
     },
     goHome () {
       this.$router.replace({ name: 'home' })
@@ -80,6 +122,15 @@ export default {
   .user-store-filter{
     position: absolute;
     right: 60px;
-    bottom: 20px;
+    bottom: 10px;
+  }
+  .slide-enter-to {
+    opacity: 1;
+  }
+  .slide-enter {
+    opacity: 0;
+  }
+  .slide-enter-active{
+    transition: all 0.3s ease-in;
   }
 </style>
