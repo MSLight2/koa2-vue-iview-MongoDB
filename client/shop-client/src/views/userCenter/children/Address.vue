@@ -22,7 +22,7 @@
     <div class="usercenter-empty" v-else>
       <div class="empty-icon"><i class="login-icon iconfont icon-chazhaoxiangsi"></i></div>
       <p class="empty-txt">你还没有填写收货地址喲~</p>
-      <Button type="primary" size="large" shape="circle" @click="addAddress">去 添 加</Button>
+      <Button type="primary" size="large" shape="circle" @click="addAddress">添 加 地 址</Button>
     </div>
     <drawer-list
       :is-show="drawerShow"

@@ -283,6 +283,10 @@ export default {
     },
     // 保存座右铭
     saveEditMotto () {
+      if (!this.userMotto) {
+        this.$Message.error('请输入你的座右铭')
+        return
+      }
       this.btnLoading = true
       EditUserMotto({ motto: this.userMotto }).then(res => {
         this.btnLoading = false
