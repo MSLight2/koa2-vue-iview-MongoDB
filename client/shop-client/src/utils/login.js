@@ -1,8 +1,9 @@
 import StorageUtils from './storage'
 
-const userTokenKey = 'USER_TOKEN'
-const userName = 'USER_NAME'
-const rememberPwd = 'REM_PWD'
+const userTokenKey = 'SPA_USER_TOKEN'
+const userLoginStatus = 'SPA_USER_STATUS'
+const userName = 'SPA_USER_NAME'
+const rememberPwd = 'SPA_REM_PWD'
 
 export default {
   getToken () {
@@ -10,6 +11,12 @@ export default {
   },
   setToken (val) {
     StorageUtils.setLoacalStorage(userTokenKey, val)
+  },
+  getLoginStatus () {
+    return StorageUtils.getSessionStorage(userLoginStatus, true)
+  },
+  setLoginStatus (val) {
+    return StorageUtils.setSessionStorage(userLoginStatus, val)
   },
   getName () {
     return StorageUtils.getLoacalStorage(userName)

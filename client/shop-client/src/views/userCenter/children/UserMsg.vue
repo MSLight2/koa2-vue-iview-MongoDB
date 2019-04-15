@@ -3,8 +3,19 @@
     <div class="user-header">
       <h3>个人资料</h3>
       <div class="user-btn">
-        <Button type="primary" shape="circle" icon="ios-create" @click="editInfo">编辑</Button>
-        <Button type="error" shape="circle" icon="md-close">注销</Button>
+        <Button
+          type="primary"
+          shape="circle"
+          icon="ios-create"
+          @click="editInfo">编辑
+        </Button>
+        <Button
+          type="error"
+          shape="circle"
+          icon="md-close"
+          :loading="btnLoading"
+          @click="loginOut">退出
+        </Button>
       </div>
       <div class="user-motto" :class="{'user-motto-space': isEditMotto}">
         <p class="motto" v-if="!isEditMotto">{{userInfoData.motto || '你的座右铭'}}</p>
@@ -130,7 +141,8 @@
 import Utils from '@/utils/utils'
 import { mapGetters } from 'vuex'
 import moment from 'moment'
-import { EditUserInfo, EditUserMotto } from '@/api/login'
+import { EditUserInfo, EditUserMotto, LoginOut } from '@/api/login'
+import LoginStorage from '@/utils/login'
 
 export default {
   data () {
@@ -240,6 +252,22 @@ export default {
       this.formValidate.birthday = this.userInfoData.birthday || null
       this.formValidate.phone = this.userInfoData.phone
       this.isEdit = true
+    },
+    // 退出登录
+    loginOut () {
+      this.btnLoading = true
+      LoginOut().then(res => {
+        this.btnLoading = false
+        if (res.isSuccess) {
+          LoginStorage.setLoginStatus(false)
+          this.$router.replace({ name: 'login' })
+        } else {
+          this.$Message.error('退出登出失败！请稍后重试')
+        }
+      }).catch(() => {
+        this.btnLoading = false
+        this.$Message.error('退出登出失败！请稍后重试')
+      })
     },
     // 保存
     saveEdit () {

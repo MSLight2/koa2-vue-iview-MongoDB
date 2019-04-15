@@ -122,6 +122,7 @@ export default {
         } else {
           LoginUtils.setPwd('')
         }
+        this.fromRouteName = 'home'
         if (this.fromRouteName === 'register') this.fromRouteName = 'home'
         this.$router.replace({ name: this.fromRouteName, query: this.routeQuery })
       }).catch(() => {
@@ -262,11 +263,11 @@ export default {
   .user-msg,.pwd-msg{
     position: absolute;
     left: 0;
-    top: 45px;
+    top: 50px;
     color: #D10024;
   }
   .login-box-btns{
-    margin-top: 20px;
+    margin-top: 30px;
   }
   .login-btn-tip{
     display: flex;

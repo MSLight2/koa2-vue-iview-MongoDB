@@ -40,7 +40,7 @@
                 placeholder="确认密码"
                 size="large"
                 :maxlength="20"
-                @keyup.enter="registerAndReset"
+                @keyup.native.enter="registerAndReset"
               />
             </FormItem>
         </Form>
@@ -110,8 +110,8 @@ export default {
       callback()
     },
     validateNickName (rule, value, callback) {
-      if (/[^\w_]/g.test(value)) {
-        return callback(new Error('昵称命名不规范（只能输入数字、字母和下划线‘_’）'))
+      if (/[^\w_\u4e00-\u9fa5]/g.test(value)) {
+        return callback(new Error('昵称命名不规范（只能输入中文、数字、字母和下划线‘_’）'))
       }
       callback()
     },

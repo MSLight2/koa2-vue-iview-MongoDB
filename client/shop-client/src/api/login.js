@@ -14,6 +14,14 @@ export const UserLogin = (data) => {
   })
 }
 
+export const LoginOut = (data) => {
+  return axios({
+    method: 'post',
+    url: '/api/loginOut',
+    data: data
+  })
+}
+
 /**
  * 用户注册
  * @method post

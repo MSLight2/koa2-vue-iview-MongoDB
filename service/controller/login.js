@@ -77,6 +77,33 @@ let login = async (ctx, next) => {
 }
 
 /**
+ * 登出
+ */
+let loginOut = async (ctx) => {
+  let validateTokenResult = Utils.validateToken(ctx);
+  if (validateTokenResult.errMsg) return ctx.body = validateTokenResult;
+  let {userId = ''} = validateTokenResult;
+  if (Utils.isEmpty(userId)) return ctx.body = Utils.responseJSON({errMsg: '用户id是必须的，请传入token'});
+
+  try {
+    ctx.body = Utils.responseJSON({
+      result: {
+        token: jwt.sign(
+          { userId: userId },
+          SecretConfig.secret,
+          { expiresIn: '120ms' }
+        )
+      },
+      isSuccess: true,
+      code: Code.successCode
+    })
+  } catch (error) {
+    ctx.body = Utils.responseJSON({errMsg: '查询数据出错', code: Code.dbErr});
+    repData = null;
+  }
+}
+
+/**
  * 用户注册
  * @method post
  * @param {用户名} userName
@@ -262,6 +289,7 @@ let editUserMotto = async (ctx) => {
 module.exports = {
   getUserInfo: ['GET', '/api/userInfo', getUserInfo],
   login: ['POST', '/api/login', login],
+  loginOut: ['POST', '/api/loginOut', loginOut],
   regist: ['POST', '/api/regist', regist],
   resetPassword: ['POST', '/api/resetPassword', resetPassword],
   editUserInfo: ['POST', '/api/editUserInfo', editUserInfo],

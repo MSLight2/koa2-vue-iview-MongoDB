@@ -27,11 +27,13 @@ axiosInstance.interceptors.response.use(response => {
   let data = response.data
   if (data.code === 1000 || data.code === 1001 || data.code === 1002) {
     // 传入token格式出错 或 未传入token 或 token过期 --> 登录
+    LoginStorage.setLoginStatus(false)
     return Promise.reject(data)
   }
   // 返回有token，保存
   let token = data.result.token
   if (token) {
+    LoginStorage.setLoginStatus(true)
     LoginStorage.setToken(token)
   }
   return data

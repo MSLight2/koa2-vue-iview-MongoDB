@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import VuexStore from '@/store/store'
+import LoginStorage from '@/utils/login'
 const Home = () => import('@/views/home/Home.vue')
 const Login = () => import('@/views/login/Login.vue')
 const RegisterAndReset = () => import('@/views/registerAndReset/RegisterAndReset.vue')
@@ -86,9 +87,13 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   let noFetchArr = ['userMsg', 'userOrder', 'userCollection', 'userAddress']
+  let noLoginNames = ['register', 'resetPwd']
   if (noFetchArr.indexOf(from.query.name) === -1) {
     VuexStore.dispatch('getUserInfoAction')
     VuexStore.dispatch('getCountAction')
+  }
+  if (LoginStorage.getLoginStatus() && noLoginNames.indexOf(to.name) !== -1) {
+    next({ name: 'home' })
   }
   next()
 })
