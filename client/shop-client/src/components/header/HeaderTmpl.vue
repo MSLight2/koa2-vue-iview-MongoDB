@@ -38,9 +38,16 @@
           <!-- ACCOUNT -->
           <div class="col-md-3 clearfix">
             <div class="header-ctn">
+              <!-- user center -->
+              <div>
+                <a @click="goUserCenter">
+                  <i class="iconfont icon-user"></i>
+                  <span>个人中心</span>
+                </a>
+              </div>
               <!-- Wishlist -->
               <div>
-                <a  @click="gotoCollectionPage">
+                <a @click="gotoCollectionPage">
                   <i class="fa fa-heart-o"></i>
                   <span>收藏</span>
                   <div class="qty" v-if="collectionCountGetter > 0">{{collectionCountGetter}}</div>
@@ -216,7 +223,7 @@ export default {
     // 显示购物车列表
     switchCart () {
       if (!LoginStorage.getToken()) {
-        this.$Message.warning('请登录后在试')
+        this.$Message.warning('你还没登录，请登录')
         return
       }
       this.cartListShow = !this.cartListShow
@@ -224,6 +231,19 @@ export default {
         // 获取购物车列表
         this.getCartListInfo()
       }
+    },
+    // 进入个人中心
+    goUserCenter () {
+      if (!LoginStorage.getToken()) {
+        this.$Message.warning('你还没登录，请登录')
+        return
+      }
+      this.$router.push({
+        name: 'userCenter',
+        query: {
+          name: 'userMsg'
+        }
+      })
     },
     // 进入收藏页
     gotoCollectionPage () {

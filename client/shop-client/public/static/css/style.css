@@ -494,16 +494,10 @@ textarea.input {
 \*----------------------------*/
 
 .header-ctn {
-  float: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   padding: 15px 0px;
-}
-
-.header-ctn>div {
-  display: inline-block;
-}
-
-.header-ctn>div+div {
-  margin-left: 15px;
 }
 
 .header-ctn>div>a {
@@ -2810,7 +2804,9 @@ textarea.input {
   color: #D10024;
   height: 22px;
   line-height: 22px;
-  animation: cursorAnim 1.3s infinite;
+}
+.flash-txt .cursor.anim{
+  animation: cursorAnim 1s infinite;
 }
 .smile-icon{
   position: absolute;

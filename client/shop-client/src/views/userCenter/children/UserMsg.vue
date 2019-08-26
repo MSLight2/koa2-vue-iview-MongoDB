@@ -118,14 +118,16 @@
         <ul>
           <li><span class="left-label">昵称：</span>{{userInfoData.nickName || '----'}}</li>
           <li><span class="left-label">姓名：</span>{{userInfoData.name || '----'}}</li>
-          <li><span class="left-label">年龄：</span>{{userInfoData.age || '18岁？嗯哼~'}}</li>
+          <li><span class="left-label">年龄：</span>{{userInfoData.age || '--(永远18岁？)'}}</li>
           <li><span class="left-label">性别：</span>{{userInfoData.sex ? '男' : '女'}}</li>
           <li><span class="left-label">邮箱：</span>{{userInfoData.email || '----'}}</li>
           <li><span class="left-label">电话号码：</span>{{userInfoData.phone || 'xxxxxx'}}</li>
-          <li><span class="left-label">地址：</span>{{userInfoData.address || '----（你是住空中吗？）'}}</li>
+          <li><span class="left-label">地址：</span>{{userInfoData.address || '暂无'}}</li>
           <li><span class="left-label">出生日期：</span>{{userInfoData.birthday | formatDate}}</li>
         </ul>
-        <div class="flash-txt">{{printMottoStr}}<i class="cursor" v-if="!isPrintFinished">|</i></div>
+        <div class="flash-txt">{{printMottoStr}}
+          <i class="cursor" :class="{'anim': isPrintFinished}"  v-if="printMottoStr.length > 0">|</i>
+        </div>
       </div>
       <div class="smile-icon" @click="showMottoAgain">
         <!-- eslint-disable -->
@@ -154,7 +156,7 @@ export default {
       selectAge: '',
       isEditMotto: false,
       isEdit: false,
-      mottoStr: '人的一生很短，也很长。世事无常，活在当下，珍惜身边爱你和你所爱。',
+      mottoStr: '',
       printMottoStr: '',
       isPrintFinished: true,
       interval: null,
@@ -227,6 +229,15 @@ export default {
       }
     },
     mottoPrinting () {
+      let mottoStrArr = [
+        '什么惊艳了你的时光，温暖了你的岁月？',
+        '若君为我赠玉簪，我便为君绾长发。洗尽铅华，从此以后，日暮天涯。',
+        '宠辱不惊，看庭前花开花落；去留无意，望天空云卷云舒。',
+        '时光静好，与君语；细水流年，与君同；繁华落尽，与君老。',
+        '一念繁华一念灰，一念成悦，处处繁华处处锦。一念成执，寸寸相思寸寸灰。'
+      ]
+      let index = Math.floor(Math.random() * 5)
+      this.mottoStr = mottoStrArr[index]
       let len = this.mottoStr.length
       let current = 1
       this.isPrintFinished = false
@@ -358,7 +369,7 @@ export default {
       if (val) {
         return moment(val).format('YYYY-MM-DD')
       } else {
-        return '无（你是石头蹦出来的吗？）'
+        return '暂无'
       }
     }
   }
