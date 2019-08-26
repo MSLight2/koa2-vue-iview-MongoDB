@@ -25,7 +25,8 @@ import {
   RadioGroup,
   Option,
   Select,
-  Drawer
+  Drawer,
+  Notice
 } from 'iview'
 // iview组件
 Vue.component('Button', Button)
@@ -43,8 +44,10 @@ Vue.component('RadioGroup', RadioGroup)
 Vue.component('Option', Option)
 Vue.component('Select', Select)
 Vue.component('Drawer', Drawer)
+Vue.component('Notice', Notice)
 Vue.prototype.$Message = Message
 Vue.prototype.$Modal = Modal
+Vue.prototype.$Notice = Notice
 
 // 这里使用jQuery是因为轮播插件有依赖jQuery╮(╯▽╰)╭，用空再换= 。=
 window.jQuery = window.$ = jQuery

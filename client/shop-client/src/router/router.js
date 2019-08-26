@@ -30,17 +30,26 @@ const router = new Router({
     {
       path: '/login',
       name: 'login',
-      component: Login
+      component: Login,
+      meta: {
+        nofade: true
+      }
     },
     {
       path: '/register',
       name: 'register',
-      component: RegisterAndReset
+      component: RegisterAndReset,
+      meta: {
+        nofade: true
+      }
     },
     {
       path: '/resetPwd',
       name: 'resetPwd',
-      component: RegisterAndReset
+      component: RegisterAndReset,
+      meta: {
+        nofade: true
+      }
     },
     {
       path: '/detail',

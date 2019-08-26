@@ -35,7 +35,7 @@ export default {
    */
   getSessionStorage (key, needConvert = false) {
     if (!key) return null
-    let result = localStorage.getItem(key)
+    let result = sessionStorage.getItem(key)
     if (needConvert) {
       try {
         return JSON.parse(result)

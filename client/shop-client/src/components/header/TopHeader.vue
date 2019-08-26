@@ -21,12 +21,15 @@
         <li v-else>
           <a href="javascript:;" @click="goLogin"><i class="fa fa-user-o"></i> 登录/注册</a>
         </li>
+        <li><a href="javascript:;" @click="loginOut">退出</a></li>
       </ul>
     </div>
   </div>
 </template>
 
 <script>
+import { LoginOut } from '@/api/login'
+import LoginStorage from '@/utils/login'
 export default {
   data () {
     return {
@@ -51,6 +54,19 @@ export default {
         query: {
           name: 'userMsg'
         }
+      })
+    },
+    loginOut () {
+      LoginOut().then(res => {
+        if (res.isSuccess) {
+          LoginStorage.removeLoginStatus()
+          LoginStorage.removeToken()
+          this.$router.replace({ name: 'login' })
+        } else {
+          this.$Message.error('退出登出失败！请稍后重试')
+        }
+      }).catch(() => {
+        this.$Message.error('退出登出失败！请稍后重试')
       })
     }
   }

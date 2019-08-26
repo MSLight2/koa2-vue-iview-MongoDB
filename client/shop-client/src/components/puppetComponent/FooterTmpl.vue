@@ -10,7 +10,7 @@
               <p style="margin: 10px 0;">早起的虫儿被鸟吃.</p>
               <ul class="footer-links">
                 <li><a href="javascript:;"><i class="fa fa-map-marker"></i>广东省广州市</a></li>
-                <li><a href="javascript:;"><i class="fa fa-phone"></i>13580XXXXXX</a></li>
+                <li><a href="javascript:;"><i class="fa fa-phone"></i>135XXXXXXXX</a></li>
                 <li><a href="javascript:;"><i class="fa fa-envelope-o"></i>1841978799@qq.com</a></li>
               </ul>
             </div>
@@ -32,7 +32,7 @@
             <div class="footer">
               <h3 class="footer-title">咨询</h3>
               <ul class="footer-links">
-                <li><a href="javascript:;">关于我</a></li>
+                <li><a target="_blank" href="https://github.com/MSLight2">关于我</a></li>
                 <li><a href="javascript:;">反馈</a></li>
                 <li><a href="javascript:;">说明</a></li>
               </ul>
@@ -42,9 +42,9 @@
             <div class="footer">
               <h3 class="footer-title">服务</h3>
               <ul class="footer-links">
-                <li><a target="_black" href="/userCenter?name=userMsg">个人中心</a></li>
-                <li><a target="_black" href="/cart">查看购物车</a></li>
-                <li><a target="_black" href="/collection">收藏</a></li>
+                <li><a href="javascript:;" @click="goUserCenter">个人中心</a></li>
+                <li><a href="javascript:;" @click="checkShopCar">查看购物车</a></li>
+                <li><a href="javascript:;" @click="checkCollection">收藏</a></li>
                 <li><a href="javascript:;">帮助</a></li>
               </ul>
             </div>
@@ -73,6 +73,7 @@
 </template>
 
 <script>
+import LoginStorage from '@/utils/login'
 export default {
   data () {
     return {
@@ -81,6 +82,30 @@ export default {
   methods: {
     gotoStore (index) {
       window.open(`/store?type=${index}`)
+    },
+    checkLogin () {
+      if (!LoginStorage.getLoginStatus) {
+        this.$Message.warning('你还未登录，请登录')
+        return false
+      }
+      return true
+    },
+    goUserCenter () {
+      if (!this.checkLogin) return
+      this.$router.push({
+        name: 'userCenter',
+        query: {
+          name: 'userMsg'
+        }
+      })
+    },
+    checkShopCar () {
+      if (!this.checkLogin) return
+      this.$router.push('cart')
+    },
+    checkCollection () {
+      if (!this.checkLogin) return
+      this.$router.push('collection')
     }
   }
 }

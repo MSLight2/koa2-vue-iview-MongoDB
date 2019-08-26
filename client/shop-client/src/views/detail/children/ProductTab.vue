@@ -48,9 +48,10 @@
                       <div class="rating-avg">
                         <span>{{averageStar}}</span>
                         <div class="rating-stars">
-                          <i class="fa fa-star" v-for="item in averageStar" :key="item"></i>
                           <!-- eslint-disable-next-line -->
-                          <i class="fa fa-star-o" v-for="i in (5 - averageStar)" :key="i"></i>
+                          <i class="fa fa-star" v-for="item in averageStar"></i>
+                          <!-- eslint-disable-next-line -->
+                          <i class="fa fa-star-o" v-for="i in (5 - averageStar)"></i>
                         </div>
                       </div>
                       <ul class="rating">
@@ -131,9 +132,10 @@
                             <h5 class="name">{{item.nickName}}</h5>
                             <p class="date">{{item.createTime | formatDate}}</p>
                             <div class="review-rating">
-                              <i class="fa fa-star" v-for="item in item.rate" :key="item"></i>
                               <!-- eslint-disable-next-line -->
-                              <i class="fa fa-star-o empty" v-for="i in (5 - item.rate)" :key="i"></i>
+                              <i class="fa fa-star" v-for="item in item.rate"></i>
+                              <!-- eslint-disable-next-line -->
+                              <i class="fa fa-star-o empty" v-for="i in (5 - item.rate)"></i>
                             </div>
                           </div>
                           <div class="review-body">
@@ -289,7 +291,7 @@ export default {
     // 提交评价
     evaluateSubmit () {
       if (!this.nickName || !this.userEmail) {
-        this.$Message.warning('请输入【昵称】和【邮箱】')
+        this.$Message.warning('请输入【昵称】和【邮箱地址】')
         return
       }
       if (!Utils.isEmail(this.userEmail)) {

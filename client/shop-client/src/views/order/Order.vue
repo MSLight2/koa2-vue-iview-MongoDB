@@ -12,7 +12,7 @@
           <div class="order-items" v-for="(item, index) in dataList" :key="index">
             <div class="order-cnt-top">
               <span>订单号：{{item.orderNumber}}</span>
-              <span class="order-time">下单时间：{{item.payTime | formatTime}}</span>
+              <span class="order-time">下单时间：{{item.payTime | formatDateTime}}</span>
             </div>
             <div class="order-cnt-desc">
               <div class="ocd-img">
@@ -58,7 +58,6 @@
 import FooterTmpl from '@/components/puppetComponent/FooterTmpl'
 import * as OrderApi from '@/api/order'
 import LoginStorage from '@/utils/login'
-import moment from 'moment'
 
 export default {
   data () {
@@ -94,13 +93,6 @@ export default {
     }
   },
   filters: {
-    formatTime (val) {
-      if (val) {
-        return moment(parseInt(val)).format('YYYY-MM-DD HH:mm:ss')
-      } else {
-        return '----'
-      }
-    },
     filterPayType (val) {
       switch (val) {
         case 1:

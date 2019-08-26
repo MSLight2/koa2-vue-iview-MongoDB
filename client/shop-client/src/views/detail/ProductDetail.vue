@@ -160,7 +160,13 @@ export default {
         rate: startRate
       }
       EvaluateApi.AddEvaluate(params).then(res => {
-        if (res.errMsg) this.$Message.warning(res.errMsg)
+        if (res.errMsg) {
+          this.$refs.productTab.nickName = ''
+          this.$refs.productTab.userEmail = ''
+          this.$refs.productTab.feedBack = ''
+          this.$refs.productTab.startRate = 0
+          this.$Message.error(res.errMsg)
+        }
         if (res.isSuccess) {
           this.$Message.success('评价成功')
           this.getEvaluateData(this.goodsId)

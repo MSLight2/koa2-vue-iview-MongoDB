@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 export default function (Vue) {
   Vue.filter('filterGoodsType', val => {
     switch (val) {
@@ -22,6 +24,13 @@ export default function (Vue) {
       return Number(val).toFixed(2)
     } else {
       return '0.00'
+    }
+  })
+  Vue.filter('formatDateTime', val => {
+    if (val) {
+      return moment(parseInt(val)).format('YYYY-MM-DD HH:mm:ss')
+    } else {
+      return '----'
     }
   })
 }

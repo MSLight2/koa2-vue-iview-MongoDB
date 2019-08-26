@@ -12,11 +12,17 @@ export default {
   setToken (val) {
     StorageUtils.setLoacalStorage(userTokenKey, val)
   },
+  removeToken () {
+    StorageUtils.removeLoacalStorage(userTokenKey)
+  },
   getLoginStatus () {
     return StorageUtils.getSessionStorage(userLoginStatus, true)
   },
   setLoginStatus (val) {
     return StorageUtils.setSessionStorage(userLoginStatus, val)
+  },
+  removeLoginStatus () {
+    StorageUtils.removeSessionStorage(userLoginStatus)
   },
   getName () {
     return StorageUtils.getLoacalStorage(userName)
@@ -24,10 +30,16 @@ export default {
   setName (val) {
     StorageUtils.setLoacalStorage(userName, val)
   },
+  removeName () {
+    StorageEvent.removeLoacalStorage(userName)
+  },
   getPwd () {
     return StorageUtils.getLoacalStorage(rememberPwd)
   },
   setPwd (val) {
     StorageUtils.setLoacalStorage(rememberPwd, val)
+  },
+  removePwd () {
+    StorageUtils.removeLoacalStorage(rememberPwd)
   }
 }

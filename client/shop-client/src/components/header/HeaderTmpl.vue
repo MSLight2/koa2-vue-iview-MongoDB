@@ -149,6 +149,7 @@ export default {
         this.loading = false
         this.cartDataList = res.result
         if (this.cartDataList.length <= 0) {
+          this.$store.commit('CART_COUNT', 0)
           setTimeout(() => {
             this.cartListShow = false
           }, 1500)

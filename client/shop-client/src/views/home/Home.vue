@@ -40,7 +40,7 @@ import TopSelling from '@/views/home/children/TopSelling'
 import NewsLetter from '@/components/puppetComponent/NewsLetter'
 import IviewModal from '@/components/puppetComponent/Modal/IviewModal'
 import * as GoodsApi from '@/api/goods'
-import LoginStorage from '@/utils/login'
+import StorageUtils from '@/utils/storage'
 
 export default {
   data () {
@@ -81,6 +81,7 @@ export default {
   },
   mounted () {
     this.initData()
+    if (!StorageUtils.getSessionStorage('elecNoticeClose', true)) this.showNotice()
   },
   methods: {
     initData () {
@@ -144,6 +145,17 @@ export default {
       this.$router.push({
         name: 'store',
         query: { type: Math.floor(Math.random() * 6 + 1) }
+      })
+    },
+    // 展示通知
+    showNotice () {
+      this.$Notice.warning({
+        title: '使用声明',
+        desc: '此网站只是个Demo，模板来源网络，没有实际支付功能，仅供学习参考！请勿它用',
+        duration: 0,
+        onClose () {
+          StorageUtils.setSessionStorage('elecNoticeClose', true)
+        }
       })
     }
   }

@@ -66,6 +66,6 @@ let manyDataDelete = async (ctx) => {
 }
 
 module.exports = {
-  // manyDataInsert: ['GET', '/api/db/manyInsert' , manyDataInsert],
-  // manyDataDelete: ['GET', '/api/db/manyDelete' , manyDataDelete]
+  manyDataInsert: ['GET', '/api/db/manyInsert' , manyDataInsert],
+  manyDataDelete: ['GET', '/api/db/manyDelete' , manyDataDelete]
 }

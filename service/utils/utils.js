@@ -51,7 +51,7 @@ let repPagination = ({page = 1, pageSize = 10, total = 0}) => {
  * 生成唯一的订单号
  * @param {商品id} goodsId
  */
-let createUniqueOrderNumber = (goodsId,) => {
+let createUniqueOrderNumber = (goodsId) => {
   return new Date().getTime() + goodsId + Math.random().toFixed(3) * 1000
 }
 

@@ -259,7 +259,8 @@ export default {
       LoginOut().then(res => {
         this.btnLoading = false
         if (res.isSuccess) {
-          LoginStorage.setLoginStatus(false)
+          LoginStorage.removeLoginStatus()
+          LoginStorage.removeToken()
           this.$router.replace({ name: 'login' })
         } else {
           this.$Message.error('退出登出失败！请稍后重试')

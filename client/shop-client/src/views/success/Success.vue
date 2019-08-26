@@ -26,7 +26,7 @@
           </div>
           <div>
             <span class="left-sp">支付时间：</span>
-            <span class="right-detail">{{$route.query.time || '----'}}</span>
+            <span class="right-detail">{{$route.query.time | formatDateTime}}</span>
           </div>
           <div>
             <span class="left-sp">交易编号：</span>

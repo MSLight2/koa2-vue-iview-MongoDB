@@ -87,8 +87,21 @@ export default {
         }
       })
     },
+    // 支付前检验
+    beforePay () {
+      if (this.addressData.length <= 0) {
+        this.$Modal.confirm({
+          title: '提示',
+          okText: '知道了',
+          content: '你还没有添加收货地址，请在右方添加收货地址'
+        })
+        return false
+      }
+      return true
+    },
     // 立即支付
     payNow (typePick, totalPrice) {
+      if (!this.beforePay()) return
       let goodsIdArr = this.orderDetailDataList.map(item => { return item.goodsId })
       let propsData = {
         goodsIdList: JSON.stringify(goodsIdArr),

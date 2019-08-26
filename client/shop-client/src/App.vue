@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <header-tmpl v-if="$route.name !== 'userCenter'"></header-tmpl>
-    <transition name="fade" mode="out-in">
+    <router-view v-if="$route.meta.nofade"/>
+    <transition name="fade" mode="out-in" v-else>
       <router-view/>
     </transition>
   </div>
