@@ -41,7 +41,7 @@
       <svg class="icon" aria-hidden="true">
         <use xlink:href="#icon-wushuju"></use>
       </svg>
-      <div>无数据</div>
+      <div>查询不到该商品</div>
     </div>
   </div>
 </template>

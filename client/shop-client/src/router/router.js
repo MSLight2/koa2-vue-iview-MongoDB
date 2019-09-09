@@ -98,8 +98,10 @@ router.beforeEach((to, from, next) => {
   let noFetchArr = ['userMsg', 'userOrder', 'userCollection', 'userAddress']
   let noLoginNames = ['register', 'resetPwd']
   if (noFetchArr.indexOf(from.query.name) === -1) {
-    VuexStore.dispatch('getUserInfoAction')
-    VuexStore.dispatch('getCountAction')
+    if (from.name !== 'store') {
+      VuexStore.dispatch('getUserInfoAction')
+      VuexStore.dispatch('getCountAction')
+    }
   }
   if (LoginStorage.getLoginStatus() && noLoginNames.indexOf(to.name) !== -1) {
     next({ name: 'home' })

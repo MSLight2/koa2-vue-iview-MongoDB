@@ -84,14 +84,14 @@ export default {
       window.open(`/store?type=${index}`)
     },
     checkLogin () {
-      if (!LoginStorage.getLoginStatus) {
+      if (!LoginStorage.getLoginStatus()) {
         this.$Message.warning('你还未登录，请登录')
         return false
       }
       return true
     },
     goUserCenter () {
-      if (!this.checkLogin) return
+      if (!this.checkLogin()) return
       this.$router.push({
         name: 'userCenter',
         query: {
@@ -100,11 +100,11 @@ export default {
       })
     },
     checkShopCar () {
-      if (!this.checkLogin) return
+      if (!this.checkLogin()) return
       this.$router.push('cart')
     },
     checkCollection () {
-      if (!this.checkLogin) return
+      if (!this.checkLogin()) return
       this.$router.push('collection')
     }
   }

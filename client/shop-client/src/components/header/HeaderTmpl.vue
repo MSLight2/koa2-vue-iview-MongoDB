@@ -247,6 +247,10 @@ export default {
     },
     // 进入收藏页
     gotoCollectionPage () {
+      if (!LoginStorage.getToken()) {
+        this.$Message.warning('你还没登录，请登录')
+        return
+      }
       this.cartListShow = false
       this.$router.replace({ name: 'collection' })
     },

@@ -40,13 +40,13 @@
               </div>
               <!-- cart bottom -->
               <div class="cart-btm">
-                <div class="cart-btm-price discount">
-                  <p>已优惠</p>
-                  <span>￥0<i>.00</i></span>
-                </div>
                 <div class="cart-btm-price">
                   <p>总金额</p>
                   <span>￥{{totalPrice[0] || 0}}<i>.{{totalPrice[1] || '00'}}</i></span>
+                </div>
+                <div class="cart-btm-price discount">
+                  <p>已优惠</p>
+                  <span>￥0<i>.00</i></span>
                 </div>
                 <Button
                   class="cart-btm-btn"

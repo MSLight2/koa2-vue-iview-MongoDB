@@ -21,7 +21,7 @@
         <li v-else>
           <a href="javascript:;" @click="goLogin"><i class="fa fa-user-o"></i> 登录/注册</a>
         </li>
-        <li><a href="javascript:;" @click="loginOut">退出</a></li>
+        <li><a href="javascript:;" v-if="isLogin" @click="loginOut">退出</a></li>
       </ul>
     </div>
   </div>
@@ -42,6 +42,12 @@ export default {
       default: () => {
         return {}
       }
+    }
+  },
+  computed: {
+    isLogin () {
+      if (LoginStorage.getToken() && LoginStorage.getLoginStatus()) return true
+      return false
     }
   },
   methods: {
