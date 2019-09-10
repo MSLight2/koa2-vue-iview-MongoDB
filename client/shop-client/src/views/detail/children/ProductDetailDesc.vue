@@ -224,7 +224,12 @@ export default {
       OrderApi.AddCheckout({ goodsCartList: JSON.stringify(postArr) }).then(res => {
         this.btnLoading = false
         if (res.isSuccess) {
-          this.$router.push({ name: 'checkout' })
+          this.$router.push({
+            name: 'checkout',
+            query: {
+              goodsId: this.dataInfo.goodsId
+            }
+          })
         } else {
           this.$Message.warning(res.errMsg)
         }

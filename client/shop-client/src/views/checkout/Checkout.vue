@@ -41,7 +41,8 @@ export default {
         path: []
       },
       addressData: [],
-      orderDetailDataList: []
+      orderDetailDataList: [],
+      goodsId: null
     }
   },
   components: {
@@ -53,6 +54,7 @@ export default {
     BillingAddress
   },
   mounted () {
+    this.goodsId = this.$route.query.goodsId || ''
     this.fetchAddress()
     this.fetchOrder()
   },
@@ -79,7 +81,8 @@ export default {
     },
     // 获取订单列表
     fetchOrder () {
-      OrderApi.GetCheckoutList().then(res => {
+      let params = { goodsId: this.goodsId }
+      OrderApi.GetCheckoutList(params).then(res => {
         if (res.isSuccess) {
           this.orderDetailDataList = res.result || []
         } else {

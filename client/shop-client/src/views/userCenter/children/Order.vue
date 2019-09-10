@@ -19,7 +19,8 @@
           <div class="ouo-item" v-if="item.payStatus === 2">支付时间：{{item.payTime | formatDate}}</div>
           <div class="ouo-item" v-else>生成订单时间：{{item.createTime | formatDate}}</div>
           <div class="ouo-item gopay-btn" v-if="item.payStatus === 0">
-            <span class="pay-btn" @click="goPay">去支付</span>
+            <span class="pay-btn cancel" @click="deleteOrder(item.goodsId)">取消订单</span>
+            <span class="pay-btn" @click="goPay(item.goodsId)">去支付</span>
           </div>
           <template v-else>
             <div
@@ -46,7 +47,7 @@
     </div>
     <div class="usercenter-empty" v-else>
       <div class="empty-icon"><i class="login-icon iconfont icon-chazhaoxiangsi"></i></div>
-      <p class="empty-txt">空空如也~</p>
+      <p class="empty-txt">暂无未支付的订单~</p>
       <Button type="primary" size="large" shape="circle" @click="goBuy">去 购 买</Button>
     </div>
     <div class="user-store-filter" v-if="orderList.length > 0">
@@ -107,8 +108,28 @@ export default {
       this.currentPage = page
       this.fetchData()
     },
-    goPay () {
-      this.$router.push({ name: 'checkout' })
+    goPay (id) {
+      this.$router.push({
+        name: 'checkout',
+        query: {
+          goodsId: id
+        }
+      })
+    },
+    deleteOrder (id) {
+      this.$Modal.confirm({
+        title: '提示',
+        okText: '确定',
+        content: '<p>确定要删除这笔订单吗？</p>',
+        onOk: () => {
+          let params = { goodsId: id }
+          OrderApi.DeleteCheckout(params).then(res => {
+            this.$Message.success('已取消该笔订单')
+            this.currentPage = 1
+            this.fetchData()
+          })
+        }
+      })
     },
     goBuy () {
       this.$router.replace({ name: 'home' })

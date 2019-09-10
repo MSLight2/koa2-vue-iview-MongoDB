@@ -35,7 +35,9 @@
                     <span class="qty-i" @click="decCount(index)">-</span>
                     <i class="iconfont icon-bu-error-circle" @click="deleteCart(index)"></i>
                   </div>
-                  <div class="cli-total">￥{{(item.goodsId_docs[0].showPrice * item.number) | formatPrice}}</div>
+                  <div class="cli-total">￥{{(item.goodsId_docs[0].showPrice * item.number) | formatPrice}}
+                    <Button type="warning" shape="circle" @click="goCheckout(index, item.goodsId)">立即购买</Button>
+                  </div>
                 </div>
               </div>
               <!-- cart bottom -->
@@ -62,7 +64,7 @@
               <!-- empty cart -->
               <div class="empty-cart">
                 <div class="empty-icon"><i class="login-icon iconfont icon-gouwuche"></i></div>
-                <p class="empty-txt">购物车什么都没有~</p>
+                <p class="empty-txt">空空如也~</p>
                 <Button type="primary" size="large" shape="circle" @click="goBuy">去 添 加</Button>
               </div>
             </template>
@@ -207,28 +209,42 @@ export default {
       }
     },
     // 立即购买
-    goCheckout () {
+    goCheckout (index, id = null) {
       // 生成订单-跳转
       if (!LoginStorage.getToken()) {
         this.$Message.error('请登录后在试！')
         return
       }
       let postArr = []
-      this.cartDataList.forEach((item, index) => {
-        let postItem = {
-          goodsId: '',
-          goodsNum: 0
-        }
-        postItem.goodsId = item.goodsId
-        postItem.goodsNum = this.cartCount[index].count
-        postArr.push(postItem)
-      })
+      if (id) {
+        // 单个购买
+        postArr = [{
+          goodsId: id,
+          goodsNum: this.cartCount[index].count
+        }]
+      } else {
+        // 购买全部
+        this.cartDataList.forEach((item, index) => {
+          let postItem = {
+            goodsId: '',
+            goodsNum: 0
+          }
+          postItem.goodsId = item.goodsId
+          postItem.goodsNum = this.cartCount[index].count
+          postArr.push(postItem)
+        })
+      }
       this.submitLoading = true
       OrderApi.AddCheckout({ goodsCartList: JSON.stringify(postArr) }).then(res => {
         this.submitLoading = false
         if (res.isSuccess) {
           this.$store.dispatch('getCountAction')
-          this.$router.push({ name: 'checkout' })
+          this.$router.push({
+            name: 'checkout',
+            query: {
+              goodsId: id
+            }
+          })
         } else {
           this.$Message.warning(res.errMsg)
         }

@@ -14,10 +14,14 @@ let getCheckoutList = async ctx => {
   let {userId = ''} = validateTokenResult;
   if (Utils.isEmpty(userId)) return ctx.body = Utils.responseJSON({errMsg: '用户id是必须的，请传入token'});
 
+  let {goodsId = ''} = ctx.query;
+  let matchQuery = {'userId': userId, 'payStatus': {'$lte': 1}}
+  if (goodsId) matchQuery['goodsId'] = goodsId
+
   try {
     let checkouts = await CheckoutModule.aggregate([
       {
-        $match: {'userId': userId, 'payStatus': {'$lte': 1}}
+        $match: matchQuery
       },
       {
         $lookup:
@@ -103,7 +107,7 @@ let getPayCheckoutList = async ctx => {
 }
 
 /**
- * 获取已所有订单
+ * 获取所有订单
  * @method get
  * @param {用户id} userId
  * @param {查询页数} page
@@ -226,8 +230,13 @@ let addCheckout = async ctx => {
     })
     await CheckoutModule.insertMany(innerGoodsCartList)
 
-    // 生成订单成功，清除空应用户的购物车
-    await ShopCartModule.deleteMany({'userId': userId})
+    // 生成订单成功，清除空应用户的购物车对应数据
+    if (goodsCartList.length === 1) {
+      let del = await ShopCartModule.deleteOne({'userId': userId, 'goodsId': goodsCartList[0].goodsId});
+      if (!del.n) return ctx.body = Utils.responseJSON({errMsg: '无此条数据'});
+    } else {
+      await ShopCartModule.deleteMany({'userId': userId})
+    }
 
     ctx.body = Utils.responseJSON({
       result: '已生成订单',

@@ -24,8 +24,8 @@
     </div>
     <div class="usercenter-empty" v-else>
       <div class="empty-icon"><i class="login-icon iconfont icon-chazhaoxiangsi"></i></div>
-      <p class="empty-txt">空空如也~</p>
-      <Button type="primary" size="large" shape="circle" @click="goBuy">去 收 藏</Button>
+      <p class="empty-txt">你还没有添加收藏~</p>
+      <Button type="primary" size="large" shape="circle" @click="goBuy">去 添 加</Button>
     </div>
     <div class="user-store-filter" v-if="collectionList.length > 0">
       <ul class="store-pagination">
