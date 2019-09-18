@@ -47,10 +47,10 @@ let manyDataInsert = async (ctx) => {
 
   GoodsModule.insertMany(insertDataArr, (err, doc) => {
     if (err) return console.log(err);
-    console.log('批量插入成功！');
+    console.log('批量数据导入成功！');
   });
 
-  ctx.body = '导入成功';
+  if (ctx) ctx.body = '导入成功';
 }
 /**
  * @name 批量数据删除
@@ -62,7 +62,7 @@ let manyDataDelete = async (ctx) => {
     sqlWhere = {[name]: val}
   }
   GoodsModule.deleteMany(sqlWhere, err => { console.log(err) });
-  ctx.body = '删除成功';
+  ctx.body = '【商品表】数据批量删除成功';
 }
 
 module.exports = {
