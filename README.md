@@ -20,11 +20,12 @@ http://localhost:3000/api/db/manyDelete 批量删除数据
 // 生产环境启动（生产环境启动会自动导入准备好的数据，不用手动访问接口）
 npm run build
 ```
-### 启动客户端
+#### 启动客户端
 ```
 cd client/shop-client
 npm i or cnpm i
 npm run serve
 ```
 > 关于模板 `侵删`
+
 > 对于登录、登出功能使用的是jwt做的，所以逻辑不严谨。看看就行别在项目上用
