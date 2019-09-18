@@ -9,7 +9,7 @@
           <div class="img-icon">
              <img src="http://thirdwx.qlogo.cn/mmopen/vi_32/ztSCiaznRSyMN9lcpSCOaccqicyoIUtp3WcsJt4JTkxJeJgvodGeDJpjrZdmtQeBFMEGVFiaMFWU7V3GYiaPx1EcjQ/132" alt=""/>
           </div>
-          <p>飞来一只菜鸡</p>
+          <p>{{getUserInfoData.nickName || '----'}}</p>
         </div>
         <ul class="user-left-list">
           <li
@@ -78,6 +78,7 @@ import UserAddress from './children/Address'
 import Collection from './children/Collection'
 import Order from './children/Order'
 import UserMsg from './children/UserMsg'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'UserCenter',
@@ -95,6 +96,9 @@ export default {
     Collection,
     Order,
     UserMsg
+  },
+  computed: {
+    ...mapGetters(['getUserInfoData'])
   },
   methods: {
     userChildrenActive (index, children) {

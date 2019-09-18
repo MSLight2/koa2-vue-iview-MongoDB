@@ -104,7 +104,6 @@ export default {
     sureSubmit () {
       this.$refs['userAddresFroms'].validate(valid => {
         if (valid) {
-          console.log(this.formValidate)
           this.$emit('sureSubmit', this.formValidate)
         }
       })
@@ -127,9 +126,7 @@ export default {
     isShow () {
       this.showDrawer = this.isShow
       if (this.isShow) this.$refs['userAddresFroms'].resetFields()
-    },
-    dataInfo () {
-      if (this.openType === 'edit') {
+      if (this.openType === 'edit' && 'nickName' in this.dataInfo) {
         this.formValidate.nickName = this.dataInfo.nickName
         this.formValidate.email = this.dataInfo.email
         this.formValidate.phone = this.dataInfo.phone

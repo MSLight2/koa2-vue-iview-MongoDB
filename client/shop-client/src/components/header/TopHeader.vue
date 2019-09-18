@@ -21,7 +21,7 @@
         <li v-else>
           <a href="javascript:;" @click="goLogin"><i class="fa fa-user-o"></i> 登录/注册</a>
         </li>
-        <li><a href="javascript:;" v-if="isLogin" @click="loginOut">退出</a></li>
+        <li><a href="javascript:;" v-if="dataInfo.name !== undefined" @click="loginOut">退出</a></li>
       </ul>
     </div>
   </div>
@@ -44,12 +44,6 @@ export default {
       }
     }
   },
-  computed: {
-    isLogin () {
-      if (LoginStorage.getToken() && LoginStorage.getLoginStatus()) return true
-      return false
-    }
-  },
   methods: {
     goLogin () {
       this.$router.replace({ name: 'login' })
@@ -67,7 +61,8 @@ export default {
         if (res.isSuccess) {
           LoginStorage.removeLoginStatus()
           LoginStorage.removeToken()
-          this.$router.replace({ name: 'login' })
+          // this.$router.replace({ name: 'login' })
+          window.location.reload()
         } else {
           this.$Message.error('退出登出失败！请稍后重试')
         }
