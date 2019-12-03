@@ -10,23 +10,23 @@ mongod --dbpath "d:\xxx" --logpath "d:\xxx" --serviceName "myMongodb" --serviceD
 ##### 启动服务端
 ```
 cd service
-npm i or cnpm i
+npm i
 
 // 开发环境启动
 npm start
-// 启动后使用postman或其他接口测试工具访问以下：
+// 启动后使用postman或其他接口测试工具访问以下接口：
 http://localhost:3000/api/db/manyInsert 批量导入数据
 http://localhost:3000/api/db/manyDelete 批量删除数据
 
-// 生产环境启动（生产环境启动会自动导入准备好的数据，不用手动访问接口）
+// 生产环境启动（生产环境启动会自动导入准备好的数据，无须手动访问接口）
 npm run build
 ```
 ##### 启动客户端
 ```
 cd client/shop-client
-npm i or cnpm i
+npm i
 npm run serve
 ```
 > 关于模板 `侵删`
 
-> 对于登录、登出功能使用的是jwt做的，所以逻辑不严谨。看看就行别在项目上用
+> 对于登录、登出功能使用的是jwt做的，所以逻辑不严谨。
