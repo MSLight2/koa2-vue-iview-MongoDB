@@ -30,3 +30,9 @@ npm run serve
 > 关于模板 `侵删`
 
 > 对于登录、登出功能使用的是jwt做的，所以逻辑不严谨。
+
+### 效果图
+![](https://github.com/MSLight2/koa2-vue-iview-MongoDB/blob/master/example/img/login.png)
+![](https://github.com/MSLight2/koa2-vue-iview-MongoDB/blob/master/example/img/home.png)
+![](https://github.com/MSLight2/koa2-vue-iview-MongoDB/blob/master/example/img/list.jpg)
+![](https://github.com/MSLight2/koa2-vue-iview-MongoDB/blob/master/example/img/cart.png)
