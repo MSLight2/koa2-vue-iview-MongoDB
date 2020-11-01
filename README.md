@@ -29,7 +29,7 @@ npm run serve
 ```
 > `如有侵权，请联系我删除`
 
-> 由于登录、登出功能使用的是jwt做的，所以逻辑不是很严谨。
+> 由于登出功能使用的是jwt做的，所以逻辑不是很严谨。
 
 ### 效果图
 ![](https://github.com/MSLight2/koa2-vue-iview-MongoDB/blob/master/example/img/login.png)
