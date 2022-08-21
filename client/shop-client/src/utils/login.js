@@ -1,4 +1,4 @@
-import StorageUtils from './storage'
+import StorageUtils from './Storage'
 
 const userTokenKey = 'SPA_USER_TOKEN'
 const userLoginStatus = 'SPA_USER_STATUS'

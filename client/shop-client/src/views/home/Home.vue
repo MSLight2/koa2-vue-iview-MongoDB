@@ -40,7 +40,7 @@ import TopSelling from '@/views/home/children/TopSelling'
 import NewsLetter from '@/components/puppetComponent/NewsLetter'
 import IviewModal from '@/components/puppetComponent/Modal/IviewModal'
 import * as GoodsApi from '@/api/goods'
-import StorageUtils from '@/utils/storage'
+import StorageUtils from '@/utils/Storage'
 
 export default {
   data () {
