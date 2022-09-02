@@ -9,6 +9,7 @@
     </section-slide>
     <hot-detail @buyNow="hotBuyNow"></hot-detail>
     <section-slide
+      :swiperId="2"
       :title-config="configRecommend"
       :data-list="recommendInfoData"
       @tabSwitch="tabSwitchTwo">

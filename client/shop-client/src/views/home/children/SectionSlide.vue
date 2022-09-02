@@ -41,8 +41,8 @@
                   </div>
                 </div>
                 <div class="products-slick-nav">
-                  <button class="slick-prev slide-prev" type="button">Previous</button>
-                  <button class="slick-next slide-next" type="button">Next</button>
+                  <button :class="['slick-prev', `slide-prev${swiperId}`]" type="button">Previous</button>
+                  <button :class="['slick-next', `slide-next${swiperId}`]" type="button">Next</button>
                 </div>
               </div>
             </div>
@@ -56,6 +56,7 @@
 <script>
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import ProductItem from '@/components/puppetComponent/ProductItem'
+
 export default {
   data () {
     return {
@@ -69,13 +70,17 @@ export default {
           disableOnInteraction: false
         },
         navigation: {
-          nextEl: '.slide-next',
-          prevEl: '.slide-prev'
+          nextEl: `.slide-next${this.swiperId}`,
+          prevEl: `.slide-prev${this.swiperId}`
         }
       }
     }
   },
   props: {
+    swiperId: {
+      type: Number,
+      default: 1
+    },
     titleConfig: {
       type: Object,
       require: true,
