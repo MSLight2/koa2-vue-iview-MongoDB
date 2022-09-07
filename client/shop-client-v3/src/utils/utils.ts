@@ -1,0 +1,16 @@
+export default {
+  isPhone (val: string) {
+    if (/^1[3456789][0-9]{9}$/g.test(val)) {
+      return true
+    } else {
+      return false
+    }
+  },
+  isEmail (val: string) {
+    if (/^([a-z0-9_.-]+)@([\da-z.-]+)\.([a-z.]{2,6})$/g.test(val)) {
+      return true
+    } else {
+      return false
+    }
+  }
+}
