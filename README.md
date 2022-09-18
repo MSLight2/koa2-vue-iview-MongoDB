@@ -6,6 +6,7 @@
 mongod --dbpath '你存放数据库的路径' --logpath '你存放日志文件的路径'
 // 将MongoDB服务器作为Windows服务运行
 mongod --dbpath "d:\xxx" --logpath "d:\xxx" --serviceName "myMongodb" --serviceDisplayName "myMongodb" --install
+> 更新时间2022/9月：目前最新的mongodb安装后会默认以Windows服务运行了，不用手动设置。
 ```
 ##### 启动服务端
 ```
@@ -28,8 +29,6 @@ npm i
 npm run serve
 ```
 > `如有侵权，请联系我删除`
-
-> 由于登出功能使用的是jwt做的，所以逻辑不是很严谨。
 
 ### 效果图
 ![](https://github.com/MSLight2/koa2-vue-iview-MongoDB/blob/master/example/img/login.png)
