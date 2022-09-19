@@ -6,7 +6,7 @@ import LoginStorage from '@/utils/login'
 const CancelToken = axios.CancelToken
 const source = CancelToken.source()
 const axiosInstance: AxiosInstance = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API,
+  baseURL: import.meta.env.VITE_BASE_API,
   timeout: 60000,
   headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
   cancelToken: source.token

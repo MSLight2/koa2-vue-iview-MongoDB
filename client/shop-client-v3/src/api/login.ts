@@ -57,7 +57,7 @@ export const UserResetPassword = (data: any) => {
  * 获取用户信息
  * @method get
  */
-export const getUserInfo = (params: any) => {
+export const getUserInfo = (params?: any) => {
   return axios({
     method: 'get',
     url: '/api/userInfo',
