@@ -3,7 +3,8 @@ node_modules
 service/node_modules
 client/shop-client/node_modules
 client/shop-client/dist
-client/shop-client/package-lock.json
+client/shop-client-v3/node_modules
+client/shop-client-v3/dist
 
 # local env files
 .env.local
