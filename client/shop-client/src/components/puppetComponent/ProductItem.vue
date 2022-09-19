@@ -89,7 +89,7 @@ export default {
           this.$Message.success('已收藏！')
         }
       }).catch((err) => {
-        if (err.code >= 1000 & err.code <= 1002) {
+        if (err.code >= 1000 && err.code <= 1002) {
           this.modalShow = true
         } else {
           this.$Message.error('服务器不想理你，请稍后重试')
@@ -125,7 +125,7 @@ export default {
           this.$Message.success('商品已在购物车，等你呦(*╹▽╹*)！')
         }
       }).catch((err) => {
-        if (err.code >= 1000 & err.code <= 1002) {
+        if (err.code >= 1000 && err.code <= 1002) {
           this.modalShow = true
         } else {
           this.$Message.error('服务器休息中，请稍后重试')
