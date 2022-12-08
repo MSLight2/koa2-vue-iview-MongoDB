@@ -12,7 +12,7 @@
           'color-success': type === 'success',
           'color-error': type === 'error'
         }">
-        <Icon :type="`${iconType}`" size="22"></Icon>
+        <Icon :type="iconType" size="22"></Icon>
         <span>{{title}}</span>
       </p>
       <div class="cnt">
@@ -135,8 +135,8 @@
   .cnt{
     font-size: 14px;
   }
-  div >>> .ivu-modal-header,
-  div >>> .ivu-modal-footer{
+  div :deep(.ivu-modal-header),
+  div :deep(.ivu-modal-footer){
     border: none;
   }
   .color-info{

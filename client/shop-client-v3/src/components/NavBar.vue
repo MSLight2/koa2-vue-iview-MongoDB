@@ -21,7 +21,7 @@
   const router = useRouter();
 
   defineProps({
-    activeCategory: { type: Number, required: true, default: 0 }
+    activeCategory: { type: Number, required: true }
   });
 
   const categotyList = ['首页', '电脑', '智能手机', '耳机', '相机', '家电', 'AI智能'];

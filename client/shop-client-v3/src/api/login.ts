@@ -14,7 +14,7 @@ export const UserLogin = (data: any) => {
   })
 }
 
-export const LoginOut = (data: any) => {
+export const LoginOut = (data?: any) => {
   return axios({
     method: 'post',
     url: '/api/loginOut',

@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import 'swiper/css';
 import { RouterView } from 'vue-router'
+import HeaderTmpl from './components/HeaderTmpl.vue'
 </script>
 
 <template>
   <div id="app">
-    <!-- <header-tmpl v-if="$route.name !== 'userCenter'"></header-tmpl> -->
+    <HeaderTmpl v-if="$route.name !== 'userCenter'"/>
     <router-view v-if="$route.meta.nofade"/>
     <template v-else>
       <router-view v-slot="{ Component }">

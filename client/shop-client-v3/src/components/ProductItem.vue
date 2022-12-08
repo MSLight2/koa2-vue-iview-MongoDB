@@ -2,15 +2,14 @@
   <div class="product spa">
     <div class="product-img"
       @click="checkDetail(dataInfo.goodsId)"
-      v-lazy-container="{ selector: 'img' }"
       :key="dataInfo.goodsId">
-        <img :data-src="getImgUrl(dataInfo.mainPicPath)" alt="">
+        <img v-lazy="getImgUrl(dataInfo.mainPicPath)" alt="">
     </div>
     <div class="product-body">
-      <p class="product-category">{{dataInfo.goodsType | filterGoodsType}}</p>
+      <p class="product-category">{{getGoodsType(dataInfo.goodsType)}}</p>
       <h3 class="product-name">{{dataInfo.title}}</h3>
-      <h4 class="product-price">￥{{dataInfo.originalPrice | formatPrice}}
-        <del class="product-old-price">￥{{dataInfo.showPrice | formatPrice}}</del>
+      <h4 class="product-price">￥{{formatPrice(dataInfo.originalPrice)}}
+        <del class="product-old-price">￥{{formatPrice(dataInfo.showPrice)}}</del>
       </h4>
       <div class="product-rating">
         <i class="fa fa-star" v-for="item in starRate" :key="item"></i>
@@ -51,6 +50,7 @@
   import LoginStorage from '@/utils/login'
   import { Message } from 'view-ui-plus';
   import { useUserStore } from '@/stores/user';
+  import { getGoodsType, formatPrice } from '@/utils/utils'
 
   const modalShow = ref<boolean>(false);
   const userStore = useUserStore();
@@ -135,6 +135,7 @@
 
 <style scoped>
   .product-img{
+    max-height: 260px;
     cursor: pointer;
   }
   .spa .product-name{
@@ -145,8 +146,5 @@
   }
   .product .product-body .product-rating>i.no{
     color: #eee;
-  }
-  .product-img{
-    max-height: 260px;
   }
 </style>

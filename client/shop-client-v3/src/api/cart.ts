@@ -4,7 +4,7 @@ import axios from '@/utils/AxiosUtil'
  * 获取购物车列表
  * @method get
  */
-export const GetCartList = (params: any) => {
+export const GetCartList = (params?: any) => {
   return axios({
     method: 'get',
     url: '/api/getShopCart',
